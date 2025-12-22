@@ -299,14 +299,26 @@ h1{
 
   <!-- ユーザーカード -->
   <div class="card headerCard">
-    <!-- カード上ラベル -->
-    <div class="cardTitle">ユーザー</div>
 
-    <div class="row">
-      <select id="userSelect"></select>
-      <button id="toggleUserPanel" class="toggleBtn">設定 ▾</button>
+    <!-- カードヘッダー（タイトル＋設定アイコン） -->
+    <div class="cardHeader">
+      <div class="cardTitle">ユーザー</div>
+      <button
+        id="toggleUserPanel"
+        class="iconBtn"
+        aria-label="ユーザー設定"
+        title="設定"
+      >
+        ⚙
+      </button>
     </div>
 
+    <!-- メイン操作 -->
+    <div class="row">
+      <select id="userSelect"></select>
+    </div>
+
+    <!-- 設定パネル -->
     <div id="userPanel" class="collapsible">
       <div class="dividerLine"></div>
       <button id="addUserBtn">ユーザー追加</button>
@@ -317,14 +329,26 @@ h1{
 
   <!-- グループカード -->
   <div class="card headerCard">
-    <!-- カード上ラベル -->
-    <div class="cardTitle">グループ</div>
 
-    <div class="row">
-      <select id="currentGroupSelect"></select>
-      <button id="toggleGroupPanel" class="toggleBtn">設定 ▾</button>
+    <!-- カードヘッダー（タイトル＋設定アイコン） -->
+    <div class="cardHeader">
+      <div class="cardTitle">グループ</div>
+      <button
+        id="toggleGroupPanel"
+        class="iconBtn"
+        aria-label="グループ設定"
+        title="設定"
+      >
+        ⚙
+      </button>
     </div>
 
+    <!-- メイン操作 -->
+    <div class="row">
+      <select id="currentGroupSelect"></select>
+    </div>
+
+    <!-- 設定パネル -->
     <div id="groupPanel" class="collapsible">
       <div class="dividerLine"></div>
 
@@ -339,12 +363,20 @@ h1{
 
       <div class="dividerLine"></div>
 
-      <input id="groupCreateName" type="text" placeholder="新しいグループ名" />
+      <input
+        id="groupCreateName"
+        type="text"
+        placeholder="新しいグループ名"
+      />
       <button id="groupCreateBtn">グループ作成</button>
 
       <div class="dividerLine"></div>
 
-      <input id="groupSearchInput" type="text" placeholder="グループ名で検索" />
+      <input
+        id="groupSearchInput"
+        type="text"
+        placeholder="グループ名で検索"
+      />
       <button id="groupSearchBtn">検索</button>
 
       <ul id="groupSearchResult"></ul>
@@ -357,6 +389,7 @@ h1{
   </div>
 
 </div>
+
 
 
 </header>
@@ -603,6 +636,7 @@ h1{
   <script type="module" src="./js/app.js" defer></script>
 </body>
 </html>
+
 
 
 
