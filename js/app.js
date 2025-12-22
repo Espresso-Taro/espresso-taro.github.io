@@ -424,28 +424,28 @@ function armStartOnFirstType() {
 }
 
 
-function startTypingByUserAction() {
-  if (!inputEl) return;
-  if (engine.started || engine.ended) return;
+//function startTypingByUserAction() {
+//  if (!inputEl) return;
+//  if (engine.started || engine.ended) return;
 
   // ★ ここが重要：最初から入力可能にする
-  inputEl.readOnly = false;
-  inputEl.disabled = false;
+//  inputEl.readOnly = false;
+//  inputEl.disabled = false;
 
-  inputEl.value = "";
-  inputEl.placeholder = "ここに文字を打つと計測開始します。";
-  inputEl.classList.add("input-guide-after");
+//  inputEl.value = "";
+//  inputEl.placeholder = "ここに文字を打つと計測開始します。";
+//  inputEl.classList.add("input-guide-after");
 
   // フォーカス & スクロール
-  inputEl.focus({ preventScroll: true });
+//  inputEl.focus({ preventScroll: true });
 
   // 開始トリガー登録（IME含む）
-  inputEl.removeEventListener("compositionstart", startTypingImmediately, true);
-  inputEl.removeEventListener("input",            startTypingImmediately, true);
+//  inputEl.removeEventListener("compositionstart", startTypingImmediately, true);
+//  inputEl.removeEventListener("input",            startTypingImmediately, true);
 
-  inputEl.addEventListener("compositionstart", startTypingImmediately, { once: true, capture: true });
-  inputEl.addEventListener("input",            startTypingImmediately, { once: true, capture: true });
-}
+//  inputEl.addEventListener("compositionstart", startTypingImmediately, { once: true, capture: true });
+//  inputEl.addEventListener("input",            startTypingImmediately, { once: true, capture: true });
+//}
 
 const rankingSvc = new RankingService({ db });
 const groupSvc = new GroupService(db);
@@ -2781,6 +2781,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
