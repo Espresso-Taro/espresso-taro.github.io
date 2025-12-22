@@ -180,6 +180,61 @@ const inputTimeEl = $("inputTime");
 let typingStartAt = null;
 let timeRAF = null;
 
+// ================================
+// 設定パネル開閉を完全に統一する処理
+// ================================
+
+// トグルボタンと対応するパネルを定義
+const settingPairs = [
+  {
+    btn: document.getElementById("toggleUserPanel"),
+    panel: document.getElementById("userPanel"),
+  },
+  {
+    btn: document.getElementById("toggleGroupPanel"),
+    panel: document.getElementById("groupPanel"),
+  },
+];
+
+// すべての設定パネルを閉じる
+function closeAllSettingPanels() {
+  settingPairs.forEach(({ btn, panel }) => {
+    if (panel) panel.classList.remove("open");
+    if (btn) btn.classList.remove("open");
+  });
+}
+
+// 指定した設定パネルをトグルする
+function toggleSettingPanel(targetBtn, targetPanel) {
+  if (!targetBtn || !targetPanel) return;
+
+  const isOpen = targetPanel.classList.contains("open");
+
+  // いったん全部閉じる
+  closeAllSettingPanels();
+
+  // すでに開いていた場合は閉じるだけ
+  if (isOpen) return;
+
+  // クリックしたものだけ開く
+  targetPanel.classList.add("open");
+  targetBtn.classList.add("open");
+}
+
+// 各設定ボタンにイベントを設定
+settingPairs.forEach(({ btn, panel }) => {
+  if (!btn || !panel) return;
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation(); // 余計なバブリング防止
+    toggleSettingPanel(btn, panel);
+  });
+});
+
+// 画面のどこかをクリックしたら全部閉じる（任意だが超おすすめ）
+document.addEventListener("click", () => {
+  closeAllSettingPanels();
+});
 
 /* =========================================================
    Services
@@ -2781,6 +2836,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
