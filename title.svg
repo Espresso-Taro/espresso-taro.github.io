@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 700 100"
+     role="img"
+     aria-label="漢字変換（IME）に対応した社会人向け日本語タイピング練習サービスのタイトル">
+
+  <style>
+
+    .main-shadow {
+      font-size: 45px;
+      fill: #000;
+      font-weight: 900;
+      opacity: 0.18;
+    }
+    .main {
+      font-size: 45px;
+      fill: #111;
+      font-weight: 900;
+    }
+  </style>
+
+
+<!-- メインタイトル影 -->
+<text x="2" y="9" class="main-shadow" dominant-baseline="hanging">
+  <tspan x="2" dy="0">漢字変換タイピングゲーム</tspan>
+  <tspan x="112" dy="55">｜社会人向け日本語入力練習</tspan>
+</text>
+
+<!-- メインタイトル本体 -->
+<text x="0" y="5" class="main" dominant-baseline="hanging">
+  <tspan x="0" dy="0">漢字変換タイピングゲーム</tspan>
+  <tspan x="110" dy="55">｜社会人向け日本語入力練習</tspan>
+</text>
+
+</svg>
+
+
+
+
+
+
+

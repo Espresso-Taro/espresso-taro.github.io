@@ -1,0 +1,627 @@
+<!-- index.html -->
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5456232753937272"
+   crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>漢字変換タイピングゲーム｜社会人向け日本語入力練習</title>
+<meta name="description" content="漢字変換（IME）を含めた日本語タイピング練習ができる社会人向けゲーム。仕事で使う実務レベルの入力スキルを効率よく鍛えられます。"/>
+<meta name="robots" content="index,follow"/>
+<meta property="og:title" content="漢字変換タイピングゲーム｜社会人向け日本語入力練習"/>
+<meta property="og:description" content="漢字変換（IME）を含めた実用的な日本語タイピング練習。社会人向けの入力スキルを効率よく鍛えられます。"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="日本語タイピングゲーム"/>
+<link rel="canonical" href="https://espresso-taro.github.io/Otonano-typing-game/"/>
+<meta property="og:url" content="https://espresso-taro.github.io/Otonano-typing-game/"/>
+<meta property="og:image" content="https://espresso-taro.github.io/Otonano-typing-game/ogp.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="漢字変換タイピングゲーム｜社会人向け日本語入力練習"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="theme-color" content="#ffffff"/>
+<meta name="google-site-verification" content="XXXXXXXXXXXXXXXXXXXX" />
+
+
+<style>
+:root{
+  --max:980px;
+}
+
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
+  margin:0;
+  line-height:1.7;
+  background:#fafafa;
+  font-size:12px;
+}
+
+header,
+main,
+footer{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:16px;
+}
+
+header{
+  padding-top:28px;
+  padding-bottom:0;
+}
+
+main{
+  padding-top:0;
+}
+
+.title-hero{
+  max-width:960px;
+  margin:0 auto;
+}
+
+.title-hero img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+h1{
+  font-size:1.9rem;
+  margin:0 0 10px;
+}
+
+.page-title{
+  font-size:.5rem;
+  font-weight:800;
+  text-align:left;
+  margin:6px 0 10px;
+  color:#222;
+}
+
+.lead{
+  font-size:1.05rem;
+  margin:0 0 12px;
+}
+
+.muted{
+  color:#555;
+}
+
+#text{
+  font-size:1.25em;
+  background:#f3f3f3;
+  padding:14px 16px;
+  border:1px solid transparent;
+  border-radius:12px;
+  box-sizing:border-box;
+  white-space:pre-wrap;
+  word-break:break-all;
+  line-height:2;
+  margin: 0 0 8px;
+  padding-right:calc(16px + var(--sbw,0px));
+}
+
+#input{
+  width:100%;
+  min-height:100px;
+  font-size:1.25em;
+  margin: 0 0 0;
+  padding:14px 16px;
+  border-radius:12px;
+  border:1px solid #bbb;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
+  line-height:2;
+  resize:none;
+  background:#fff;
+  overflow-y:scroll;
+}
+
+.typingArea{
+  position:relative;
+}
+</style>
+<link rel="stylesheet" href="./css/app.css">
+<link href="sitemap.xml" rel="sitemap" type="application/xml"/>
+<link href="robots.txt" rel="robots"/>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "漢字変換タイピングゲーム｜社会人向け日本語入力練習",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "description": "IME漢字変換を含めた実用的な日本語タイピング練習ゲーム。社会人向けの実務レベル入力練習に最適で、成長グラフ・ランキング・グループ対戦に対応しています。スマートフォンでも使いやすく、フリック入力・外付けキーボードの両方に対応。"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "IMEとは何ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "IME（Input Method Editor）とは、日本語を入力するための仕組みです。ローマ字入力をひらがな・漢字・カタカナへ変換する機能を指します。本タイピングゲームでは、この漢字変換操作も含めた実務に近い日本語入力練習ができます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "CPMとは何ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CPM（Characters Per Minute）とは、1分間に入力できた文字数を表す指標です。本ゲームでは入力速度と正確性を評価するために使用しています。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "漢字変換のあるタイピング練習はできますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい。本ゲームはIMEによる漢字変換を前提に入力を判定します。実務に近い日本語入力として練習できます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "社会人向けのタイピング練習として使えますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい。社会人が日常的に使う語彙や文体に近い文章で、日本語入力を実践的に練習できます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "スマートフォンのフリック入力でも使えますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい。スマートフォンのフリック入力でもスコア計測・ランキング参加が可能です。"
+      }
+    }
+  ]
+}
+</script>
+
+
+</head>
+
+<body>
+<header>
+    <!-- ===============================
+         タイトル
+    ================================ -->
+    <h1 class="muted page-title">
+      漢字変換（IME）を含めて練習できる社会人向け日本語タイピングゲーム
+    </h1>
+<div class="title-hero">
+  <svg xmlns="http://www.w3.org/2000/svg"
+       viewBox="0 0 700 110"
+       aria-hidden="true"
+       focusable="false">
+
+  <style>
+
+    .main-shadow {
+      font-size: 45px;
+      fill: #000;
+      font-weight: 900;
+      opacity: 0.18;
+    }
+    .main {
+      font-size: 45px;
+      fill: #111;
+      font-weight: 900;
+    }
+  </style>
+
+
+<!-- メインタイトル影 -->
+<text x="2" y="7" class="main-shadow" dominant-baseline="hanging">
+  <tspan x="2" dy="0">漢字変換タイピングゲーム</tspan>
+  <tspan x="112" dy="55">｜社会人向け日本語入力練習</tspan>
+</text>
+
+<!-- メインタイトル本体 -->
+<text x="0" y="5" class="main" dominant-baseline="hanging">
+  <tspan x="0" dy="0">漢字変換タイピングゲーム</tspan>
+  <tspan x="110" dy="55">｜社会人向け日本語入力練習</tspan>
+</text>
+</svg>
+    </div>
+
+    <p class="lead">
+      IMEの<strong>漢字変換</strong>を含めた、実用的な<strong>日本語タイピング練習</strong>ができます。
+    </p>
+
+<!-- ===============================
+     特徴（折りたたみ：SEO用）
+================================ -->
+<details class="card featureCard">
+  <summary><strong>このタイピングゲームの特徴・違い・遊び方を見る</strong></summary>
+
+  <p class="muted">
+  本ページは、<strong>漢字変換（IME）を含めた日本語タイピング練習</strong>を目的とした、
+  社会人向けタイピングゲームの公式ページです。
+  </p>
+
+  <h3 class="section-heading">この日本語タイピングゲームの特徴</h3>
+    <ul class="indent">
+      <li><strong>漢字変換（IME）対応</strong>：変換を含めた実践的な日本語入力を練習</li>
+      <li><strong>雑学100テーマ</strong>：学びながら続けられる文章コンテンツ</li>
+      <li><strong>成長グラフ</strong>：CPM（入力速度）の推移を自動で可視化</li>
+      <li><strong>全国ランキング</strong>：モチベーションが続く仕組み</li>
+      <li><strong>グループ対戦</strong>：身内ランキングで習慣化しやすい</li>
+<li><strong>フリック入力対応</strong>：スマートフォンのフリック操作でもスコアを競えます</li>
+<li><strong>外付けキーボード対応</strong>：スマホでもPCに近い環境で練習可能</li>
+    </ul>
+
+    <p class="muted indent">
+      「子供向けタイピング」では物足りない方に向けて、実務に近い文章入力を重視しています。
+    </p>
+
+  <h2 class="section-heading">一般的なタイピングゲームとの違い</h2>
+    <p class="indent"> 
+    一般的なタイピングゲームはローマ字入力の速さに寄りがちですが、
+    本サイトは<strong>日本語変換（IME）込み</strong>で判定するため、仕事で必要な入力スキルに直結します。
+    「読み取る → 入力する → 変換する → 正確に仕上げる」をまとめて練習したい方に適しています。
+    </p>
+
+  <h3 class="section-heading">遊び方</h3>
+    <ol>
+      <li>
+        まず <strong>ユーザー</strong> を選択・作成します  
+        <span class="muted">（1台の端末で複数人の成績を分けて管理できます）</span>
+      </li>
+      <li>
+        必要に応じて <strong>グループ</strong> を選択・作成します  
+        <span class="muted">（グループに参加すると、グループランキングにスコアが記録されます）</span>
+      </li>
+      <li>
+        難易度・文章長・カテゴリ／テーマを選択します  
+        <span class="muted">（迷った場合は「今日の課題」がおすすめ）</span>
+      </li>
+      <li>
+        文章を読み、IMEで漢字変換しながら入力します
+      </li>
+      <li>
+        完了後、スコア（CPM）・ランキング・成長グラフを確認します
+      </li>
+    </ol>
+</details>
+    
+<!-- ===============================
+      ユーザー / グループ（最優先操作）
+================================ -->
+<div class="row topControls">
+
+  <!-- ユーザーカード -->
+  <div class="card headerCard">
+    <div class="row">
+      <label class="sectionTitle">ユーザー</label>
+      <select id="userSelect"></select>
+      <button id="toggleUserPanel" class="toggleBtn">設定 ▾</button>
+    </div>
+
+    <div id="userPanel" class="collapsible">
+      <div class="dividerLine"></div>
+      <button id="addUserBtn">ユーザー追加</button>
+      <button id="renameUserBtn">ユーザー名変更</button>
+      <button id="deleteUserBtn">削除</button>
+    </div>
+  </div>
+
+  <!-- グループカード -->
+  <div class="card headerCard">
+    <div class="row">
+      <label class="sectionTitle">グループ</label>
+      <select id="currentGroupSelect"></select>
+      <button id="toggleGroupPanel" class="toggleBtn">設定 ▾</button>
+    </div>
+
+    <div id="groupPanel" class="collapsible">
+      <div class="dividerLine"></div>
+
+      <div class="inlineBtns">
+        <button id="leaveGroupBtn">退出</button>
+        <button id="deleteGroupBtn">グループ削除</button>
+      </div>
+
+      <p class="hint">
+        ※ 選択中のグループにスコアが記録されます。
+      </p>
+
+      <div class="dividerLine"></div>
+
+      <input id="groupCreateName" type="text" placeholder="新しいグループ名" />
+      <button id="groupCreateBtn">グループ作成</button>
+
+      <div class="dividerLine"></div>
+
+      <input id="groupSearchInput" type="text" placeholder="グループ名で検索" />
+      <button id="groupSearchBtn">検索</button>
+
+      <ul id="groupSearchResult"></ul>
+
+      <div id="pendingBox">
+        <h3>参加申請（承認待ち）</h3>
+        <ul id="pendingList"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</header>
+
+<main>
+
+<!-- ===============================
+      タイピング練習（主役）
+================================ -->
+<section id="play" class="card" aria-label="タイピング練習" style="margin-top:16px;">
+  <h2 style="margin-top:0;">漢字変換（IME）対応のタイピング練習</h2>
+
+  <div class="row">
+    <select id="difficulty" aria-label="難易度"></select>
+    <select id="lengthGroup" aria-label="文章長"></select>
+    <select id="category" aria-label="カテゴリ"></select>
+    <select id="theme" aria-label="テーマ"></select>
+
+    <label class="toggle">
+      <span>今日の課題</span>
+      <input type="checkbox" id="dailyTask" />
+    </label>
+  </div>
+
+  <div class="muted" id="dailyInfo" style="margin:0 0 10px; display:none;"></div>
+
+  <div class="row" style="margin: 0 0 6px;">
+    <button id="skipBtn" type="button">別の文章にする</button>
+  </div>
+
+  <div id="metaInfo" style="font-size: 1.0em; color: #000; margin-bottom: 0px;">
+    <strong>【見本文】</strong>
+    <span id="metaInfoValue">難度 / 長さ / カテゴリー / テーマ</span>
+  </div>
+
+  <p id="text">読み込み中...</p>
+
+  <div class="typingArea">
+    <div style="font-size: 1.0em; color: #000; margin-bottom: 0px;"><strong>【タイピング入力欄】</strong> </div>
+    <textarea
+      id="input"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      aria-describedby="typing-status"
+    ></textarea>
+  </div>
+  
+  <div id="typing-status" role="status" aria-live="polite"></div>
+
+
+  <div id="inputTime" class="input-time"></div>
+
+  <div id="result"></div>
+
+  <noscript>
+    <p class="muted">このサイトはJavaScriptが必要です。ブラウザ設定でJavaScriptを有効にしてください。</p>
+  </noscript>
+</section>
+
+<section class="card" aria-label="成績と分析" style="margin-top:16px;">
+  <h2 style="margin-top:0;">成績・分析（ランキング / 成長グラフ）</h2>
+  <p class="muted" style="margin-top:0;">
+    <strong>全国ランキング</strong>・<strong>今日の課題ランキング</strong>・<strong>グループランキング</strong>で競い、
+    <strong>スコア推移グラフ</strong>で日々の成長を確認できます。
+  </p>
+
+  <div class="diffTabs" id="diffTabsUnified">
+    <button type="button" class="diffTab" data-diff="easy">易</button>
+    <button type="button" class="diffTab active" data-diff="normal">普</button>
+    <button type="button" class="diffTab" data-diff="hard">難</button>
+  </div>
+
+  <div class="split">
+    <!-- 今日の課題ランキング -->
+    <div class="card" style="border-color:#eee;">
+      <h3 style="margin-top:0;">今日の課題ランキング（上位10）</h3>
+      <div class="muted" id="dailyRankLabel" style="margin-bottom: 8px;"></div>
+      <ul id="dailyRanking"></ul>
+    </div>
+  
+    <!-- 全国ランキング -->
+    <div class="card" style="border-color:#eee;">
+      <h3 style="margin-top:0;">全国ランキング（上位10）</h3>
+      <div id="overallLabel" class="muted" style="margin-bottom: 8px;"></div>
+      <ul id="ranking" style="margin-top: 10px;"></ul>
+    </div>
+  </div>
+  
+  <!-- グループランキング（参加中のみ表示：app.js 側で制御） -->
+  <div class="card" id="groupRankingBox" style="border-color:#eee; margin-top:12px; display:none;">
+    <h3 style="margin-top:0;">グループランキング（上位10）</h3>
+    <div id="groupRankLabel" class="muted" style="margin-bottom: 8px;"></div>
+    <ul id="groupRanking"></ul>
+  </div>
+
+
+  <div class="card" style="border-color:#eee; margin-top:12px;">
+    <h3 id="analyticsTitle" style="margin-top:0;">入力分析</h3>
+
+    <div class="muted" id="analyticsLabel" style="margin: 0 0 10px;"></div>
+
+    <div class="split">
+      <!-- 左：実力ブロック -->
+      <div class="powerBlock">
+        <div class="powerTitle">あなたの実力</div>
+    
+        <div class="powerInner">
+          <!-- 表（JSが描画） -->
+          <div id="bestByDifficulty"></div>
+    
+          <!-- 称号画像（JSが差し込む） -->
+          <div id="rankImageBox"></div>
+        </div>
+      </div>
+    
+      <!-- 右：グラフ＋履歴 -->
+      <div>
+        <h3>スコア（CPM）の推移（縦：スコア / 横：日付）</h3>
+        <canvas id="scoreChart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     向いている人（既存セクションを強化）
+     ========================================================= -->
+<section class="card" style="margin-top:16px;">
+  <h2 style="margin-top:0;">このタイピングゲームが向いている人</h2>
+  <ul style="margin:0;">
+<li>社会人・大人向けの<strong>日本語タイピング練習</strong>を探している</li>
+<li>ブラインドタッチはできるが、<strong>漢字変換が遅い</strong>・ミスが多いと感じる</li>
+<li><strong>実務レベルの入力速度と正確性</strong>を上げたい</li>
+<li><strong>成長グラフ</strong>で上達を確認しながら続けたい</li>
+<li>友人・同僚・クラスで<strong>グループランキング</strong>を作って習慣化したい</li>
+<li>雑学を読みながら、飽きずに継続したい</li>
+</ul>
+</section>
+
+<!-- =========================================================
+     FAQ（既存を差し替え）
+     ========================================================= -->
+<section class="card" style="margin-top:16px;">
+  <h2 style="margin-top:0;">よくある質問（FAQ）</h2>
+  <ul style="margin:0;">
+<details>
+  <summary>IMEとは何ですか？</summary>
+  <p>
+    IME（Input Method Editor）とは、日本語入力でローマ字を
+    ひらがな・漢字に変換する仕組みです。
+    <br>
+    → <a href="/Otonano-typing-game/ime/what-is-ime.html">IMEの仕組みを詳しく解説</a>
+  </p>
+</details>
+
+<details>
+  <summary>CPMとは何ですか？</summary>
+  <p>
+    CPM（Characters Per Minute）は1分間に入力できた文字数を表します。
+    <br>
+    → <a href="/Otonano-typing-game/typing/cpm.html">CPMとWPMの違いを見る</a>
+  </p>
+</details>
+
+<details>
+  <summary>漢字変換のあるタイピング練習はできますか？</summary>
+  <p>
+    はい。本ゲームはIME変換込みで判定します。
+    <br>
+    → <a href="/Otonano-typing-game/typing/kanji-typing.html">漢字変換タイピングとは</a>
+  </p>
+</details>
+
+<details>
+<summary>社会人向けのタイピング練習として使えますか？</summary>
+<p>
+はい。文章内容は雑学・豆知識ですが、
+社会人が日常的に目にする語彙や文体に近い日本語を使用しています。
+漢字変換（IME）を含めた実用的な日本語入力の練習として利用できます。
+</p>
+</details>
+
+<details>
+<summary>グループ対戦（身内ランキング）はできますか？</summary>
+<p>はい。<strong>グループを作成・参加</strong>すると、友人・会社・学校などのメンバーで<strong>ランキング形式の対戦</strong>ができます。全国ランキングにも同時参加できます。</p>
+</details>
+
+<details>
+<summary>タイピングの成長をグラフで確認できますか？（CPM推移）</summary>
+<p>はい。<strong>スコア（CPM）の推移グラフ</strong>を自動生成し、日々の成長を視覚的に確認できます。</p>
+</details>
+
+<details>
+  <summary>スマートフォンのフリック入力でも対戦やランキングに参加できますか？</summary>
+  <p>
+    はい。スマートフォンの<strong>フリック入力でもスコアが計測</strong>され、
+    フリック操作による入力で<strong>ランキングやグループ対戦に参加</strong>できます。
+    外付けキーボードを接続しての入力にも対応しています。
+  </p>
+</details>
+</section>
+
+</main>
+
+<footer>
+<div class="container">
+<div class="card">
+<p class="muted" style="margin:0;">
+        © Otonano Typing Game
+      </p>
+<p class="muted">
+本サイトは日本語タイピング練習、漢字変換タイピング、大人向けタイピングゲームを探している方に最適です。
+</p>
+<p class="muted">
+<a href="/Otonano-typing-game/about/developer.html">このサイトについて（運営者・制作背景）</a>
+</p>
+<p class="muted">
+※入力した文章そのものは外部に送信されません。スコア等の成績情報のみ、ランキング表示のために使用されます。
+</p>
+
+</div>
+</div>
+</footer>
+
+  <div id="resultModalBackdrop" class="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="resultModalTitle">
+      <h3 id="resultModalTitle">結果</h3>
+      <div class="grid">
+        <div class="kpi"><div class="muted">ランク</div><div class="v" id="mRank">-</div></div>
+        <div class="kpi"><div class="muted">スコア（CPM）</div><div class="v" id="mCPM">-</div></div>
+        <div class="kpi"><div class="muted">完了時間（秒）</div><div class="v" id="mTimeSec">-</div></div>
+        <div class="kpi"><div class="muted">文章長（文字）</div><div class="v" id="mLen">-</div></div>
+      </div>
+      <div id="mRankUp" class="rankUpMsg" aria-live="polite" style="display:none;"></div>
+      <div class="muted" id="mMeta" style="margin-top:10px;"></div>
+      <div class="modalActions">
+        <button id="closeModalBtn" type="button">閉じる</button>
+        <button id="nextBtn" type="button">次の文章へ</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/app.js" defer></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

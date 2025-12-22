@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- トップページ -->
+  <url>
+    <loc>https://espresso-taro.github.io/Otonano-typing-game/</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- IME解説 -->
+  <url>
+    <loc>https://espresso-taro.github.io/Otonano-typing-game/ime/what-is-ime.html</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 漢字変換タイピング解説 -->
+  <url>
+    <loc>https://espresso-taro.github.io/Otonano-typing-game/typing/kanji-typing.html</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- CPM解説 -->
+  <url>
+    <loc>https://espresso-taro.github.io/Otonano-typing-game/typing/cpm.html</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 制作背景・運営者情報 -->
+  <url>
+    <loc>https://espresso-taro.github.io/Otonano-typing-game/about/developer.html</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+</urlset>
