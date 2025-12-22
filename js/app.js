@@ -61,22 +61,9 @@ function hide(el) {
 }
 
 function bindToggle(btnId, panelId) {
-  const btn = $(btnId);
-  const panel = $(panelId);
-  if (!btn || !panel) return;
-
-  btn.addEventListener("click", () => {
-    const open = panel.classList.toggle("open");
-    btn.textContent = open
-      ? btn.textContent.replace("▾", "▲")
-      : btn.textContent.replace("▲", "▾");
-
-    // ★ 追加：折り畳み後に見本文の基準Yを更新
-    if (textEl) {
-      textBaseY = textEl.offsetTop;
-    }
-  });
+  // 旧方式は使わない（settingPairs方式に統一）
 }
+
 
 
 
@@ -184,61 +171,50 @@ let timeRAF = null;
 // 設定パネル開閉を完全に統一する処理
 // ================================
 
-document.addEventListener("DOMContentLoaded", () => {
+const settingPairs = [
+  {
+    btn: document.getElementById("toggleUserPanel"),
+    panel: document.getElementById("userPanel"),
+  },
+  {
+    btn: document.getElementById("toggleGroupPanel"),
+    panel: document.getElementById("groupPanel"),
+  },
+];
 
-  // トグルボタンと対応するパネルを定義
-  const settingPairs = [
-    {
-      btn: document.getElementById("toggleUserPanel"),
-      panel: document.getElementById("userPanel"),
-    },
-    {
-      btn: document.getElementById("toggleGroupPanel"),
-      panel: document.getElementById("groupPanel"),
-    },
-  ];
-
-  // すべての設定パネルを閉じる
-  function closeAllSettingPanels() {
-    settingPairs.forEach(({ btn, panel }) => {
-      if (panel) panel.classList.remove("open");
-      if (btn) btn.classList.remove("open");
-    });
-  }
-
-  // 指定した設定パネルをトグルする
-  function toggleSettingPanel(targetBtn, targetPanel) {
-    if (!targetBtn || !targetPanel) return;
-
-    const isOpen = targetPanel.classList.contains("open");
-
-    // いったん全部閉じる
-    closeAllSettingPanels();
-
-    // すでに開いていた場合は閉じるだけ
-    if (isOpen) return;
-
-    // クリックしたものだけ開く
-    targetPanel.classList.add("open");
-    targetBtn.classList.add("open");
-  }
-
-  // 各設定ボタンにイベントを設定
+function closeAllSettingPanels() {
   settingPairs.forEach(({ btn, panel }) => {
-    if (!btn || !panel) return;
-
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleSettingPanel(btn, panel);
-    });
+    if (panel) panel.classList.remove("open");
+    if (btn) btn.classList.remove("open");
   });
+}
 
-  // 画面のどこかをクリックしたら全部閉じる
-  document.addEventListener("click", (e) => {
-    if (e.target.closest(".headerCard")) return;
-    closeAllSettingPanels();
+function toggleSettingPanel(targetBtn, targetPanel) {
+  if (!targetBtn || !targetPanel) return;
+
+  const isOpen = targetPanel.classList.contains("open");
+
+  closeAllSettingPanels();
+  if (isOpen) return;
+
+  targetPanel.classList.add("open");
+  targetBtn.classList.add("open");
+}
+
+settingPairs.forEach(({ btn, panel }) => {
+  if (!btn || !panel) return;
+
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation(); // ★ document まで飛ばさない
+    toggleSettingPanel(btn, panel);
   });
+});
 
+// ★ 画面外を押したら閉じる（ただしカード内は除外）
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".headerCard")) return;
+  closeAllSettingPanels();
 });
 
 
@@ -2770,8 +2746,8 @@ engine.attach();
   bindRankDiffTabs();
   bindGroupUI();
   bindUserSwitchHooks();
-  bindToggle("toggleUserPanel", "userPanel");
-  bindToggle("toggleGroupPanel", "groupPanel");
+  //bindToggle("toggleUserPanel", "userPanel");
+  //bindToggle("toggleGroupPanel", "groupPanel");
 
    
   // 初回ランキング：activeRankDiff も復元済みの State.activeRankDiff で走る
@@ -2843,6 +2819,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
