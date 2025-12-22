@@ -1,3 +1,17 @@
+/* 設定パネルの表示制御 */
+.collapsible {
+  display: none;
+}
+
+.collapsible.open {
+  display: block;
+}
+
+/* ⚙ アイコンが開いているとき回転 */
+.iconBtn.open {
+  transform: rotate(90deg);
+  transition: transform 0.2s ease;
+}
 /* ユーザー・グループカードを常に横並び（スマホ含む） */
 .topControls {
   display: flex;
