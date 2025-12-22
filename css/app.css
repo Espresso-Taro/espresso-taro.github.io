@@ -1,3 +1,9 @@
+#groupCreateName,
+#groupSearchInput {
+  width: 8ch;        /* ← 8文字分ぴったり */
+  min-width: 8ch;
+  box-sizing: content-box;
+}
 /* 設定パネルの表示制御 */
 .collapsible {
   display: none;
