@@ -1,34 +1,55 @@
-.cardTitle {
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-  color: #222;
-}
+/* ユーザー・グループカードを常に横並び（スマホ含む） */
 .topControls {
   display: flex;
   gap: 12px;
-  flex-wrap: nowrap;      /* ← 折り返さない */
+  flex-wrap: nowrap;   /* 折り返さない */
 }
 
+/* カードを均等幅にし、はみ出し防止 */
 .topControls > .headerCard {
-  flex: 1 1 0;            /* ← 2枚を均等幅 */
-  min-width: 0;           /* ← selectはみ出し防止 */
+  flex: 1 1 0;
+  min-width: 0;        /* select のはみ出し防止（重要） */
 }
+
+/* カードヘッダー（タイトル＋設定アイコン） */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+/* カードタイトル */
+.cardTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #222;
+}
+
+/* 設定アイコンボタン */
+.iconBtn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  padding: 4px;
+  cursor: pointer;
+  line-height: 1;
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.iconBtn:hover,
+.iconBtn:focus-visible {
+  background: #f0f0f0;
+  border-radius: 50%;
+}
+
+/* select はカード幅に収める */
 .headerCard select {
   width: 100%;
   min-width: 0;
 }
 
-
-/* ユーザー・グループカードはスマホでも横並び */
-.topControls {
-  flex-wrap: nowrap;   /* ← 折り返さない */
-}
-
-.topControls > .headerCard {
-  flex: 1 1 0;         /* ← 2枚を均等幅に */
-  min-width: 0;        /* ← はみ出し防止（超重要） */
-}
 .article-page {
   font-size: 1.05rem;      /* PCでも少し大きく */
   line-height: 1.9;
