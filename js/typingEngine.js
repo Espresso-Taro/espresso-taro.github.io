@@ -283,8 +283,9 @@ export class TypingEngine {
     if (!this.inputEl) return;
   
     this.inputEl.value = "";
-    this.inputEl.placeholder = "上文を入力してください。\n(入力すると始まります。)";
+    this.inputEl.placeholder = "入力すると始まります。";
     this.inputEl.classList.add("input-guide-after");
   }
 }
+
 
