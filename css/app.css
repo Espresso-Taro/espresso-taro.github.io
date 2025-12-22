@@ -1,3 +1,7 @@
+.collapsible {
+  width: 100%;
+  flex-basis: 100%;
+}
 /* ユーザー選択・グループ選択の幅を16文字基準に制限 */
 #userSelect,
 #currentGroupSelect {
