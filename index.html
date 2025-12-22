@@ -304,6 +304,7 @@ h1{
     <div class="cardHeader">
       <div class="cardTitle">ユーザー</div>
       <button
+        type="button"
         id="toggleUserPanel"
         class="iconBtn"
         aria-label="ユーザー設定"
@@ -321,9 +322,9 @@ h1{
     <!-- 設定パネル -->
     <div id="userPanel" class="collapsible">
       <div class="dividerLine"></div>
-      <button id="addUserBtn">ユーザー追加</button>
-      <button id="renameUserBtn">ユーザー名変更</button>
-      <button id="deleteUserBtn">削除</button>
+      <button type="button" id="addUserBtn">ユーザー追加</button>
+      <button type="button" id="renameUserBtn">ユーザー名変更</button>
+      <button type="button" id="deleteUserBtn">削除</button>
     </div>
   </div>
 
@@ -334,6 +335,7 @@ h1{
     <div class="cardHeader">
       <div class="cardTitle">グループ</div>
       <button
+        type="button"
         id="toggleGroupPanel"
         class="iconBtn"
         aria-label="グループ設定"
@@ -353,8 +355,8 @@ h1{
       <div class="dividerLine"></div>
 
       <div class="inlineBtns">
-        <button id="leaveGroupBtn">退出</button>
-        <button id="deleteGroupBtn">グループ削除</button>
+        <button type="button" id="leaveGroupBtn">退出</button>
+        <button type="button" id="deleteGroupBtn">グループ削除</button>
       </div>
 
       <p class="hint">
@@ -366,18 +368,18 @@ h1{
       <input
         id="groupCreateName"
         type="text"
-        placeholder="新しいグループ名"
+        placeholder=""
       />
-      <button id="groupCreateBtn">グループ作成</button>
+      <button type="button" id="groupCreateBtn">グループ作成</button>
 
       <div class="dividerLine"></div>
 
       <input
         id="groupSearchInput"
         type="text"
-        placeholder="グループ名で検索"
+        placeholder=""
       />
-      <button id="groupSearchBtn">検索</button>
+      <button type="button" id="groupSearchBtn">検索</button>
 
       <ul id="groupSearchResult"></ul>
 
@@ -387,10 +389,7 @@ h1{
       </div>
     </div>
   </div>
-
 </div>
-
-
 
 </header>
 
@@ -636,6 +635,7 @@ h1{
   <script type="module" src="./js/app.js" defer></script>
 </body>
 </html>
+
 
 
 
