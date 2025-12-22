@@ -281,7 +281,7 @@ h1{
       </li>
       <li>
         難易度・文章長・カテゴリ／テーマを選択します  
-        <span class="muted">（迷った場合は「今日の課題」がおすすめ）</span>
+        <span class="muted">（迷った場合は「日替課題」がおすすめ）</span>
       </li>
       <li>
         文章を読み、IMEで漢字変換しながら入力します
@@ -370,7 +370,7 @@ h1{
     <select id="theme" aria-label="テーマ"></select>
 
     <label class="toggle">
-      <span>今日の課題</span>
+      <span>日替課題</span>
       <input type="checkbox" id="dailyTask" />
     </label>
   </div>
@@ -414,7 +414,7 @@ h1{
 <section class="card" aria-label="成績と分析" style="margin-top:16px;">
   <h2 style="margin-top:0;">成績・分析（ランキング / 成長グラフ）</h2>
   <p class="muted" style="margin-top:0;">
-    <strong>全国ランキング</strong>・<strong>今日の課題ランキング</strong>・<strong>グループランキング</strong>で競い、
+    <strong>全国ランキング</strong>・<strong>日替課題ランキング</strong>・<strong>グループランキング</strong>で競い、
     <strong>スコア推移グラフ</strong>で日々の成長を確認できます。
   </p>
 
@@ -425,9 +425,9 @@ h1{
   </div>
 
   <div class="split">
-    <!-- 今日の課題ランキング -->
+    <!-- 日替課題ランキング -->
     <div class="card" style="border-color:#eee;">
-      <h3 style="margin-top:0;">今日の課題ランキング（上位10）</h3>
+      <h3 style="margin-top:0;">日替課題ランキング（上位10）</h3>
       <div class="muted" id="dailyRankLabel" style="margin-bottom: 8px;"></div>
       <ul id="dailyRanking"></ul>
     </div>
@@ -597,6 +597,7 @@ h1{
   <script type="module" src="./js/app.js" defer></script>
 </body>
 </html>
+
 
 
 
