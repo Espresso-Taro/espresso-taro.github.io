@@ -305,6 +305,7 @@ h1{
       <div class="cardTitle">ユーザー</div>
       <button
         type="button"
+        maxlength="8"
         id="toggleUserPanel"
         class="iconBtn"
         aria-label="ユーザー設定"
@@ -336,7 +337,8 @@ h1{
       <div class="cardTitle">グループ</div>
       <button
         type="button"
-        id="toggleGroupPanel"
+        maxlength="8"
+      　id="toggleGroupPanel"
         class="iconBtn"
         aria-label="グループ設定"
         title="設定"
@@ -368,15 +370,17 @@ h1{
       <input
         id="groupCreateName"
         type="text"
+        maxlength="8"
         placeholder=""
       />
       <button type="button" id="groupCreateBtn">グループ作成</button>
-
+      
       <div class="dividerLine"></div>
-
+      
       <input
         id="groupSearchInput"
         type="text"
+        maxlength="8"
         placeholder=""
       />
       <button type="button" id="groupSearchBtn">検索</button>
@@ -635,6 +639,7 @@ h1{
   <script type="module" src="./js/app.js" defer></script>
 </body>
 </html>
+
 
 
 
