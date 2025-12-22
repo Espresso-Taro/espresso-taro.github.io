@@ -232,9 +232,13 @@ settingPairs.forEach(({ btn, panel }) => {
 });
 
 // 画面のどこかをクリックしたら全部閉じる（任意だが超おすすめ）
-document.addEventListener("click", () => {
+document.addEventListener("click", (e) => {
+  // 設定カード内をクリックしている場合は閉じない
+  if (e.target.closest(".headerCard")) return;
+
   closeAllSettingPanels();
 });
+
 
 /* =========================================================
    Services
@@ -2836,6 +2840,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
