@@ -1,3 +1,25 @@
+.cardTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #222;
+}
+.topControls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;      /* ← 折り返さない */
+}
+
+.topControls > .headerCard {
+  flex: 1 1 0;            /* ← 2枚を均等幅 */
+  min-width: 0;           /* ← selectはみ出し防止 */
+}
+.headerCard select {
+  width: 100%;
+  min-width: 0;
+}
+
+
 /* ユーザー・グループカードはスマホでも横並び */
 .topControls {
   flex-wrap: nowrap;   /* ← 折り返さない */
