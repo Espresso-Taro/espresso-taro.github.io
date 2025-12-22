@@ -1,3 +1,10 @@
+/* ユーザー選択・グループ選択の幅を16文字基準に制限 */
+#userSelect,
+#currentGroupSelect {
+  width: 18ch;        /* 見た目16文字＋余白 */
+  max-width: 18ch;
+  min-width: 18ch;
+}
 #groupCreateName,
 #groupSearchInput {
   width: 8ch;        /* ← 8文字分ぴったり */
