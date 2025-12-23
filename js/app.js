@@ -1161,14 +1161,13 @@ async function loadTriviaFastFirst() {
     updateMetaInfo();
   }
 
-  // ★ 残りは「load 完了後」に idle で実行（Lighthouse対策）
-  window.addEventListener("load", () => {
-    runWhenIdle(async () => {
-      await loadTriviaAll();
-      initFilterOptions();
-      buildPool();
-    });
+  // ★ 残りはアイドル時間に完全ロード
+  runWhenIdle(async () => {
+    await loadTriviaAll();
+    initFilterOptions();
+    buildPool();
   });
+
 
 }
 
@@ -1535,7 +1534,7 @@ function setCurrentItem(item, { daily = false } = {}) {
     ? State.daily.lengthGroup
     : getPracticeLengthGroup();
 
-  applyFontSizeByLength(lg);
+  applyFontSizeByLengthOnce(lg);
 
   engine.setTarget(text, {
     daily,
@@ -2959,4 +2958,5 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
