@@ -511,7 +511,16 @@ function armStartOnFirstType() {
 //  inputEl.addEventListener("input",            startTypingImmediately, { once: true, capture: true });
 //}
 
-const rankingSvc = new RankingService({ db });
+let rankingSvc = null;
+
+function getRankingService() {
+  if (!rankingSvc) {
+    ensureFirebaseReady();
+    rankingSvc = new RankingService({ db });
+  }
+  return rankingSvc;
+}
+
 const groupSvc = new GroupService(db);
 
 const userMgr = new UserManager({
@@ -1666,6 +1675,9 @@ function sortAndTop10(rows) {
 async function loadDailyRanking() {
   if (!dailyRankingUL) return [];
 
+  ensureFirebaseReady();
+  const rankingSvc = getRankingService();
+
   const dateKey = todayKey();
   const diff = State.activeRankDiff;
   const dailyTaskKey = dailyTaskKeyOf(diff);
@@ -1673,12 +1685,11 @@ async function loadDailyRanking() {
   hide(dailyRankLabel);
 
   try {
-    const rowsRaw = await rankingSvc.loadDailyTask({
+    const rows = await rankingSvc.loadDailyTask({
       dailyTaskKey,
       dateKey,
       difficulty: diff
     });
-    const rows = rowsRaw;
 
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
@@ -1695,18 +1706,18 @@ async function loadDailyRanking() {
   }
 }
 
-
-
 async function loadOverallRanking() {
   if (!rankingUL) return [];
+
+  ensureFirebaseReady();
+  const rankingSvc = getRankingService();
 
   hide(overallLabel);
 
   try {
-    const rowsRaw = await rankingSvc.loadOverall({
+    const rows = await rankingSvc.loadOverall({
       difficulty: State.activeRankDiff
     });
-    const rows = rowsRaw;
 
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
@@ -1733,6 +1744,9 @@ async function loadGroupRanking() {
     return [];
   }
 
+  ensureFirebaseReady();
+  const rankingSvc = getRankingService();
+
   groupRankingBox.style.display = "block";
   hide(groupRankLabel);
 
@@ -1757,6 +1771,7 @@ async function loadGroupRanking() {
     return [];
   }
 }
+
 
 async function reloadAllRankings() {
   await loadOverallRanking();
@@ -2845,6 +2860,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
