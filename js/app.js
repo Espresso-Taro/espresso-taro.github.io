@@ -48,13 +48,7 @@ let _rankingSvc = null;
 function getUserManager() {
   if (!_userMgr) {
     ensureFirebaseReady();
-    _userMgr = new UserManager({
-      selectEl: userSelect,
-      addBtn,
-      renameBtn,
-      deleteBtn,
-      db
-    });
+    _userMgr = new UserManager({ db });
   }
   return _userMgr;
 }
@@ -2902,6 +2896,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
