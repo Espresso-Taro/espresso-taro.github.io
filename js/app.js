@@ -2026,10 +2026,10 @@ async function loadMyAnalytics() {
 
 /** db/auth が必要になった瞬間に初期化される前提 */
 function ensureFirebaseReady() {
-  if (!db || !auth || !fbApp) {
-    initFirebase(); // ← あなたの既存の initFirebase()
-  }
+  if (fbApp) return;
+  initFirebase();
 }
+
 
 /* =========================================================
    Group UI
@@ -2900,6 +2900,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
