@@ -2859,21 +2859,22 @@ onAuthStateChanged(auth, async (user) => {
   if (!user) return;
 
   try {
-    // auth.uid が確定してから userMgr 初期化
+    // ★ 先に UI を完全に構築する
+    await initApp();
+
+    // ★ UI が揃ってから UserManager を初期化
     await getUserManager().init(user.uid);
 
-    // ★ personalId 確定後に必ず1回実行
+    // ★ personalId 確定後に実行
     await refreshMyGroups();
     await reloadAllRankings();
     await loadMyAnalytics();
 
-    // 既存の初期化（UI構築など）
-    await initApp();
-
   } catch (e) {
-    console.error("initApp error:", e);
+    console.error("init error:", e);
   }
 });
+
 
 
 /* =========================================================
@@ -2899,6 +2900,7 @@ window.addEventListener("pageshow", () => {
 
 // ★ デバッグ用（確認が終わったら消してOK）
 window.__State = State;
+
 
 
 
