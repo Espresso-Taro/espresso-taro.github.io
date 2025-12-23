@@ -297,12 +297,18 @@ h1{
 ================================ -->
 <div class="row topControls">
 
-  <!-- ユーザーカード -->
+  <!-- ===============================
+       ユーザーカード
+  =============================== -->
   <div class="card headerCard">
 
-    <!-- カードヘッダー（タイトル＋設定アイコン） -->
+    <!-- カードヘッダー（ラベル＋選択＋設定） -->
     <div class="cardHeader">
       <div class="cardTitle">ユーザー</div>
+
+      <!-- ★ select をここへ移動 -->
+      <select id="userSelect"></select>
+
       <button
         type="button"
         id="toggleUserPanel"
@@ -314,11 +320,6 @@ h1{
       </button>
     </div>
 
-    <!-- メイン操作 -->
-    <div class="row">
-      <select id="userSelect"></select>
-    </div>
-
     <!-- 設定パネル -->
     <div id="userPanel" class="collapsible">
       <div class="dividerLine"></div>
@@ -328,12 +329,18 @@ h1{
     </div>
   </div>
 
-  <!-- グループカード -->
+  <!-- ===============================
+       グループカード
+  =============================== -->
   <div class="card headerCard">
 
-    <!-- カードヘッダー（タイトル＋設定アイコン） -->
+    <!-- カードヘッダー（ラベル＋選択＋設定） -->
     <div class="cardHeader">
       <div class="cardTitle">グループ</div>
+
+      <!-- ★ select をここへ移動 -->
+      <select id="currentGroupSelect"></select>
+
       <button
         type="button"
         id="toggleGroupPanel"
@@ -343,11 +350,6 @@ h1{
       >
         ⚙
       </button>
-    </div>
-
-    <!-- メイン操作 -->
-    <div class="row">
-      <select id="currentGroupSelect"></select>
     </div>
 
     <!-- 設定パネル -->
@@ -372,9 +374,9 @@ h1{
         placeholder=""
       />
       <button type="button" id="groupCreateBtn">グループ作成</button>
-      
+
       <div class="dividerLine"></div>
-      
+
       <input
         id="groupSearchInput"
         type="text"
@@ -391,7 +393,9 @@ h1{
       </div>
     </div>
   </div>
+
 </div>
+
 
 </header>
 
@@ -637,6 +641,7 @@ h1{
   <script type="module" src="./js/app.js" defer></script>
 </body>
 </html>
+
 
 
 
