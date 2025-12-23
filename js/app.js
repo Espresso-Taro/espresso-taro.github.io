@@ -35,6 +35,34 @@ function runWhenIdle(fn) {
   }
 }
 
+// ===============================
+// Service holders（最上部）
+// ===============================
+let _userMgr = null;
+let _groupSvc = null;
+let _rankingSvc = null;
+
+// ===============================
+// Service getters
+// ===============================
+function getUserManager() {
+  if (!_userMgr) {
+    ensureFirebaseReady();
+    _userMgr = new UserManager({
+      selectEl: userSelect,
+      addBtn,
+      renameBtn,
+      deleteBtn,
+      db
+    });
+  }
+  return _userMgr;
+}
+
+function getGroupService() { ... }
+function getRankingService() { ... }
+
+
 /* =========================================================
    Firebase init
 ========================================================= */
@@ -2900,6 +2928,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
