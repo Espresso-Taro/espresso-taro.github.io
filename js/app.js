@@ -27,6 +27,16 @@ import { rankByCPM, rankIndex } from "./rankUtil.js";
 /* =========================================================
    ユーティリティ関数
 ========================================================= */
+function runAfterWindowLoad(fn) {
+  if (document.readyState === "complete") {
+    // すでに load 済み
+    fn();
+  } else {
+    // これから load
+    window.addEventListener("load", fn, { once: true });
+  }
+}
+
 function runWhenIdle(fn) {
   if ("requestIdleCallback" in window) {
     requestIdleCallback(fn);
@@ -1161,12 +1171,14 @@ async function loadTriviaFastFirst() {
     updateMetaInfo();
   }
 
-  // ★ 残りはアイドル時間に完全ロード
-  runWhenIdle(async () => {
-    await loadTriviaAll();
-    initFilterOptions();
-    buildPool();
+  runAfterWindowLoad(() => {
+    runWhenIdle(async () => {
+      await loadTriviaAll();
+      initFilterOptions();
+      buildPool();
+    });
   });
+
 
 
 }
@@ -2958,5 +2970,6 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
