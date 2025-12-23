@@ -1,45 +1,45 @@
 /* ===== PC表示：ユーザー / グループを1行・3点横並び ===== */
 @media (min-width: 860px) {
 
-  /* カード内の「タイトル＋select＋⚙」を1行に */
-  .headerCard {
-    display: flex;
-    flex-direction: column;
-  }
+/* カード内の「タイトル＋select＋⚙」を1行に */
+.headerCard {
+  display: flex;
+  flex-direction: column;
+}
 
-  /* ヘッダー＋select を横並びにする行 */
-  .headerCard > .cardHeader,
-  .headerCard > .row {
-    display: contents; /* ← 構造は維持しつつ見た目だけ統合 */
-  }
+/* ヘッダー＋select を横並びにする行 */
+.headerCard > .cardHeader,
+.headerCard > .row {
+  display: contents; /* ← 構造は維持しつつ見た目だけ統合 */
+}
 
-  /* 実際の1行レイアウト */
-  .headerCard {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    column-gap: 10px;
-  }
+/* 実際の1行レイアウト */
+.headerCard {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  column-gap: 10px;
+}
 
-  /* ラベル */
-  .cardTitle {
-    white-space: nowrap;
-  }
+/* ラベル */
+.cardTitle {
+  white-space: nowrap;
+}
 
-  /* select */
-  .headerCard select {
-    width: 100%;
-  }
+/* select */
+.headerCard select {
+  width: 100%;
+}
 
-  /* ⚙ */
-  .iconBtn {
-    justify-self: end;
-  }
+/* ⚙ */
+.iconBtn {
+  justify-self: end;
+}
 
-  /* 設定パネルは下に */
-  .headerCard .collapsible {
-    grid-column: 1 / -1;
-  }
+/* 設定パネルは下に */
+.headerCard .collapsible {
+  grid-column: 1 / -1;
+}
 }
 .collapsible {
   width: 100%;
