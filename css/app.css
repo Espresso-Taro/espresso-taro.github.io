@@ -524,5 +524,33 @@ textarea.input-guide{
     white-space: nowrap;
   }
 }
+/* ===== スマホ表示：ラベル＋⚙ → 下に select ===== */
+@media (max-width: 600px) {
+
+  /* ヘッダーを2段構成に */
+  .headerCard .cardHeader {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title icon"
+      "select select";
+    row-gap: 8px;
+    align-items: center;
+  }
+
+  .headerCard .cardTitle {
+    grid-area: title;
+    white-space: nowrap;   /* 縦崩れ防止 */
+  }
+
+  .headerCard .iconBtn {
+    grid-area: icon;
+  }
+
+  .headerCard select {
+    grid-area: select;
+    width: 100%;
+  }
+}
 
 
