@@ -59,7 +59,6 @@ function getUserManager() {
   return _userMgr;
 }
 
- * GroupService を遅延生成で取得*/
 function getGroupService() {
   if (!_groupSvc) {
     ensureFirebaseReady();
@@ -68,8 +67,6 @@ function getGroupService() {
   return _groupSvc;
 }
 
-/**
- * RankingService を遅延生成で取得*/
 function getRankingService() {
   if (!_rankingSvc) {
     ensureFirebaseReady();
@@ -2944,6 +2941,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
