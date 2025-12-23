@@ -407,11 +407,18 @@ h1{
 <section id="play" class="card typingCard" aria-label="タイピング練習" style="margin-top:16px;">
   <h2 style="margin-top:0;">漢字変換（IME）対応のタイピング練習</h2>
 
-  <div class="row">
-    <select id="difficulty" aria-label="難易度"></select>
-    <select id="lengthGroup" aria-label="文章長"></select>
-    <select id="category" aria-label="カテゴリ"></select>
-    <select id="theme" aria-label="テーマ"></select>
+   <div class="row">
+     <label for="difficulty" class="sr-only">難易度</label>
+     <select id="difficulty"></select>
+   
+     <label for="lengthGroup" class="sr-only">文章長</label>
+     <select id="lengthGroup"></select>
+   
+     <label for="category" class="sr-only">カテゴリ</label>
+     <select id="category"></select>
+   
+     <label for="theme" class="sr-only">テーマ</label>
+     <select id="theme"></select>
 
     <label class="toggle">
       <span>日替課題</span>
@@ -540,7 +547,6 @@ h1{
      ========================================================= -->
 <section class="card" style="margin-top:16px;">
   <h2 style="margin-top:0;">よくある質問（FAQ）</h2>
-  <ul style="margin:0;">
 <details>
   <summary>IMEとは何ですか？</summary>
   <p>
@@ -641,6 +647,7 @@ h1{
   <script type="module" src="./js/app.js" defer></script>
 </body>
 </html>
+
 
 
 
