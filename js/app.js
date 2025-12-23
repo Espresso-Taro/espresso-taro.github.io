@@ -542,7 +542,7 @@ async function submitScoreDoc({
 
 
 // userName切替時：グループSelect即更新 + ランキング更新
-userMgr.onUserChanged(async () => {
+getUserManager().onUserChanged(async () => {
   if (isBooting) return; // ★初期化中はここで止める
   // ★ ユーザーごとの前回状態を復元
   const userName = currentUserNameSafe();
@@ -2719,7 +2719,7 @@ function onTypingFinish({ metrics, meta }) {
 
     const user = State.authUser;
     const uid = user?.uid;
-    const userName   = userMgr.getCurrentUserName?.() ?? "Guest";
+    const userName   = getUserManager().getCurrentUserName?.() ?? "Guest";
     const dateKey = todayKey();
     const dailyTaskKey = meta?.dailyTaskKey ?? (isDailyTask ? State.daily.dailyTaskKey : null);
     const dailyTaskName = isDailyTask ? (theme !== "all" ? theme : (category !== "all" ? category : "今日の課題")) : null;
@@ -2854,7 +2854,7 @@ onAuthStateChanged(auth, async (user) => {
 
   try {
     // auth.uid が確定してから userMgr 初期化
-    await userMgr.init(user.uid);
+    await getUserManager().init(user.uid);
 
     // ★ 起動完了を明示
     isBooting = false;
@@ -2893,6 +2893,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
