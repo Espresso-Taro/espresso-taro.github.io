@@ -1111,7 +1111,57 @@ function hideModal() {
 /* =========================================================
    Trivia load
 ========================================================= */
-async function loadTrivia() {
+async function loadTriviaFastFirst() {
+  const res = await fetch("./trivia.json");
+  if (!res.ok) throw new Error("trivia.json load failed");
+  const json = await res.json();
+  if (!Array.isArray(json)) throw new Error("trivia.json must be an array");
+
+  const diff = getPracticeDifficulty();
+  const lg   = getPracticeLengthGroup();
+  const cat  = getPracticeCategory();
+  const th   = getPracticeTheme();
+
+  let firstItem = null;
+
+  for (const x of json) {
+    const text = (x?.text ?? "").toString();
+    if (!text) continue;
+
+    const item = {
+      ...x,
+      text,
+      difficulty: x?.difficulty ?? difficultyByText(text),
+      lengthGroup: x?.lengthGroup ?? lengthGroupOf(text.length),
+      category: (x?.category ?? "all").toString(),
+      theme: (x?.theme ?? "all").toString()
+    };
+
+    if (
+      item.difficulty === diff &&
+      item.lengthGroup === lg &&
+      (cat === "all" || item.category === cat) &&
+      (th === "all" || item.theme === th)
+    ) {
+      firstItem = item;
+      break; // ★ 最初の1件で即終了
+    }
+  }
+
+  if (firstItem) {
+    setCurrentItem(firstItem);
+    updateMetaInfo();
+  }
+
+  // ★ 残りはアイドル時間に完全ロード
+  runWhenIdle(async () => {
+    await loadTriviaAll();
+    initFilterOptions();
+    buildPool();
+  });
+}
+
+async function loadTriviaAll() {
   const res = await fetch("./trivia.json", );
   if (!res.ok) throw new Error("trivia.json load failed");
   const json = await res.json();
@@ -1416,6 +1466,7 @@ function stableIndex(seed, mod) {
    pool / pick / set item
 ========================================================= */
 function buildPool() {
+  if (!State.allItems || State.allItems.length === 0) return;
   State.hasNoItem = false;
 
   if (State.daily.enabled) {
@@ -2780,7 +2831,7 @@ engine.attach();
    App init
 ========================================================= */
 async function initApp() {
-  await loadTrivia();
+  loadTriviaFastFirst();
   initFilterOptions();
 
   // =========================
@@ -2808,7 +2859,7 @@ async function initApp() {
     disableDailyTask();
   }
 
-  buildPool();
+  //buildPool();トリビアを分けたときにコメントアウトした。
   if (!State.hasNoItem) {
     setCurrentItem(pickRandomDifferentText(), { daily: false });
   }
@@ -2900,6 +2951,7 @@ window.addEventListener("pageshow", () => {
 
 // ★ デバッグ用（確認が終わったら消してOK）
 window.__State = State;
+
 
 
 
