@@ -507,37 +507,22 @@ textarea.input-guide{
   text-align:right;
   min-height:1em;
 }
-/* ===== PC表示：ラベル → select → ⚙ の順に横並び ===== */
 @media (min-width: 860px) {
-
-  /* カード上部を1行にまとめる */
-  .headerCard {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* タイトル・select・⚙を横並びにする専用行 */
-  .headerCard > .cardHeader {
+  .headerCard .cardHeader {
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    column-gap: 12px;
-    margin-bottom: 0;
-  }
-
-  /* select を cardHeader 内に視覚的に移動 */
-  .headerCard > .row {
-    grid-column: 2 / 3;
-    margin: 0;
+    gap: 12px;
   }
 
   .headerCard select {
     width: 100%;
+    min-width: 0;
   }
 
-  /* 設定パネルは下段 */
-  .headerCard .collapsible {
-    margin-top: 8px;
+  .cardTitle {
+    white-space: nowrap;
   }
 }
+
 
