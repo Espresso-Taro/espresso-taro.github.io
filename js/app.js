@@ -1678,7 +1678,7 @@ async function loadDailyRanking() {
   hide(dailyRankLabel);
 
   try {
-    const rows = await getRankingService()loadDailyTask({
+    const rows = await getRankingService().loadDailyTask({
       dailyTaskKey,
       dateKey,
       difficulty: diff
@@ -1686,7 +1686,7 @@ async function loadDailyRanking() {
 
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
-    getRankingService()renderList(dailyRankingUL, rows, {
+    getRankingService().renderList(dailyRankingUL, rows, {
       highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
       userNameMap
     });
@@ -1708,13 +1708,13 @@ async function loadOverallRanking() {
   hide(overallLabel);
 
   try {
-    const rows = await getRankingService()loadOverall({
+    const rows = await getRankingService().loadOverall({
       difficulty: State.activeRankDiff
     });
 
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
-    getRankingService()renderList(rankingUL, rows, {
+    getRankingService().renderList(rankingUL, rows, {
       highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
       userNameMap
     });
@@ -1752,7 +1752,7 @@ async function loadGroupRanking() {
     const rows = sortAndTop10(rowsRaw);
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
-    getRankingService()renderList(groupRankingUL, rows, {
+    getRankingService().renderList(groupRankingUL, rows, {
       highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
       userNameMap
     });
@@ -2900,6 +2900,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
