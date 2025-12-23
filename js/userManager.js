@@ -148,6 +148,12 @@ export class UserManager {
           );
           return;
         }
+        
+        // ★ 追加：削除前の確認
+        const ok = window.confirm(
+          "このユーザーを削除します。\n\n本当によろしいですか？"
+        );
+        if (!ok) return;
     
         // confirm は使わない（②の方針）
         try {
@@ -372,6 +378,7 @@ export class UserManager {
     if (personalId) localStorage.removeItem(`currentGroupId_v1:${personalId}`);
   }
 }
+
 
 
 
