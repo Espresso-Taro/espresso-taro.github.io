@@ -1106,12 +1106,14 @@ const RANK_IMAGES = {
 ========================================================= */
 function showModal() {
   if (!modalBackdrop) return;
-  modalBackdrop.style.display = "flex";
+  modalBackdrop.classList.add("open");
 }
+
 function hideModal() {
   if (!modalBackdrop) return;
-  modalBackdrop.style.display = "none";
+  modalBackdrop.classList.remove("open");
 }
+
 
 /* =========================================================
    Trivia load
@@ -2896,6 +2898,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
