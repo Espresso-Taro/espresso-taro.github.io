@@ -2,17 +2,17 @@
   width: 100%;
   flex-basis: 100%;
 }
-/* ユーザー選択・グループ選択の幅を16文字基準に制限 */
+/* ユーザー選択・グループ選択の幅を14文字基準に制限 */
 #userSelect,
 #currentGroupSelect {
-  width: 18ch;        /* 見た目16文字＋余白 */
-  max-width: 18ch;
-  min-width: 18ch;
+  width: 16ch;        /* 見た目14文字＋余白 */
+  max-width: 16ch;
+  min-width: 16ch;
 }
 #groupCreateName,
 #groupSearchInput {
-  width: 16ch;        /* ← 日本語8文字分ぴったり */
-  min-width: 16ch;
+  width: 14ch;        /* ← 日本語7文字分ぴったり */
+  min-width: 14ch;
   box-sizing: content-box;
 }
 /* 設定パネルの表示制御 */
