@@ -1,7 +1,7 @@
 # 漢字変換タイピングゲーム  
 ### 社会人向け日本語入力練習（IME対応）
 
-🔗 https://espresso-taro.github.io/Otonano-typing-game/
+🔗 https://espresso-taro.github.io/
 
 > English: see [README.en.md](./README.en.md)
 
