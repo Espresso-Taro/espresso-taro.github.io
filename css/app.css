@@ -240,13 +240,17 @@ footer{
 .modalBackdrop{
   position:fixed;
   inset:0;
-  background:transparent;
+  background:rgba(0,0,0,0); /* 透明でもOK */
   display:none;
-  align-items:center;
-  justify-content:center;
+  pointer-events:none;      /* ★重要 */
   z-index:9999;
-  padding:16px;
 }
+
+.modalBackdrop.open{
+  display:flex;
+  pointer-events:auto;      /* 表示中のみ有効 */
+}
+
 
 .modal{
   width:min(720px,100%);
