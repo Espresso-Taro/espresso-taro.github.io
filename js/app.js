@@ -497,14 +497,19 @@ function getRankingService() {
   return rankingSvc;
 }
 
-
-const userMgr = new UserManager({
-  selectEl: userSelect,
-  addBtn: addUserBtn,
-  renameBtn: renameUserBtn,
-  deleteBtn: deleteUserBtn,
-  db
-});
+function getUserManager() {
+  if (!_userMgr) {
+    ensureFirebaseReady();
+    _userMgr = new UserManager({
+      selectEl: userSelect,
+      addBtn,
+      renameBtn,
+      deleteBtn,
+      db
+    });
+  }
+  return _userMgr;
+}
 
 
 
@@ -763,7 +768,7 @@ function applyPrefsToUI(prefs) {
 }
 
 function persistPrefsNow() {
-  const personalId = userMgr.getCurrentPersonalId();
+  const personalId = getUserManager().getCurrentPersonalId();
   if (!personalId) return;
   savePrefsOf(personalId, collectCurrentPrefs());
 }
@@ -1669,7 +1674,7 @@ async function loadDailyRanking() {
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
     rankingSvc.renderList(dailyRankingUL, rows, {
-      highlightPersonalId: userMgr.getCurrentPersonalId() || null,
+      highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
       userNameMap
     });
 
@@ -1697,7 +1702,7 @@ async function loadOverallRanking() {
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
     rankingSvc.renderList(rankingUL, rows, {
-      highlightPersonalId: userMgr.getCurrentPersonalId() || null,
+      highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
       userNameMap
     });
 
@@ -1735,7 +1740,7 @@ async function loadGroupRanking() {
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
     rankingSvc.renderList(groupRankingUL, rows, {
-      highlightPersonalId: userMgr.getCurrentPersonalId() || null,
+      highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
       userNameMap
     });
 
@@ -1935,7 +1940,7 @@ function drawScoreTrend(rows) {
 }
 
 async function loadMyAnalytics() {
-  const personalId = userMgr.getCurrentPersonalId();
+  const personalId = getUserManager().getCurrentPersonalId();
   if (!personalId) return;
 
   setText(analyticsTitle, "入力分析");
@@ -2050,7 +2055,7 @@ async function refreshMyGroups() {
   const groupSvc = getGroupService();
 
   // ★ personalId 未確定なら何もしない（これが最重要）
-  const personalId = userMgr.getCurrentPersonalId();
+  const personalId = getUserManager().getCurrentPersonalId();
   if (!personalId) return;
 
   let groups = [];
@@ -2189,7 +2194,7 @@ async function resolveCurrentGroupRole() {
   ensureFirebaseReady();
   const userMgr = getUserManager();
 
-  const pid = userMgr.getCurrentPersonalId();
+  const pid = getUserManager().getCurrentPersonalId();
   if (!pid) return null;
 
   const ref = doc(db, "groupMembers", `${pid}::${State.currentGroupId}`);
@@ -2213,7 +2218,7 @@ async function onGroupChanged() {
   State.currentGroupRole = await resolveCurrentGroupRole();
 
   // personalId が null の可能性があるのでガード
-  const personalId = userMgr.getCurrentPersonalId();
+  const personalId = getUserManager().getCurrentPersonalId();
   if (personalId) {
     setSavedGroupIdFor(personalId, State.currentGroupId);
   }
@@ -2419,7 +2424,7 @@ function bindPracticeFilters() {
     
       // ★ beforeDailyPrefs が無い場合は、保存済み prefs から復元
       if (!restore) {
-        const personalId = userMgr.getCurrentPersonalId();
+        const personalId = getUserManager().getCurrentPersonalId();
         const prefs = loadPrefsOf(personalId);
         if (prefs) {
           restore = {
@@ -2506,7 +2511,7 @@ function bindGroupUI() {
 
     const created = await groupSvc.createGroup({
       groupName,
-      ownerPersonalId: userMgr.getCurrentPersonalId(),
+      ownerPersonalId: getUserManager().getCurrentPersonalId(),
       ownerUid: State.authUser.uid
     });
 
@@ -2539,7 +2544,7 @@ function bindGroupUI() {
 
       const results = await groupSvc.searchGroupsByName(name);
 
-      const personalId = userMgr.getCurrentPersonalId();
+      const personalId = getUserManager().getCurrentPersonalId();
       if (!personalId) return;
 
       const myGroups = new Set(
@@ -2635,7 +2640,7 @@ function bindGroupUI() {
 
       await groupSvc.leaveGroup({
         groupId: State.currentGroupId,
-        personalId: userMgr.getCurrentPersonalId()
+        personalId: getUserManager().getCurrentPersonalId()
       });
 
       await refreshMyGroups();
@@ -2743,7 +2748,7 @@ function onTypingFinish({ metrics, meta }) {
       try {
         if (!uid) return;
     
-        const personalId = userMgr.getCurrentPersonalId();
+        const personalId = getUserManager().getCurrentPersonalId();
     
         await submitScoreDoc({
           personalId,
@@ -2798,7 +2803,7 @@ engine.attach();
   
   // ★ 前回の選択を復元（options 構築後じゃないと反映できない）
   {
-    const personalId = userMgr.getCurrentPersonalId();
+    const personalId = getUserManager().getCurrentPersonalId();
     const prefs = loadPrefsOf(personalId);
     applyPrefsToUI(prefs);
   }
@@ -2904,6 +2909,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
