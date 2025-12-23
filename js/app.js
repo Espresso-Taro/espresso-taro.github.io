@@ -1535,7 +1535,7 @@ function setCurrentItem(item, { daily = false } = {}) {
     ? State.daily.lengthGroup
     : getPracticeLengthGroup();
 
-  applyFontSizeByLengthOnce(lg);
+  applyFontSizeByLength(lg);
 
   engine.setTarget(text, {
     daily,
@@ -2959,3 +2959,4 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
