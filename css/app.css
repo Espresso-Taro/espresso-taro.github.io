@@ -5,9 +5,9 @@
 /* ユーザー選択・グループ選択の幅を14文字基準に制限 */
 #userSelect,
 #currentGroupSelect {
-  width: 16ch;        /* 見た目14文字＋余白 */
-  max-width: 16ch;
-  min-width: 16ch;
+  width: 18ch;        /* 見た目14文字＋余白 */
+  max-width: 18ch;
+  min-width: 18ch;
 }
 #groupCreateName,
 #groupSearchInput {
