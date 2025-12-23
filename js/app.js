@@ -2483,7 +2483,7 @@ function bindGroupUI() {
 
   const groupName = (groupCreateName?.value ?? "").trim();
   if (!groupName) {
-    alert("グループ名を7字以内で入力してください。");
+    alert("グループ名を7文字以内で入力してください。");
     return;
   }
   if (groupName.length > 7) {
@@ -2896,6 +2896,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
