@@ -497,22 +497,6 @@ function getRankingService() {
   return rankingSvc;
 }
 
-function getUserManager() {
-  if (!_userMgr) {
-    ensureFirebaseReady();
-    _userMgr = new UserManager({
-      selectEl: userSelect,
-      addBtn,
-      renameBtn,
-      deleteBtn,
-      db
-    });
-  }
-  return _userMgr;
-}
-
-
-
 async function submitScoreDoc({
   personalId,
   uid,
@@ -2909,6 +2893,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
