@@ -360,17 +360,17 @@ footer{
   align-items:flex-start;
 }
 
-/*.panelRow{
+.panelRow{
   margin-top:8px;
   align-items:flex-start;
   gap:22px;
-}*/
+}
 
-/*.panelBox{
+.panelBox{
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-}*/
+}
 
 .typingCard{
   border:2px solid #ddd;
@@ -412,7 +412,7 @@ main{padding-top:0;}
   text-shadow:0 1px 0 rgba(0,0,0,.12);
 }
 
-/*.powerTable{
+.powerTable{
   border:2px solid #000;
   border-collapse:collapse;
   font-size:1rem;
@@ -443,7 +443,7 @@ main{padding-top:0;}
   word-break:break-word;
   overflow-wrap:anywhere;
   text-align:center;
-}*/
+}
 
 .powerBlock{
   display:flex;
