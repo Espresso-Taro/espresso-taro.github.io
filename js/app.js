@@ -528,16 +528,6 @@ function armStartOnFirstType() {
   inputEl.addEventListener("input",            startTypingImmediately, { once: true, capture: true });
 }
 
-let rankingSvc = null;
-
-function getRankingService() {
-  if (!rankingSvc) {
-    ensureFirebaseReady();
-    rankingSvc = new RankingService({ db });
-  }
-  return rankingSvc;
-}
-
 async function submitScoreDoc({
   personalId,
   uid,
@@ -2043,35 +2033,6 @@ function ensureFirebaseReady() {
   }
 }
 
-/** UserManager を遅延生成 */
-let _userMgr = null;
-
-function getUserManager() {
-  if (!_userMgr) {
-    ensureFirebaseReady();
-    _userMgr = new UserManager({
-      selectEl: userSelect,
-      addBtn,
-      renameBtn,
-      deleteBtn,
-      db
-    });
-  }
-  return _userMgr;
-}
-
-
-/** GroupService を遅延生成 */
-let _groupSvc = null;
-function getGroupService() {
-  if (!_groupSvc) {
-    ensureFirebaseReady();
-    // 既存の GroupService の ctor 仕様に合わせてください（例：{ db }）
-    _groupSvc = new GroupService({ db });
-  }
-  return _groupSvc;
-}
-
 /* =========================================================
    Group UI
 ========================================================= */
@@ -2941,6 +2902,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
