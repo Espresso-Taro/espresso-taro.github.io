@@ -2912,6 +2912,9 @@ window.addEventListener("pageshow", () => {
   });
 });
 
+// ★ デバッグ用（確認が終わったら消してOK）
+window.__State = State;
+
 
 
 
