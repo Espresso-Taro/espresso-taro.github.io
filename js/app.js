@@ -64,12 +64,14 @@ function getGroupService() {
 
 
 function getRankingService() {
+  ensureFirebaseReady(); // ★ 最初
+
   if (!_rankingSvc) {
-    ensureFirebaseReady();
     _rankingSvc = new RankingService({ db });
   }
   return _rankingSvc;
 }
+
 
 
 /* =========================================================
@@ -1676,7 +1678,7 @@ async function loadDailyRanking() {
   hide(dailyRankLabel);
 
   try {
-    const rows = await rankingSvc.loadDailyTask({
+    const rows = await getRankingService()loadDailyTask({
       dailyTaskKey,
       dateKey,
       difficulty: diff
@@ -1684,7 +1686,7 @@ async function loadDailyRanking() {
 
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
-    rankingSvc.renderList(dailyRankingUL, rows, {
+    getRankingService()renderList(dailyRankingUL, rows, {
       highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
       userNameMap
     });
@@ -1706,13 +1708,13 @@ async function loadOverallRanking() {
   hide(overallLabel);
 
   try {
-    const rows = await rankingSvc.loadOverall({
+    const rows = await getRankingService()loadOverall({
       difficulty: State.activeRankDiff
     });
 
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
-    rankingSvc.renderList(rankingUL, rows, {
+    getRankingService()renderList(rankingUL, rows, {
       highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
       userNameMap
     });
@@ -1750,7 +1752,7 @@ async function loadGroupRanking() {
     const rows = sortAndTop10(rowsRaw);
     const userNameMap = await buildUserNameMapFromScores(db, rows);
 
-    rankingSvc.renderList(groupRankingUL, rows, {
+    getRankingService()renderList(groupRankingUL, rows, {
       highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
       userNameMap
     });
@@ -2898,6 +2900,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
