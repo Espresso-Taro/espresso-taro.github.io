@@ -360,7 +360,7 @@ footer{
   align-items:flex-start;
 }
 
-.panelRow{
+/*.panelRow{
   margin-top:8px;
   align-items:flex-start;
   gap:22px;
@@ -370,7 +370,7 @@ footer{
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-}
+}*/
 
 .typingCard{
   border:2px solid #ddd;
