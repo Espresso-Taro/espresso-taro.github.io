@@ -25,21 +25,47 @@ import { GroupService } from "./groupService.js";
 import { rankByCPM, rankIndex } from "./rankUtil.js";
 
 /* =========================================================
+   ユーティリティ関数
+========================================================= */
+function runWhenIdle(fn) {
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(fn);
+  } else {
+    setTimeout(fn, 500);
+  }
+}
+
+/* =========================================================
    Firebase init
 ========================================================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyAqDSPE_HkPbi-J-SqPL4Ys-wR4RaA8wKA",
-  authDomain: "otonano-typing-game.firebaseapp.com",
-  projectId: "otonano-typing-game",
-  storageBucket: "otonano-typing-game.appspot.com",
-  messagingSenderId: "475283850178",
-  appId: "1:475283850178:web:193d28f17be20a232f4c5b",
-  measurementId: "G-JE1X0NCNHB"
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "...",
+  measurementId: "..."
 };
 
-const fbApp = initializeApp(firebaseConfig);
-const db = getFirestore(fbApp);
-const auth = getAuth(fbApp);
+let fbApp = null;
+let db = null;
+let auth = null;
+
+function initFirebase() {
+  if (fbApp) return; // 二重初期化防止
+
+  fbApp = initializeApp(firebaseConfig);
+  db = getFirestore(fbApp);
+  auth = getAuth(fbApp);
+
+  signInAnonymously(auth);
+}
+
+runWhenIdle(() => {
+  initFirebase();
+});
+
 
 /* =========================================================
    DOM helpers
@@ -2819,6 +2845,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
