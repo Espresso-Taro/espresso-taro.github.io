@@ -688,8 +688,6 @@ async function filterRowsByExistingUsers(db, rows) {
 //let touchActive = false;
 //const SWIPE_THRESHOLD = 10;
 
-let _fontSizeApplied = false;
-
 /* =========================================================
    State
 ========================================================= */
@@ -2962,6 +2960,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
