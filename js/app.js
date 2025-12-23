@@ -59,8 +59,24 @@ function getUserManager() {
   return _userMgr;
 }
 
-function getGroupService() { ... }
-function getRankingService() { ... }
+ * GroupService を遅延生成で取得*/
+function getGroupService() {
+  if (!_groupSvc) {
+    ensureFirebaseReady();
+    _groupSvc = new GroupService({ db });
+  }
+  return _groupSvc;
+}
+
+/**
+ * RankingService を遅延生成で取得*/
+function getRankingService() {
+  if (!_rankingSvc) {
+    ensureFirebaseReady();
+    _rankingSvc = new RankingService({ db });
+  }
+  return _rankingSvc;
+}
 
 
 /* =========================================================
@@ -2928,6 +2944,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
