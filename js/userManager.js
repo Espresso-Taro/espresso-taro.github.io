@@ -26,31 +26,50 @@ function generatePersonalId() {
 }
 
 export class UserManager {
-  constructor({ selectEl, addBtn, renameBtn, deleteBtn, db }) {
+  /* =========================================================
+     constructor（依存注入のみ）
+  ========================================================= */
+  constructor({ db }) {
     if (!db) throw new Error("UserManager: Firestore db is required");
 
     this.db = db;
 
-    this.userSelect = selectEl || null;
-    this.addBtn = addBtn || null;
-    this.renameBtn = renameBtn || null;
-    this.deleteBtn = deleteBtn || null;
+    // UI refs（後から setUI で注入）
+    this.userSelect = null;
+    this.addBtn = null;
+    this.renameBtn = null;
+    this.deleteBtn = null;
 
-    // [{ personalId, userName }]
-    this.users = [];
+    // state
+    this.users = []; // [{ personalId, userName }]
     this.currentUserName = "";
     this.currentPersonalId = "";
     this._authUid = "";
     this._listeners = new Set();
   }
 
-  /* =========================
-     init
-  ========================= */
+  /* =========================================================
+     UI 注入（DOM 準備後に必ず呼ぶ）
+  ========================================================= */
+  setUI({ selectEl, addBtn, renameBtn, deleteBtn }) {
+    this.userSelect = selectEl || null;
+    this.addBtn = addBtn || null;
+    this.renameBtn = renameBtn || null;
+    this.deleteBtn = deleteBtn || null;
+  }
+
+  /* =========================================================
+     init（Auth 確定後に呼ぶ）
+  ========================================================= */
   async init(authUid) {
+    if (!authUid) throw new Error("UserManager.init: authUid is required");
+
+    // 二重 init 防止
+    if (this._authUid === authUid) return;
+
+    this._authUid = authUid.toString();
+
     this._bindEvents();
-    this._authUid = (authUid || "").toString();
-    if (!this._authUid) throw new Error("UserManager.init: authUid is required");
 
     this.users = await this.listUsers();
 
@@ -77,9 +96,9 @@ export class UserManager {
     return this.currentUserName;
   }
 
-  /* =========================
+  /* =========================================================
      Events
-  ========================= */
+  ========================================================= */
   onUserChanged(fn) {
     if (typeof fn !== "function") return () => {};
     this._listeners.add(fn);
@@ -138,8 +157,7 @@ export class UserManager {
     if (this.deleteBtn) {
       this.deleteBtn.addEventListener("click", async () => {
         if (!this.currentPersonalId) return;
-    
-        // ★ 追加：最後の1人は削除不可
+
         if (this.users.length <= 1) {
           alert(
             "このユーザーは削除できません。\n\n" +
@@ -147,14 +165,12 @@ export class UserManager {
           );
           return;
         }
-        
-        // ★ 追加：削除前の確認
+
         const ok = window.confirm(
           "このユーザーを削除します。\n\n本当によろしいですか？"
         );
         if (!ok) return;
-    
-        // confirm は使わない（②の方針）
+
         try {
           await this.deleteUser(this.currentPersonalId);
         } catch (e) {
@@ -164,9 +180,9 @@ export class UserManager {
     }
   }
 
-  /* =========================
+  /* =========================================================
      UI
-  ========================= */
+  ========================================================= */
   render() {
     if (!this.userSelect) return;
 
@@ -191,9 +207,9 @@ export class UserManager {
     return this.currentPersonalId;
   }
 
-  /* =========================
+  /* =========================================================
      Firestore
-  ========================= */
+  ========================================================= */
   async listUsers() {
     const q = query(
       collection(this.db, "userProfiles"),
@@ -289,43 +305,35 @@ export class UserManager {
     this.render();
     this._emitChanged();
   }
-  
+
   async deleteUser(personalId) {
     const me = this.users.find(u => u.personalId === personalId);
     if (!me) return;
-  
-    // 1. userName の一意制約を解除
+
     await deleteDoc(doc(this.db, "userNames", me.userName));
-  
-    // 2. ★ 完全削除：userProfiles を Firestore から削除
     await deleteDoc(doc(this.db, "userProfiles", personalId));
-  
-    // 3. localStorage 掃除
+
     this._cleanupLocalStorageForUser(me.userName, personalId);
-  
-    // 4. ローカル配列からも除去
+
     this.users = this.users.filter(u => u.personalId !== personalId);
-  
-    // 5. current を安全に再設定
+
     if (this.users.length > 0) {
       this.currentPersonalId = this.users[0].personalId;
       this.currentUserName = this.users[0].userName;
       this._setLastPersonalId(this.currentPersonalId);
     } else {
-      // 理論上は delete ボタン側で防がれているが、保険
       this.currentPersonalId = "";
       this.currentUserName = "";
       localStorage.removeItem(this._lastKey());
     }
-  
+
     this.render();
     this._emitChanged();
   }
 
-
-  /* =========================
+  /* =========================================================
      guest
-  ========================= */
+  ========================================================= */
   async _createUniqueGuestUser() {
     for (let i = 0; i < 30; i++) {
       const name = `ゲスト${this._randBase36(5)}`;
@@ -354,12 +362,14 @@ export class UserManager {
   _randBase36(n) {
     const bytes = new Uint8Array(n);
     crypto.getRandomValues(bytes);
-    return Array.from(bytes).map(b => (b % 36).toString(36)).join("");
+    return Array.from(bytes)
+      .map(b => (b % 36).toString(36))
+      .join("");
   }
 
-  /* =========================
+  /* =========================================================
      localStorage
-  ========================= */
+  ========================================================= */
   _lastKey() {
     return `lastPersonalId_v1:${this._authUid}`;
   }
@@ -377,22 +387,3 @@ export class UserManager {
     if (personalId) localStorage.removeItem(`currentGroupId_v1:${personalId}`);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
