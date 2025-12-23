@@ -3,7 +3,7 @@
 # IME-aware Kanji Typing Game
 ### Practical Japanese typing practice for office work
 
-Live: https://espresso-taro.github.io/Otonano-typing-game/
+Live: https://espresso-taro.github.io/
 
 > Japanese version: [README.md](./README.md)
 
