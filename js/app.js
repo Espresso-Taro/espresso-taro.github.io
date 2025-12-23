@@ -2014,7 +2014,7 @@ async function refreshMyGroups() {
   {
     const opt = document.createElement("option");
     opt.value = "";
-    opt.textContent = "（グループ未選択）";
+    opt.textContent = "（未選択）";
     currentGroupSelect.appendChild(opt);
   }
 
@@ -2819,6 +2819,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
