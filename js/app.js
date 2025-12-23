@@ -2004,14 +2004,21 @@ function ensureFirebaseReady() {
 
 /** UserManager を遅延生成 */
 let _userMgr = null;
+
 function getUserManager() {
   if (!_userMgr) {
     ensureFirebaseReady();
-    // 既存の UserManager の ctor 仕様に合わせてください（例：{ db, auth }）
-    _userMgr = new UserManager({ db, auth });
+    _userMgr = new UserManager({
+      selectEl: userSelect,
+      addBtn,
+      renameBtn,
+      deleteBtn,
+      db
+    });
   }
   return _userMgr;
 }
+
 
 /** GroupService を遅延生成 */
 let _groupSvc = null;
@@ -2893,6 +2900,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
