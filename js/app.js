@@ -39,13 +39,13 @@ function runWhenIdle(fn) {
    Firebase init
 ========================================================= */
 const firebaseConfig = {
-  apiKey: "...",
-  authDomain: "...",
-  projectId: "...",
-  storageBucket: "...",
-  messagingSenderId: "...",
-  appId: "...",
-  measurementId: "..."
+  apiKey: "AIzaSyAqDSPE_HkPbi-J-SqPL4Ys-wR4RaA8wKA",
+  authDomain: "otonano-typing-game.firebaseapp.com",
+  projectId: "otonano-typing-game",
+  storageBucket: "otonano-typing-game.appspot.com",
+  messagingSenderId: "475283850178",
+  appId: "1:475283850178:web:193d28f17be20a232f4c5b",
+  measurementId: "G-JE1X0NCNHB"
 };
 
 let fbApp = null;
@@ -2893,6 +2893,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
