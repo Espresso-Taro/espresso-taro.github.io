@@ -92,7 +92,7 @@ let db = null;
 let auth = null;
 
 function initFirebase() {
-  if (fbApp) return; // 二重初期化防止
+  if (fbApp) return;
 
   fbApp = initializeApp(firebaseConfig);
   db = getFirestore(fbApp);
@@ -100,10 +100,6 @@ function initFirebase() {
 
   signInAnonymously(auth);
 }
-
-runWhenIdle(() => {
-  initFirebase();
-});
 
 
 /* =========================================================
@@ -2900,6 +2896,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
