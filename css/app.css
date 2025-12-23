@@ -11,8 +11,8 @@
 }
 #groupCreateName,
 #groupSearchInput {
-  width: 8ch;        /* ← 8文字分ぴったり */
-  min-width: 8ch;
+  width: 16ch;        /* ← 日本語8文字分ぴったり */
+  min-width: 16ch;
   box-sizing: content-box;
 }
 /* 設定パネルの表示制御 */
