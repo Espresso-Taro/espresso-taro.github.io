@@ -2790,24 +2790,35 @@ engine.attach();
 /* =========================================================
    App init
 ========================================================= */
- async function initApp() {
+async function initApp() {
   await loadTrivia();
   initFilterOptions();
-  
+
+  // =========================
+  // ★ UserManager に UI を注入（最重要）
+  // =========================
+  const um = getUserManager();
+  um.setUI({
+    selectEl: document.getElementById("userSelect"),
+    addBtn: document.getElementById("addUserBtn"),
+    renameBtn: document.getElementById("renameUserBtn"),
+    deleteBtn: document.getElementById("deleteUserBtn"),
+  });
+
   // ★ 前回の選択を復元（options 構築後じゃないと反映できない）
   {
-    const personalId = getUserManager().getCurrentPersonalId();
+    const personalId = um.getCurrentPersonalId();
     const prefs = loadPrefsOf(personalId);
     applyPrefsToUI(prefs);
   }
-  
+
   // ★ daily は「復元したチェック状態」に従う
   if (dailyTaskEl?.checked) {
     enableDailyTask();
   } else {
     disableDailyTask();
   }
-  
+
   buildPool();
   if (!State.hasNoItem) {
     setCurrentItem(pickRandomDifferentText(), { daily: false });
@@ -2815,37 +2826,34 @@ engine.attach();
   updateMetaInfo();
   syncDailyInfoLabel();
 
-    // ★ ここで一度だけ基準Yを記録（初期化時）
+  // ★ ここで一度だけ基準Yを記録（初期化時）
   if (textEl) {
     textBaseY = textEl.offsetTop;
   }
 
   // ★ 追加（1回だけ）
   setupStableAutoScrollOnKeyboard();
-   
+
   bindModal();
   bindTypingButtons();
   bindPracticeFilters();
   bindRankDiffTabs();
   bindGroupUI();
   bindUserSwitchHooks();
-  //bindToggle("toggleUserPanel", "userPanel");
-  //bindToggle("toggleGroupPanel", "groupPanel");
 
-   
-  // 初回ランキング：activeRankDiff も復元済みの State.activeRankDiff で走る
+  // 初回ランキング
   await reloadAllRankings();
   await loadMyAnalytics();
 
-  // ★ 起動完了後（isBooting を false にする直前 or 直後）
+  // ★ 起動完了後の同期
   const diff = getPracticeDifficulty();
   syncRankDifficultyFromPractice(diff);
 
-  // ★ここまで来たら初期描画が完了している
+  // ★ここまで来たら初期描画が完了
   isBooting = false;
   document.body.classList.remove("preload");
-
 }
+
 
 /* =========================================================
    Auth start
@@ -2899,6 +2907,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
