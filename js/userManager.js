@@ -42,14 +42,13 @@ export class UserManager {
     this.currentPersonalId = "";
     this._authUid = "";
     this._listeners = new Set();
-
-    this._bindEvents();
   }
 
   /* =========================
      init
   ========================= */
   async init(authUid) {
+    this._bindEvents();
     this._authUid = (authUid || "").toString();
     if (!this._authUid) throw new Error("UserManager.init: authUid is required");
 
@@ -378,6 +377,7 @@ export class UserManager {
     if (personalId) localStorage.removeItem(`currentGroupId_v1:${personalId}`);
   }
 }
+
 
 
 
