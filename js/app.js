@@ -564,35 +564,34 @@ async function submitScoreDoc({
   }
 }
 
+function bindUserSwitchHooks() {
+  getUserManager().onUserChanged(async () => {
+    console.log("onUserChanged ACTIVE");
 
+    // ★ ユーザーごとの前回状態を復元
+    const userName = currentUserNameSafe();
+    const prefs = loadPrefsOf(userName);
+    applyPrefsToUI(prefs);
 
-// userName切替時：グループSelect即更新 + ランキング更新
-getUserManager().onUserChanged(async () => {
-  if (State.isBooting) {
-    console.log("skip onUserChanged during boot");
-    return;
-  }
+    // ★ ユーザー切替時は必ず練習難度に同期
+    syncRankDifficultyFromPractice(getPracticeDifficulty());
 
-  // ★ ユーザーごとの前回状態を復元
-  const userName = currentUserNameSafe();
-  const prefs = loadPrefsOf(userName);
-  applyPrefsToUI(prefs);
+    if (dailyTaskEl?.checked) enableDailyTask();
+    else disableDailyTask();
 
-  // ★ ユーザー切替時は必ず練習難度に同期
-  syncRankDifficultyFromPractice(getPracticeDifficulty());
+    buildPool();
+    if (!State.hasNoItem) {
+      setCurrentItem(pickRandomDifferentText(), { daily: false });
+    }
+    updateMetaInfo();
+    syncDailyInfoLabel();
 
-  if (dailyTaskEl?.checked) enableDailyTask();
-  else disableDailyTask();
+    await refreshMyGroups();
+    await reloadAllRankings();
+    await loadMyAnalytics();
+  });
+}
 
-  buildPool();
-  if (!State.hasNoItem) setCurrentItem(pickRandomDifferentText(), { daily: false });
-  updateMetaInfo();
-  syncDailyInfoLabel();
-
-  await refreshMyGroups();
-  await reloadAllRankings();
-  await loadMyAnalytics();
-});
 
 // ★ 追加：personalId から userName を解決（1人用）
 async function resolveUserName(db, personalId) {
@@ -805,17 +804,6 @@ function setSavedGroupIdFor(personalId, groupId) {
   if (groupId) localStorage.setItem(key, groupId);
   else localStorage.removeItem(key);
 }
-
-function bindUserSwitchHooks() {
-  // userName切替 → グループ即更新 + ランキング更新
-  on(userSelect, "change", async () => {
-    // userMgr側の状態反映が先に走る前提で、選択後に再描画
-    await refreshMyGroups();
-    await reloadAllRankings();
-  });
-}
-
-
 
 /* =========================================================
    Labels / mapping
@@ -2839,7 +2827,6 @@ async function initApp() {
   bindPracticeFilters();
   bindRankDiffTabs();
   bindGroupUI();
-  bindUserSwitchHooks();
 
   // 初回ランキング
   await reloadAllRankings();
@@ -2853,10 +2840,8 @@ async function initApp() {
   State.isBooting = false;
   document.body.classList.remove("preload");
 
-  // ★ 起動完了後に 1 回だけ同期
-  getUserManager()._emitChanged();
-}
-
+  // ★ boot 完了後に登録
+  bindUserSwitchHooks();
 
 
 /* =========================================================
@@ -2914,6 +2899,7 @@ window.addEventListener("pageshow", () => {
 
 // ★ デバッグ用（確認が終わったら消してOK）
 window.__State = State;
+
 
 
 
