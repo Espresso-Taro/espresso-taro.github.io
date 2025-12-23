@@ -758,7 +758,7 @@ function persistPrefsNow() {
 }
 
 function currentUserNameSafe() {
-  return (userMgr.getCurrentPersonalId?.() ?? "").toString();
+  return (getUserManager().getCurrentPersonalId?.() ?? "").toString();
 }
 
 function groupStorageKeyOf(personalId) {
@@ -2893,6 +2893,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
