@@ -338,6 +338,13 @@ function applyFontSizeByLength(lengthGroup) {
   }
 }
 
+function applyFontSizeByLengthOnce(lengthGroup) {
+  if (_fontSizeAppliedOnce) return;
+  _fontSizeAppliedOnce = true;
+  applyFontSizeByLength(lengthGroup);
+}
+
+
 
 function setupStableAutoScrollOnKeyboard() {
   if (!inputEl || !textEl) return;
@@ -673,12 +680,13 @@ async function filterRowsByExistingUsers(db, rows) {
 })();
 
 // ===== タップ / スワイプ判定 =====
-let touchStartX = 0;
-let touchStartY = 0;
-let touchMoved = false;
-let touchActive = false;
-const SWIPE_THRESHOLD = 10;
+//letlet・let touc = 0;
+//let touchStartY = 0;
+//let touchMoved = false;
+//let touchActive = false;
+//const SWIPE_THRESHOLD = 10;
 
+let _fontSizeAppliedOnce = false;
 
 /* =========================================================
    State
@@ -1153,12 +1161,15 @@ async function loadTriviaFastFirst() {
     updateMetaInfo();
   }
 
-  // ★ 残りはアイドル時間に完全ロード
-  runWhenIdle(async () => {
-    await loadTriviaAll();
-    initFilterOptions();
-    buildPool();
+  // ★ 残りは「load 完了後」に idle で実行（Lighthouse対策）
+  window.addEventListener("load", () => {
+    runWhenIdle(async () => {
+      await loadTriviaAll();
+      initFilterOptions();
+      buildPool();
+    });
   });
+
 }
 
 async function loadTriviaAll() {
@@ -1524,7 +1535,7 @@ function setCurrentItem(item, { daily = false } = {}) {
     ? State.daily.lengthGroup
     : getPracticeLengthGroup();
 
-  applyFontSizeByLength(lg);
+  applyFontSizeByLengthOnce(lg);
 
   engine.setTarget(text, {
     daily,
@@ -2951,6 +2962,7 @@ window.addEventListener("pageshow", () => {
 
 // ★ デバッグ用（確認が終わったら消してOK）
 window.__State = State;
+
 
 
 
