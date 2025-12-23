@@ -2122,7 +2122,7 @@ async function loadPendingRequests() {
 
   let reqs;
   try {
-    reqs = await groupSvc.getPendingRequests(State.currentGroupId);
+    reqs = await getGroupService().getPendingRequests(State.currentGroupId);
   } catch (e) {
     console.error("loadPendingRequests failed:", e);
     const li = document.createElement("li");
@@ -2159,7 +2159,7 @@ async function loadPendingRequests() {
       ensureFirebaseReady();
 
       State._lastPendingRenderKey = null; // ★ 状態が変わるので解除
-      await groupSvc.approveMember({
+      await getGroupService().approveMember({
         requestId: r.id,
         ownerUid: State.authUser.uid
       });
@@ -2170,7 +2170,7 @@ async function loadPendingRequests() {
       ensureFirebaseReady();
 
       State._lastPendingRenderKey = null; // ★ 状態が変わるので解除
-      await groupSvc.rejectMember({ requestId: r.id });
+      await getGroupService().rejectMember({ requestId: r.id });
       await onGroupChanged();
     };
 
@@ -2500,7 +2500,7 @@ function bindGroupUI() {
     const userMgr = getUserManager();
     const groupSvc = getGroupService();
 
-    const created = await groupSvc.createGroup({
+    const created = await getGroupService().createGroup({
       groupName,
       ownerPersonalId: getUserManager().getCurrentPersonalId(),
       ownerUid: State.authUser.uid
@@ -2533,7 +2533,7 @@ function bindGroupUI() {
       const userMgr = getUserManager();
       const groupSvc = getGroupService();
 
-      const results = await groupSvc.searchGroupsByName(name);
+      const results = await getGroupService().searchGroupsByName(name);
 
       const personalId = getUserManager().getCurrentPersonalId();
       if (!personalId) return;
@@ -2541,7 +2541,7 @@ function bindGroupUI() {
       const myGroups = new Set(
         (await getGroupService().getMyGroups(personalId)).map(g => g.groupId)
       );
-      const pendingSet = await groupSvc.getMyPendingGroupIds(personalId);
+      const pendingSet = await getGroupService().getMyPendingGroupIds(personalId);
 
       groupSearchResult.innerHTML = "";
 
@@ -2589,7 +2589,7 @@ function bindGroupUI() {
 
             ensureFirebaseReady();
 
-            await groupSvc.requestJoin({
+            await getGroupService().requestJoin({
               groupId: g.groupId,
               personalId,
               uid: State.authUser.uid
@@ -2629,7 +2629,7 @@ function bindGroupUI() {
       const userMgr = getUserManager();
       const groupSvc = getGroupService();
 
-      await groupSvc.leaveGroup({
+      await getGroupService().leaveGroup({
         groupId: State.currentGroupId,
         personalId: getUserManager().getCurrentPersonalId()
       });
@@ -2655,7 +2655,7 @@ function bindGroupUI() {
       ensureFirebaseReady();
       const groupSvc = getGroupService();
 
-      await groupSvc.deleteGroup({
+      await getGroupService().deleteGroup({
         groupId: State.currentGroupId
       });
 
@@ -2900,6 +2900,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
