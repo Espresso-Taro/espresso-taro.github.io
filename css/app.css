@@ -245,6 +245,8 @@ footer{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0); /* 透明でもOK */
+  justify-content: center; /* 横中央 */
+  align-items: center;     /* 縦中央 */
   display:none;
   pointer-events:none;      /* ★重要 */
   z-index:9999;
@@ -263,6 +265,8 @@ footer{
   border:1px solid #ddd;
   padding:16px;
   box-shadow:0 12px 32px rgba(0,0,0,.18);
+  max-width: 420px;
+  width: calc(100% - 32px); /* スマホ対応 */
 }
 .modal h3{margin:0 0 10px;}
 
