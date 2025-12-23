@@ -176,11 +176,11 @@ button[disabled]{
 }
 .toggle input{width:18px;height:18px;}
 
-.long-text #text{
+#text.long-text{
   font-size:.85rem;
   line-height:1.3;
 }
-.xl-text #text{
+#text.xl-text{
   font-size:.8rem;
   line-height:1.3;
 }
