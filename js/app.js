@@ -54,12 +54,14 @@ function getUserManager() {
 }
 
 function getGroupService() {
+  ensureFirebaseReady(); // ← ★ 必ず先
+
   if (!_groupSvc) {
-    ensureFirebaseReady();
     _groupSvc = new GroupService({ db });
   }
   return _groupSvc;
 }
+
 
 function getRankingService() {
   if (!_rankingSvc) {
@@ -2048,7 +2050,7 @@ async function refreshMyGroups() {
   let groups = [];
   try {
     // ★ personalId を変数から渡す（再取得しない）
-    groups = await groupSvc.getMyGroups(personalId);
+    groups = await getGroupService().getMyGroups(personalId);
   } catch (e) {
     console.error("getMyGroups failed:", e);
     groups = [];
@@ -2535,7 +2537,7 @@ function bindGroupUI() {
       if (!personalId) return;
 
       const myGroups = new Set(
-        (await groupSvc.getMyGroups(personalId)).map(g => g.groupId)
+        (await getGroupService().getMyGroups(personalId)).map(g => g.groupId)
       );
       const pendingSet = await groupSvc.getMyPendingGroupIds(personalId);
 
@@ -2896,6 +2898,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
