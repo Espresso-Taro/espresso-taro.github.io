@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
-Sitemap: https://espresso-taro.github.io/Otonano-typing-game/sitemap.xml
+Sitemap: https://espresso-taro.github.io/sitemap.xml
+
 
