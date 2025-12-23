@@ -348,14 +348,6 @@ function applyFontSizeByLength(lengthGroup) {
   }
 }
 
-function applyFontSizeByLengthOnce(lengthGroup) {
-  if (_fontSizeAppliedOnce) return;
-  _fontSizeAppliedOnce = true;
-  applyFontSizeByLength(lengthGroup);
-}
-
-
-
 function setupStableAutoScrollOnKeyboard() {
   if (!inputEl || !textEl) return;
 
@@ -1546,7 +1538,7 @@ function setCurrentItem(item, { daily = false } = {}) {
     ? State.daily.lengthGroup
     : getPracticeLengthGroup();
 
-  applyFontSizeByLengthOnce(lg);
+  applyFontSizeByLength(lg);
 
   engine.setTarget(text, {
     daily,
@@ -2970,6 +2962,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
