@@ -568,7 +568,11 @@ async function submitScoreDoc({
 
 // userName切替時：グループSelect即更新 + ランキング更新
 getUserManager().onUserChanged(async () => {
-  if (isBooting) return; // ★初期化中はここで止める
+  if (isBooting) {
+    console.log("skip onUserChanged during boot");
+    return;
+  }
+
   // ★ ユーザーごとの前回状態を復元
   const userName = currentUserNameSafe();
   const prefs = loadPrefsOf(userName);
@@ -2861,9 +2865,6 @@ onAuthStateChanged(auth, async (user) => {
     // auth.uid が確定してから userMgr 初期化
     await getUserManager().init(user.uid);
 
-    // ★ 起動完了を明示
-    isBooting = false;
-
     // ★ personalId 確定後に必ず1回実行
     await refreshMyGroups();
     await reloadAllRankings();
@@ -2898,6 +2899,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
