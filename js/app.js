@@ -568,7 +568,7 @@ async function submitScoreDoc({
 
 // userName切替時：グループSelect即更新 + ランキング更新
 getUserManager().onUserChanged(async () => {
-  if (isBooting) {
+  if (State.isBooting) {
     console.log("skip onUserChanged during boot");
     return;
   }
@@ -651,8 +651,6 @@ async function filterRowsByExistingUsers(db, rows) {
   return rows.filter(r => alive.has(r.personalId));
 }
 
-let isBooting = true; // ★起動中は true
-
 // =========================================================
 // スクロールバー幅を測定して CSS 変数 --sbw に入れる
 // =========================================================
@@ -714,6 +712,8 @@ const State = {
   currentGroupId: "",
   currentGroupRole: null,
   _lastPendingRenderKey: null,
+
+  isBooting: true,   // ★追加
 };
 
 const GROUP_STORAGE_KEY = "currentGroupId_v1";
@@ -2850,7 +2850,7 @@ async function initApp() {
   syncRankDifficultyFromPractice(diff);
 
   // ★ここまで来たら初期描画が完了
-  isBooting = false;
+  State.isBooting = false;
   document.body.classList.remove("preload");
 
   // ★ 起動完了後に 1 回だけ同期
@@ -2911,6 +2911,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
