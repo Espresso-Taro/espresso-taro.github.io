@@ -487,30 +487,6 @@ function armStartOnFirstType() {
   inputEl.addEventListener("input",            startTypingImmediately, { once: true, capture: true });
 }
 
-
-//function startTypingByUserAction() {
-//  if (!inputEl) return;
-//  if (engine.started || engine.ended) return;
-
-  // ★ ここが重要：最初から入力可能にする
-//  inputEl.readOnly = false;
-//  inputEl.disabled = false;
-
-//  inputEl.value = "";
-//  inputEl.placeholder = "ここに文字を打つと計測開始します。";
-//  inputEl.classList.add("input-guide-after");
-
-  // フォーカス & スクロール
-//  inputEl.focus({ preventScroll: true });
-
-  // 開始トリガー登録（IME含む）
-//  inputEl.removeEventListener("compositionstart", startTypingImmediately, true);
-//  inputEl.removeEventListener("input",            startTypingImmediately, true);
-
-//  inputEl.addEventListener("compositionstart", startTypingImmediately, { once: true, capture: true });
-//  inputEl.addEventListener("input",            startTypingImmediately, { once: true, capture: true });
-//}
-
 let rankingSvc = null;
 
 function getRankingService() {
@@ -521,7 +497,16 @@ function getRankingService() {
   return rankingSvc;
 }
 
-const groupSvc = new GroupService(db);
+let groupSvc = null;
+
+function getGroupService() {
+  if (!groupSvc) {
+    ensureFirebaseReady();
+    groupSvc = new GroupService({ db });
+  }
+  return groupSvc;
+}
+
 
 const userMgr = new UserManager({
   selectEl: userSelect,
@@ -2028,12 +2013,51 @@ async function loadMyAnalytics() {
 }
 
 /* =========================================================
+   Group UI (lazy Firebase safe)
+========================================================= */
+
+/** db/auth が必要になった瞬間に初期化される前提 */
+function ensureFirebaseReady() {
+  if (!db || !auth || !fbApp) {
+    initFirebase(); // ← あなたの既存の initFirebase()
+  }
+}
+
+/** UserManager を遅延生成 */
+let _userMgr = null;
+function getUserManager() {
+  if (!_userMgr) {
+    ensureFirebaseReady();
+    // 既存の UserManager の ctor 仕様に合わせてください（例：{ db, auth }）
+    _userMgr = new UserManager({ db, auth });
+  }
+  return _userMgr;
+}
+
+/** GroupService を遅延生成 */
+let _groupSvc = null;
+function getGroupService() {
+  if (!_groupSvc) {
+    ensureFirebaseReady();
+    // 既存の GroupService の ctor 仕様に合わせてください（例：{ db }）
+    _groupSvc = new GroupService({ db });
+  }
+  return _groupSvc;
+}
+
+/* =========================================================
    Group UI
 ========================================================= */
 async function refreshMyGroups() {
   // Auth 未確定なら何もしない
   if (!State.authUser) return;
   if (!currentGroupSelect) return;
+
+  // db/auth が必要になるのでここで保証
+  ensureFirebaseReady();
+
+  const userMgr = getUserManager();
+  const groupSvc = getGroupService();
 
   // ★ personalId 未確定なら何もしない（これが最重要）
   const personalId = userMgr.getCurrentPersonalId();
@@ -2083,8 +2107,15 @@ async function refreshMyGroups() {
 
   await onGroupChanged();
 }
+
 async function loadPendingRequests() {
   if (!pendingList) return;
+
+  // db/auth が必要になる可能性があるので保証
+  ensureFirebaseReady();
+
+  const userMgr = getUserManager();
+  const groupSvc = getGroupService();
 
   const renderKey = `${State.currentGroupId}::${State.currentGroupRole}`;
 
@@ -2127,6 +2158,7 @@ async function loadPendingRequests() {
     li.style.gap = "8px";
     li.style.alignItems = "center";
 
+    // resolveUserName が db を使うので、db 直参照の前に ensure 済みであることが重要
     const nameSpan = document.createElement("span");
     nameSpan.textContent = await resolveUserName(db, r.personalId);
 
@@ -2137,6 +2169,9 @@ async function loadPendingRequests() {
     ng.textContent = "却下";
 
     ok.onclick = async () => {
+      // クリック時点で Firebase が未初期化の可能性もゼロではないので保険
+      ensureFirebaseReady();
+
       State._lastPendingRenderKey = null; // ★ 状態が変わるので解除
       await groupSvc.approveMember({
         requestId: r.id,
@@ -2146,6 +2181,8 @@ async function loadPendingRequests() {
     };
 
     ng.onclick = async () => {
+      ensureFirebaseReady();
+
       State._lastPendingRenderKey = null; // ★ 状態が変わるので解除
       await groupSvc.rejectMember({ requestId: r.id });
       await onGroupChanged();
@@ -2156,9 +2193,12 @@ async function loadPendingRequests() {
   }
 }
 
-
 async function resolveCurrentGroupRole() {
   if (!State.currentGroupId) return null;
+
+  ensureFirebaseReady();
+  const userMgr = getUserManager();
+
   const pid = userMgr.getCurrentPersonalId();
   if (!pid) return null;
 
@@ -2170,6 +2210,10 @@ async function resolveCurrentGroupRole() {
 async function onGroupChanged() {
   if (!currentGroupSelect) return;
 
+  ensureFirebaseReady();
+  const userMgr = getUserManager();
+  const groupSvc = getGroupService(); // 現状この関数内で直接は使わないが、今後の拡張で安全
+
   const sel = currentGroupSelect.selectedOptions[0];
   const nextGroupId = sel?.value ?? "";
 
@@ -2178,7 +2222,11 @@ async function onGroupChanged() {
   // role は Firestore からのみ決定
   State.currentGroupRole = await resolveCurrentGroupRole();
 
-  setSavedGroupIdFor(userMgr.getCurrentPersonalId(), State.currentGroupId);
+  // personalId が null の可能性があるのでガード
+  const personalId = userMgr.getCurrentPersonalId();
+  if (personalId) {
+    setSavedGroupIdFor(personalId, State.currentGroupId);
+  }
 
   if (leaveGroupBtn) {
     leaveGroupBtn.disabled = !State.currentGroupId;
@@ -2442,46 +2490,50 @@ function bindRankDiffTabs() {
   buttons.forEach(b => b.classList.toggle("active", b.dataset.diff === State.activeRankDiff));
 }
 
-function bindGroupUI() {
 
+function bindGroupUI() {
   /* =========================
      グループ作成
   ========================= */
-  on(groupCreateBtn, "click", async () => {
-    if (!State.authUser) return;
 
-    const groupName = (groupCreateName?.value ?? "").trim();
-    if (!groupName) {
-      alert("グループ名を7字以内で入力してください。");
-      return;
+ on(groupCreateBtn, "click", async () => {
+  if (!State.authUser) return;
+
+  const groupName = (groupCreateName?.value ?? "").trim();
+  if (!groupName) {
+    alert("グループ名を7字以内で入力してください。");
+    return;
+  }
+  if (groupName.length > 7) {
+    alert("グループ名は7文字以内にしてください。");
+    return;
+  }
+
+  try {
+    ensureFirebaseReady();
+    const userMgr = getUserManager();
+    const groupSvc = getGroupService();
+
+    const created = await groupSvc.createGroup({
+      groupName,
+      ownerPersonalId: userMgr.getCurrentPersonalId(),
+      ownerUid: State.authUser.uid
+    });
+
+    groupCreateName.value = "";
+
+    await refreshMyGroups();
+    if (currentGroupSelect) {
+      currentGroupSelect.value = created.groupId;
     }
-    if (groupName.length > 7) {
-      alert("グループ名は7文字以内にしてください。");
-      return;
-    }
+    await onGroupChanged();
 
-    try {
-      const created = await groupSvc.createGroup({
-        groupName,
-        ownerPersonalId: userMgr.getCurrentPersonalId(),
-        ownerUid: State.authUser.uid
-      });
-
-      groupCreateName.value = "";
-
-      await refreshMyGroups();
-      if (currentGroupSelect) {
-        currentGroupSelect.value = created.groupId;
-      }
-      await onGroupChanged();
-
-      alert("グループを作成しました。");
-    } catch (e) {
-      console.error("createGroup failed:", e);
-      alert("グループ作成に失敗しました。");
-    }
-  });
-
+    alert("グループを作成しました。");
+  } catch (e) {
+    console.error("createGroup failed:", e);
+    alert("グループ作成に失敗しました。");
+  }
+ });
 
   /* =========================
      グループ検索 & 参加申請
@@ -2491,9 +2543,15 @@ function bindGroupUI() {
     if (!name) return;
 
     try {
+      ensureFirebaseReady();
+      const userMgr = getUserManager();
+      const groupSvc = getGroupService();
+
       const results = await groupSvc.searchGroupsByName(name);
 
       const personalId = userMgr.getCurrentPersonalId();
+      if (!personalId) return;
+
       const myGroups = new Set(
         (await groupSvc.getMyGroups(personalId)).map(g => g.groupId)
       );
@@ -2512,20 +2570,18 @@ function bindGroupUI() {
         const row = document.createElement("div");
         row.className = "groupRow";
 
-        /* グループ名 */
+        // グループ名
         const nameSpan = document.createElement("span");
         nameSpan.textContent = g.name;
         row.appendChild(nameSpan);
 
-        /* ★ オーナー名は UI 側で解決 */
+        // オーナー名（db使用）
         const ownerName = await resolveUserName(db, g.ownerPersonalId);
-
         const ownerSpan = document.createElement("span");
         ownerSpan.className = "groupOwner";
         ownerSpan.textContent = `（オーナー：${ownerName}）`;
         row.appendChild(ownerSpan);
 
-        /* 操作ボタン */
         const btn = document.createElement("button");
 
         if (myGroups.has(g.groupId)) {
@@ -2541,10 +2597,11 @@ function bindGroupUI() {
           btn.addEventListener("click", async () => {
             const ok = confirm(
               `グループ「${g.name}」\n` +
-              `オーナー：${ownerName}\n\n` +
-              `参加申請しますか？`
+              `オーナー：${ownerName}\n\n参加申請しますか？`
             );
             if (!ok) return;
+
+            ensureFirebaseReady();
 
             await groupSvc.requestJoin({
               groupId: g.groupId,
@@ -2552,7 +2609,6 @@ function bindGroupUI() {
               uid: State.authUser.uid
             });
 
-            // ★ 即時UI反映
             btn.textContent = "申請中";
             btn.disabled = true;
           });
@@ -2570,13 +2626,6 @@ function bindGroupUI() {
 
 
   /* =========================
-     ※ 旧：groupSearchResult クリック申請（不要）
-     → ボタン処理に一本化するため削除
-  ========================= */
-  // on(groupSearchResult, "click", async () => { ... });
-
-
-  /* =========================
      グループ切替
   ========================= */
   on(currentGroupSelect, "change", onGroupChanged);
@@ -2587,10 +2636,13 @@ function bindGroupUI() {
   ========================= */
   on(leaveGroupBtn, "click", async () => {
     if (!State.currentGroupId) return;
-
     if (!confirm("このグループから退出しますか？")) return;
 
     try {
+      ensureFirebaseReady();
+      const userMgr = getUserManager();
+      const groupSvc = getGroupService();
+
       await groupSvc.leaveGroup({
         groupId: State.currentGroupId,
         personalId: userMgr.getCurrentPersonalId()
@@ -2611,10 +2663,12 @@ function bindGroupUI() {
   on(deleteGroupBtn, "click", async () => {
     if (!State.currentGroupId) return;
     if (State.currentGroupRole !== "owner") return;
-
     if (!confirm("このグループを削除しますか？")) return;
 
     try {
+      ensureFirebaseReady();
+      const groupSvc = getGroupService();
+
       await groupSvc.deleteGroup({
         groupId: State.currentGroupId
       });
@@ -2860,6 +2914,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
