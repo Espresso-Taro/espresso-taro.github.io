@@ -497,16 +497,6 @@ function getRankingService() {
   return rankingSvc;
 }
 
-let groupSvc = null;
-
-function getGroupService() {
-  if (!groupSvc) {
-    ensureFirebaseReady();
-    groupSvc = new GroupService({ db });
-  }
-  return groupSvc;
-}
-
 
 const userMgr = new UserManager({
   selectEl: userSelect,
@@ -2914,6 +2904,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
