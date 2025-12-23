@@ -2842,8 +2842,7 @@ async function initApp() {
 
   // ★ boot 完了後に登録
   bindUserSwitchHooks();
-
-
+}
 /* =========================================================
    Auth start
 ========================================================= */
@@ -2899,6 +2898,7 @@ window.addEventListener("pageshow", () => {
 
 // ★ デバッグ用（確認が終わったら消してOK）
 window.__State = State;
+
 
 
 
