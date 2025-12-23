@@ -23,7 +23,7 @@ import { TypingEngine } from "./typingEngine.js";
 import { RankingService } from "./ranking.js";
 import { GroupService } from "./groupService.js";
 import { rankByCPM, rankIndex } from "./rankUtil.js";
-initFirebase();
+
 /* =========================================================
    ユーティリティ関数
 ========================================================= */
@@ -99,8 +99,9 @@ function initFirebase() {
   auth = getAuth(fbApp);
 
   signInAnonymously(auth);
-}
 
+}
+initFirebase();
 
 /* =========================================================
    DOM helpers
@@ -2898,6 +2899,7 @@ window.addEventListener("pageshow", () => {
 
 // ★ デバッグ用（確認が終わったら消してOK）
 window.__State = State;
+
 
 
 
