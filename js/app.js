@@ -2411,11 +2411,11 @@ function bindGroupUI() {
 
     const groupName = (groupCreateName?.value ?? "").trim();
     if (!groupName) {
-      alert("グループ名を8字以内で入力してください。");
+      alert("グループ名を7字以内で入力してください。");
       return;
     }
-    if (groupName.length > 8) {
-      alert("グループ名は8文字以内にしてください。");
+    if (groupName.length > 7) {
+      alert("グループ名は7文字以内にしてください。");
       return;
     }
 
@@ -2819,6 +2819,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
