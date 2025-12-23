@@ -10,7 +10,7 @@ Live: https://espresso-taro.github.io/
 ---
 
 ## Screenshot
-![App screenshot](docs/Screenshot_20251221-161633~2.png)
+![App screenshot](docs/Screenshot_001.png)
 
 ---
 
