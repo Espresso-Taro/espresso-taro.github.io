@@ -2852,7 +2852,11 @@ async function initApp() {
   // ★ここまで来たら初期描画が完了
   isBooting = false;
   document.body.classList.remove("preload");
+
+  // ★ 起動完了後に 1 回だけ同期
+  getUserManager()._emitChanged();
 }
+
 
 
 /* =========================================================
@@ -2907,6 +2911,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
