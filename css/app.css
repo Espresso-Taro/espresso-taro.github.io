@@ -75,7 +75,7 @@
    word-break:break-all;
    line-height:2;
    margin: 0 0 5;
-   padding-right:calc(16px + var(--sbw,0px));
+   padding-right:calc(7.5px + var(--sbw,0px));
  }
  
  #input{
