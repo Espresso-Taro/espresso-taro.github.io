@@ -333,7 +333,12 @@ footer{
   color:#666;
   margin:0 0 0;
 }
-
+.userinlineBtns{
+  display:inline-flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
 .inlineBtns{
   display:inline-flex;
   gap:10px;
