@@ -17,17 +17,14 @@
   width: 100%;
   flex-basis: 100%;
 }
-/* ユーザー選択・グループ選択の幅を14文字基準に制限 */
+/* ユーザー選択・グループ選択の幅を7文字基準に制限 */
 #userSelect,
 #currentGroupSelect {
-  width: 18ch;        /* 見た目14文字＋余白 */
-  max-width: 18ch;
-  min-width: 18ch;
+  width: 17ch;        /* ← 日本語7文字分ぴったり */
 }
 #groupCreateName,
 #groupSearchInput {
-  width: 14ch;        /* ← 日本語7文字分ぴったり */
-  min-width: 14ch;
+  width: 13ch;        /* ← 日本語7文字分ぴったり */
   box-sizing: content-box;
 }
 /* 設定パネルの表示制御 */
@@ -41,13 +38,12 @@
 
 /* ⚙ アイコンが開いているとき回転 */
 .iconBtn.open {
-  transform: rotate(90deg);
+  transform: rotate(180deg);
   transition: transform 0.2s ease;
 }
 /* ユーザー・グループカードを常に横並び（スマホ含む） */
 .topControls {
   display: flex;
-  gap: 12px;
   flex-wrap: nowrap;   /* 折り返さない */
 }
 
@@ -62,7 +58,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
 }
 
 /* カードタイトル */
@@ -76,12 +71,11 @@
 .iconBtn {
   background: none;
   border: none;
-  font-size: 1.2rem;
-  padding: 4px;
+  font-size: 1.4rem;
   cursor: pointer;
   line-height: 1;
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 24px;
+  min-height: 24px;
 }
 
 .iconBtn:hover,
@@ -123,40 +117,43 @@
     font-size: 1.1rem;
   }
 }
-.section-heading{
+/*.section-heading{
   font-size:1.05rem;
   display:inline-block;
   border-bottom:2px solid #222;
   padding-bottom:0px;
-}
+}*/
 
 p.indent{margin-left:1.5em;}
 
 .card{
   border:1px solid #ddd;
-  border-radius:12px;
-  padding:16px;
+  border-radius:10px;
+  padding:10px;
   background:#fff;
 }
-
+.card.featureCard{padding:4px 4px}
+.card.headerCard{padding:4px 4px}
 .row{
   display:flex;
-  gap:10px;
+  gap:5px;
   flex-wrap:wrap;
   align-items:center;
 }
-/*.row.between{justify-content:space-between;}*/
 
 select,button,input[type="text"],textarea{
-  font-size:.98rem;
-  padding:10px 12px;
-  border-radius:10px;
+  font-size:.9rem;
+  padding:4px 2px;
+  border-radius:5px;
   border:1px solid #bbb;
   background:#fff;
 }
 
 button{
+  font-size:.9rem;
   border:1px solid #222;
+  border-radius:5px;
+  padding:4px 4px;
   cursor:pointer;
 }
 button[disabled]{
@@ -165,16 +162,17 @@ button[disabled]{
 }
 
 .toggle{
+  font-size:.9rem;
   display:inline-flex;
   align-items:center;
-  gap:10px;
+  gap:0px;
   border:1px solid #bbb;
-  border-radius:10px;
-  padding:10px 12px;
+  border-radius:5px;
+  padding:1px 2px;
   background:#fff;
   user-select:none;
 }
-.toggle input{width:18px;height:18px;}
+.toggle input{width:14px;height:14px;}
 
 .long-text #text{
   font-size:.85rem;
@@ -184,6 +182,9 @@ button[disabled]{
   font-size:.8rem;
   line-height:1.3;
 }
+
+.long-text #input{font-size:.85rem;}
+.xl-text #input{font-size:.8rem;}
 
 .ok{
   color:#0b5ed7;
@@ -195,9 +196,6 @@ button[disabled]{
   font-weight:400;
   text-shadow:.4px 0 0 currentColor,-.4px 0 0 currentColor;
 }
-
-.long-text #input{font-size:.85rem;}
-.xl-text #input{font-size:.8rem;}
 
 .typingArea{position:relative;}
 #result{margin-top:10px;font-weight:800;}
@@ -322,13 +320,13 @@ footer{
   width:100%;
   height:1px;
   background:#eee;
-  margin:10px 0;
+  margin:5px 0;
 }
 
 .hint{
-  font-size:.92rem;
+  font-size:.9rem;
   color:#666;
-  margin:6px 0 0;
+  margin:0 0 0;
 }
 
 .inlineBtns{
@@ -341,41 +339,40 @@ footer{
 .collapsible{display:none;width:auto;}
 .collapsible.open{display:block;}
 
-.collapsible .sectionTitle+select{margin-bottom:10px;}
+/*.collapsible .sectionTitle+select{margin-bottom:10px;}*/
 
 .topControls{
   align-items:center;
-  gap:16px;
+  gap:px;
   align-items:flex-start;
 }
 
 .typingCard{
   border:2px solid #ddd;
-  border-radius:12px;
-  padding:12px 14px;
+  border-radius:10px;
+  padding:0px 8px;
 }
-.headerCard .collapsible{margin-top:8px;}
 
 #authBadge{display:none!important;}
 
-.headerCard .row{
+/*.headerCard .row{
   align-items:center;
   min-height:36px;
-}
+}*/
 
 .featureCard summary{font-size:.9rem;}
 
 .headerCard select{
-  height:36px;
-  padding:0 12px;
+  height:26px;
+  padding:0 2px;
 }
 .headerCard .sectionTitle,
 .headerCard .toggleBtn{
-  line-height:24px;
+  line-height:36px;
 }
 
-header{padding-bottom:0;}
-main{padding-top:0;}
+/*header{padding-bottom:0;}
+main{padding-top:0;}*/
 
 .rankUpMsg{
   margin-top:10px;
@@ -482,12 +479,12 @@ main{padding-top:0;}
   text-align:right;
   min-height:1em;
 }
-@media (min-width: 860px) {
+@media (min-width: 530px) {
   .headerCard .cardHeader {
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   .headerCard select {
@@ -500,7 +497,7 @@ main{padding-top:0;}
   }
 }
 /* ===== スマホ表示：ラベル＋⚙ → 下に select ===== */
-@media (max-width: 600px) {
+@media (max-width: 530px) {
 
   /* ヘッダーを2段構成に */
   .headerCard .cardHeader {
@@ -509,7 +506,6 @@ main{padding-top:0;}
     grid-template-areas:
       "title icon"
       "select select";
-    row-gap: 8px;
     align-items: center;
   }
 
@@ -527,13 +523,3 @@ main{padding-top:0;}
     width: 100%;
   }
 }
-
-.featureCard{
-  padding:6px 10px;
-}
-
-.featureCard summary{
-  margin:0;
-  padding:4px 0;
-}
-
