@@ -74,7 +74,7 @@
    white-space:pre-wrap;
    word-break:break-all;
    line-height:2;
-   margin: 0 0 5;
+   margin: 0 0 5px;
    padding-right:calc(7.5px + var(--sbw,0px));
  }
  
@@ -287,6 +287,7 @@ button[disabled]{
   padding:1px 2px;
   background:#fff;
   user-select:none;
+  margin-right: 12px; /* 好みで調整 */
 }
 .toggle input{width:14px;height:14px;}
 
