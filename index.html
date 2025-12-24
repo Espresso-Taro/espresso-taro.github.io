@@ -407,7 +407,7 @@ h1{
 <!-- ===============================
       タイピング練習（主役）
 ================================ -->
-<section id="play" class="card typingCard" aria-label="タイピング練習" style="margin-top:16px;">
+<section id="play" class="card typingCard" aria-label="タイピング練習" style="margin-top:10px;">
   <h2 style="margin-top:0;">漢字変換（IME）対応のタイピング練習</h2>
 
    <div class="row">
@@ -416,20 +416,22 @@ h1{
    
      <label for="lengthGroup" class="sr-only">文章長</label>
      <select id="lengthGroup"></select>
-   
-     <label for="category" class="sr-only">カテゴリ</label>
-     <select id="category"></select>
-   
-     <label for="theme" class="sr-only">テーマ</label>
-     <select id="theme"></select>
 
-    <label class="toggle">
+     <label class="toggle">
       <span>日替課題</span>
       <input type="checkbox" id="dailyTask" />
-    </label>
+     </label>
+   
+     <label for="category" class="sr-only">カテゴリ</label>
+     <select id="category">カテゴリ</select>
+   
+     <label for="theme" class="sr-only">テーマ</label>
+     <select id="theme">テーマ</select>
+
+
   </div>
 
-  <div class="muted" id="dailyInfo" style="margin:0 0 10px; display:none;"></div>
+  <!--<div class="muted" id="dailyInfo" style="margin:0 0 10px; display:none;"></div>-->
 
   <div class="row" style="margin: 10px 0 6px;">
     <button id="skipBtn" type="button">次の文</button>
@@ -658,4 +660,4 @@ h1{
 
   <script type="module" src="./js/app.js" defer></script>
 </body>
-</html>
+</html>
