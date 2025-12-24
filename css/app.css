@@ -9,10 +9,14 @@
    background:#fafafa;
    font-size:12px;
  }
- 
+
+ header,
+ main,
  footer{
    max-width:var(--max);
    margin:0 auto;
+ }
+ footer{
    padding:16px;
  }
  
