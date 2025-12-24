@@ -1,3 +1,7 @@
+h2{
+  font-size:1.1rem;
+  margin:0 0 4px;
+}
 :root{
   --max:980px;
 }
@@ -224,20 +228,20 @@ p.indent{margin-left:1.5em;}
 .card{
   border:1px solid #ddd;
   border-radius:10px;
-  padding:10px 10px;
+  padding:4px 10px;
   background:#fff;
 }
 .card.featureCard{padding:4px 4px}
 .card.headerCard{padding:4px 4px}
 .row{
   display:flex;
-  gap:5px;
+  gap:7px;
   flex-wrap:wrap;
   align-items:center;
 }
 
 select,button,input[type="text"],textarea{
-  font-size:.9rem;
+  font-size:1.0rem;
   padding:4px 2px;
   border-radius:5px;
   border:1px solid #bbb;
@@ -245,7 +249,7 @@ select,button,input[type="text"],textarea{
 }
 
 button{
-  font-size:.9rem;
+  font-size:1.0rem;
   border:1px solid #222;
   border-radius:5px;
   padding:4px 4px;
@@ -257,7 +261,7 @@ button[disabled]{
 }
 
 .toggle{
-  font-size:.9rem;
+  font-size:1.0rem;
   display:inline-flex;
   align-items:center;
   gap:0px;
@@ -269,17 +273,30 @@ button[disabled]{
 }
 .toggle input{width:14px;height:14px;}
 
-.long-text #text{
-  font-size:.85rem;
-  line-height:1.3;
+.short-text #text,
+.short-text #input{
+  font-size:0.95rem;
+  line-height:1.6;
 }
-.xl-text #text{
+
+.medium-text #text,
+.medium-text #input{
+  font-size:0.9rem;
+  line-height:1.5;
+}
+
+.long-text #text,
+.long-text #input{
+  font-size:.85rem;
+  line-height:1.4;
+}
+
+.xl-text #text,
+.xl-text #input{
   font-size:.8rem;
   line-height:1.3;
 }
 
-.long-text #input{font-size:.85rem;}
-.xl-text #input{font-size:.8rem;}
 
 .ok{
   color:#0b5ed7;
@@ -410,14 +427,6 @@ footer{
   color:#fff;
   border-color:#222;
 }
-
-.dividerLine{
-  width:100%;
-  height:1px;
-  background:#eee;
-  margin:5px 0;
-}
-
 .hint{
   font-size:.8rem;
   color:#666;
@@ -426,13 +435,25 @@ footer{
 
 .inlineBtns{
   display:inline-flex;
-  gap:8px;
+  gap:10px;
   flex-wrap:wrap;
   align-items:center;
 }
 
 .collapsible{display:none;width:auto;}
 .collapsible.open{display:block;}
+.collapsible{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.dividerLine{
+  width:100%;
+  height:1px;
+  background:#eee;
+  margin:5px 0;
+}
 
 /*.collapsible .sectionTitle+select{margin-bottom:10px;}*/
 
