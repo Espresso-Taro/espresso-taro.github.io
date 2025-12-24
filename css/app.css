@@ -441,12 +441,7 @@ footer{
 
 .collapsible{display:none;width:auto;}
 .collapsible.open{display:block;}
-.collapsible{
-  display:flex;
-  gap:5px;
-  flex-wrap:wrap;
-  align-items:center;
-}
+
 .dividerLine{
   width:100%;
   height:1px;
