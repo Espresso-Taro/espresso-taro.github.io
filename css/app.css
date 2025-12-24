@@ -341,21 +341,6 @@ footer{
 .collapsible{display:none;width:auto;}
 .collapsible.open{display:block;}
 
-/*.toggleBtn{
-  border:none;
-  background:transparent;
-  color:#555;
-  cursor:pointer;
-  padding:4px 6px;
-}*/
-
-/*.sectionTitle{
-  font-size:1.05rem;
-  font-weight:900;
-  color:#222;
-  margin-right:6px;
-}*/
-
 .collapsible .sectionTitle+select{margin-bottom:10px;}
 
 .topControls{
@@ -363,18 +348,6 @@ footer{
   gap:16px;
   align-items:flex-start;
 }
-
-/*.panelRow{
-  margin-top:8px;
-  align-items:flex-start;
-  gap:22px;
-}
-
-.panelBox{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-}*/
 
 .typingCard{
   border:2px solid #ddd;
@@ -398,7 +371,7 @@ footer{
 }
 .headerCard .sectionTitle,
 .headerCard .toggleBtn{
-  line-height:36px;
+  line-height:24px;
 }
 
 header{padding-bottom:0;}
@@ -500,28 +473,7 @@ main{padding-top:0;}
   }
 }
 
-/*textarea.input-guide{
-  text-align:left;
-  color:#888;
-  font-size:14px;
-  line-height:1.4;
-  padding-top:6px;
-  padding-left:6px;
-}*/
-
-/*.visually-hidden{
-  position:absolute;
-  width:1px;
-  height:1px;
-  padding:0;
-  margin:-1px;
-  overflow:hidden;
-  clip:rect(0,0,0,0);
-  white-space:nowrap;
-  border:0;
-}*/
-
-.featureCard{margin-bottom:16px;}
+.featureCard{margin-bottom:5px;}
 
 .input-time{
   font-size:.85rem;
