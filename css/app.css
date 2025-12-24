@@ -239,6 +239,20 @@ p.indent{margin-left:1.5em;}
   flex-wrap:wrap;
   align-items:center;
 }
+/* スマホだけ改行として機能 */
+@media (max-width: 600px){
+  .sp-break{
+    flex-basis:100%;
+    height:0;
+  }
+}
+
+/* PCでは無効 */
+@media (min-width: 601px){
+  .sp-break{
+    display:none;
+  }
+}
 
 select,button,input[type="text"],textarea{
   font-size:1.0rem;
