@@ -1,3 +1,11 @@
+.featureCard + .headerCard{
+  margin: 0 0;
+}
+
+.featureCard + .headerCard{
+  padding: 0 0;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
