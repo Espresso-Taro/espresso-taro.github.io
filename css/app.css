@@ -253,6 +253,9 @@ p.indent{margin-left:1.5em;}
     display:none;
   }
 }
+#lengthGroup{
+  margin-right: 12px; /* 好みで調整 */
+}
 
 select,button,input[type="text"],textarea{
   font-size:1.0rem;
