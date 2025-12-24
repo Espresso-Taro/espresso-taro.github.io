@@ -528,11 +528,12 @@ main{padding-top:0;}
   }
 }
 
-.featureCard + .headerCard{
-  margin: 0 0;
+.featureCard{
+  padding:6px 10px;
 }
 
-.featureCard + .headerCard{
-  padding: 0 0;
+.featureCard summary{
+  margin:0;
+  padding:4px 0;
 }
 
