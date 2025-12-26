@@ -13,7 +13,7 @@
   <!-- IME解説 -->
   <url>
     <loc>https://espresso-taro.github.io/ime/what-is-ime.html</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2025-12-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -21,7 +21,7 @@
   <!-- 漢字変換タイピング解説 -->
   <url>
     <loc>https://espresso-taro.github.io/typing/kanji-typing.html</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2025-12-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -29,7 +29,7 @@
   <!-- CPM解説 -->
   <url>
     <loc>https://espresso-taro.github.io/typing/cpm.html</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2025-12-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -37,11 +37,12 @@
   <!-- 制作背景・運営者情報 -->
   <url>
     <loc>https://espresso-taro.github.io/about/developer.html</loc>
-    <lastmod>2025-01-01</lastmod>
+    <lastmod>2025-12-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
 </urlset>
+
 
 
