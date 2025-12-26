@@ -414,7 +414,7 @@ footer{
 
 .powerTable td{                  /* テーブル内の各セル(td)のスタイル */
   border:1px solid #000;         /* セルごとの枠線を黒の1pxで表示 */
-  padding:6px 10px;              /* セル内の上下左右の余白 */
+  padding:6px 20px;              /* セル内の上下左右の余白 */
   text-align:center;             /* 文字を中央揃え */
   white-space:nowrap;            /* 文字の自動改行を防止 */
 }
@@ -452,7 +452,7 @@ footer{
 .powerTitle{                     /* タイトル表示 */
   font-size:1.4rem;              /* タイトル用の大きめ文字 */
   font-weight:900;               /* 太字で強調 */
-  margin-bottom:8px;             /* 下に余白を追加 */
+  margin-bottom:5px;             /* 下に余白を追加 */
   text-align:center;             /* 中央揃え */
 }
 
@@ -460,7 +460,7 @@ footer{
   display:flex;                  /* 横並びレイアウト */
   gap:0;                         /* 要素間の隙間なし */
   align-items:stretch;           /* 高さを揃える */
-  border:2px solid #000;         /* 全体を囲む黒枠 */
+  border:4px solid #000;         /* 全体を囲む黒枠 */
 }
 
 .powerTable{                     /* powerInner内でのテーブル再定義 */
@@ -471,7 +471,7 @@ footer{
 
 #rankImageBox{                   /* ランク画像用の枠 */
   width:190px;                   /* 枠の横幅を190pxに固定 */
-  height:190px;                  /* 枠の高さを190pxに固定 */
+  height:189px;                  /* 枠の高さを190pxに固定 */
   background:#fff;               /* 背景を白に設定 */
   border:none;                   /* 枠線は一旦なし */
   border-left:1px solid #000;    /* 左側だけ区切り線を表示 */
