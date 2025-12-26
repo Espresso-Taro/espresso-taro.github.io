@@ -405,82 +405,90 @@ footer{
   text-shadow:0 1px 0 rgba(0,0,0,.12);
 }
 
-.powerTable{
-  border:2px solid #000;
-  border-collapse:collapse;
-  font-size:1rem;
-  margin-top:8px;
-}
-.powerTable td{
-  border:1px solid #000;
-  padding:6px 10px;
-  text-align:center;
-  white-space:nowrap;
-}
-.powerTable .label{
-  background:#f5f5f5;
-  font-weight:700;
-}
-.powerTable .rank{
-  font-size:1.4em;
-  font-weight:900;
-}
-.powerTable .score{
-  font-size:1.2em;
-  font-weight:800;
-}
-.powerTable .message{
-  padding:10px;
-  line-height:1.5;
-  white-space:normal;
-  word-break:break-word;
-  overflow-wrap:anywhere;
-  text-align:center;
+.powerTable{                     /* パワー表示用テーブル全体のスタイル */
+  border:2px solid #000;         /* テーブル外枠を黒の2px実線で表示 */
+  border-collapse:collapse;      /* セルの境界線を重ねて表示 */
+  font-size:1rem;                /* テーブル全体の文字サイズを標準に設定 */
+  margin-top:8px;                /* テーブル上部に余白を追加 */
 }
 
-.powerBlock{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-.powerTitle{
-  font-size:1.4rem;
-  font-weight:900;
-  margin-bottom:8px;
-  text-align:center;
-}
-.powerInner{
-  display:flex;
-  gap:0;
-  align-items:stretch;
-  border:2px solid #000;
+.powerTable td{                  /* テーブル内の各セル(td)のスタイル */
+  border:1px solid #000;         /* セルごとの枠線を黒の1pxで表示 */
+  padding:6px 10px;              /* セル内の上下左右の余白 */
+  text-align:center;             /* 文字を中央揃え */
+  white-space:nowrap;            /* 文字の自動改行を防止 */
 }
 
-.powerTable{
-  border:none;
-  margin:0;
-  min-width:0;
+.powerTable .label{              /* 見出し・ラベル用セル */
+  background:#f5f5f5;            /* 背景色を薄いグレーに設定 */
+  font-weight:700;               /* 文字を太字にする */
 }
 
-#rankImageBox{
-  width:200px;
-  height:200px;
-  background:#fff;
-  border:none;
-  border-left:1px solid #000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-sizing:border-box;
+.powerTable .rank{               /* ランク表示用の文字 */
+  font-size:1.4em;               /* 通常より大きめの文字サイズ */
+  font-weight:900;               /* 非常に太い文字 */
+}
+
+.powerTable .score{              /* スコア表示用の文字 */
+  font-size:1.2em;               /* 少し大きめの文字サイズ */
+  font-weight:800;               /* 太字表示 */
+}
+
+.powerTable .message{            /* メッセージ表示用セル */
+  padding:10px;                  /* セル内の余白を広めに確保 */
+  line-height:1.5;               /* 行間を広げて読みやすくする */
+  white-space:normal;            /* 自動改行を許可 */
+  word-break:break-word;         /* 単語途中でも折り返し可能にする */
+  overflow-wrap:anywhere;        /* どこでも折り返し可能にする */
+  text-align:center;             /* 文字を中央揃え */
+}
+
+.powerBlock{                     /* 全体を包むブロック */
+  display:flex;                  /* フレックスボックスを使用 */
+  flex-direction:column;         /* 縦方向に要素を並べる */
+  align-items:center;            /* 子要素を中央揃え */
+}
+
+.powerTitle{                     /* タイトル表示 */
+  font-size:1.4rem;              /* タイトル用の大きめ文字 */
+  font-weight:900;               /* 太字で強調 */
+  margin-bottom:8px;             /* 下に余白を追加 */
+  text-align:center;             /* 中央揃え */
+}
+
+.powerInner{                     /* テーブルと画像をまとめる内部枠 */
+  display:flex;                  /* 横並びレイアウト */
+  gap:0;                         /* 要素間の隙間なし */
+  align-items:stretch;           /* 高さを揃える */
+  border:2px solid #000;         /* 全体を囲む黒枠 */
+}
+
+.powerTable{                     /* powerInner内でのテーブル再定義 */
+  border:none;                   /* 外枠はpowerInnerに任せる */
+  margin:0;                      /* 余白をリセット */
+  min-width:0;                   /* flex内でのはみ出し防止 */
+}
+
+#rankImageBox{                   /* ランク画像用の枠 */
+  width:200px;                   /* 枠の横幅を200pxに固定 */
+  height:200px;                  /* 枠の高さを200pxに固定 */
+  background:#fff;               /* 背景を白に設定 */
+  border:none;                   /* 枠線は一旦なし */
+  border-left:1px solid #000;    /* 左側だけ区切り線を表示 */
+  display:flex;                  /* 中央配置用にflex使用 */
+  align-items:center;            /* 縦方向中央揃え */
+  justify-content:center;        /* 横方向中央揃え */
+  box-sizing:border-box;         /* 枠線込みでサイズ計算 */
 }
 
 /* webp画像本体 */
-#rankImageBox img{
-  width:100%;
-  height:100%;
-  object-fit:contain;   /* はみ出し・歪み防止 */
-  display:block;
+#rankImageBox img{               /* 枠内の画像(webp) */
+  width:90%;                    /* 枠の横幅 */
+  height:90%;                   /* 枠の高さ */
+  object-fit:contain;            /* 縦横比を保ったまま収める */
+  display:block;                 /* 余計な隙間を防ぐ */
 }
+
 
 @media(max-width:600px){
   .powerInner{
