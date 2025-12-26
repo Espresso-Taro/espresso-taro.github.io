@@ -990,115 +990,17 @@ const RANK_MESSAGES = {
 };
 
 const RANK_IMAGES = {
-
-  /* G：入門（おどおど） */
-  G: `
-<svg viewBox="0 0 200 200">
-  <circle cx="100" cy="70" r="45" fill="#e0b070" stroke="#000" stroke-width="5"/>
-  <circle cx="85" cy="65" r="6"/><circle cx="115" cy="65" r="6"/>
-  <path d="M90 85 Q100 80 110 85" fill="none" stroke="#000" stroke-width="4"/>
-  <rect x="70" y="115" width="60" height="50" rx="20" fill="#e0b070" stroke="#000" stroke-width="5"/>
-  <text x="100" y="190" text-anchor="middle" font-size="18">入門</text>
-</svg>`,
-
-  /* F：修練（構え） */
-  F: `
-<svg viewBox="0 0 200 200">
-  <circle cx="100" cy="70" r="45" fill="#d9a85f" stroke="#000" stroke-width="5"/>
-  <circle cx="85" cy="65" r="6"/><circle cx="115" cy="65" r="6"/>
-  <path d="M85 85 Q100 90 115 85" fill="none" stroke="#000" stroke-width="4"/>
-  <rect x="65" y="115" width="70" height="50" rx="20" fill="#d9a85f" stroke="#000" stroke-width="5"/>
-  <text x="100" y="190" text-anchor="middle" font-size="18">修練</text>
-</svg>`,
-
-  /* E：初段（集中） */
-  E: `
-<svg viewBox="0 0 200 200">
-  <circle cx="100" cy="70" r="45" fill="#d2a060" stroke="#000" stroke-width="5"/>
-  <rect x="80" y="60" width="15" height="6"/>
-  <rect x="105" y="60" width="15" height="6"/>
-  <path d="M90 85 H110" stroke="#000" stroke-width="4"/>
-  <rect x="65" y="115" width="70" height="50" rx="18" fill="#d2a060" stroke="#000" stroke-width="5"/>
-  <text x="100" y="190" text-anchor="middle" font-size="18">初段</text>
-</svg>`,
-
-  /* D：中段（安定） */
-  D: `
-<svg viewBox="0 0 200 200">
-  <circle cx="100" cy="70" r="45" fill="#cfa45a" stroke="#000" stroke-width="5"/>
-  <circle cx="85" cy="65" r="5"/><circle cx="115" cy="65" r="5"/>
-  <path d="M90 88 Q100 92 110 88" fill="none" stroke="#000" stroke-width="4"/>
-  <rect x="60" y="115" width="80" height="55" rx="20" fill="#cfa45a" stroke="#000" stroke-width="5"/>
-  <text x="100" y="190" text-anchor="middle" font-size="18">中段</text>
-</svg>`,
-
-  /* C：上段（余裕） */
-  C: `
-<svg viewBox="0 0 200 200">
-  <circle cx="100" cy="70" r="45" fill="#caa04a" stroke="#000" stroke-width="5"/>
-  <path d="M80 60 H95 M105 60 H120" stroke="#000" stroke-width="4"/>
-  <path d="M85 90 Q100 80 115 90" fill="none" stroke="#000" stroke-width="4"/>
-  <rect x="60" y="115" width="80" height="55" rx="22" fill="#caa04a" stroke="#000" stroke-width="5"/>
-  <text x="100" y="190" text-anchor="middle" font-size="18">上段</text>
-</svg>`,
-
-  /* B：師範代（自信） */
-  B: `
-<svg viewBox="0 0 200 200">
-  <circle cx="100" cy="65" r="45" fill="#c79a3c" stroke="#000" stroke-width="5"/>
-  <path d="M80 60 H100 M105 60 H125" stroke="#000" stroke-width="4"/>
-  <path d="M90 90 Q100 75 110 90" fill="none" stroke="#000" stroke-width="4"/>
-  <rect x="55" y="110" width="90" height="60" rx="25" fill="#c79a3c" stroke="#000" stroke-width="5"/>
-  <text x="100" y="190" text-anchor="middle" font-size="18">師範代</text>
-</svg>`,
-
-  /* A：師範（堂々） */
-  A: `
-<svg viewBox="0 0 200 200">
-  <circle cx="100" cy="60" r="45" fill="#c4942e" stroke="#000" stroke-width="5"/>
-  <path d="M75 55 H95 M105 55 H125" stroke="#000" stroke-width="5"/>
-  <path d="M90 92 Q100 85 110 92" fill="none" stroke="#000" stroke-width="4"/>
-  <rect x="50" y="110" width="100" height="65" rx="28" fill="#c4942e" stroke="#000" stroke-width="5"/>
-  <text x="100" y="190" text-anchor="middle" font-size="18">師範</text>
-</svg>`,
-
-  /* S：達人（静） */
-  S: `
-<svg viewBox="0 0 200 200">
-  <circle cx="100" cy="60" r="45" fill="#d4af37" stroke="#000" stroke-width="5"/>
-  <path d="M85 58 H115" stroke="#000" stroke-width="5"/>
-  <path d="M90 95 H110" stroke="#000" stroke-width="4"/>
-  <rect x="45" y="110" width="110" height="70" rx="30" fill="#d4af37" stroke="#000" stroke-width="5"/>
-  <text x="100" y="190" text-anchor="middle" font-size="18">達人</text>
-</svg>`,
-
-  /* SS：宗匠（威厳） */
-  SS: `
-<svg viewBox="0 0 200 200">
-  <circle cx="100" cy="55" r="45" fill="#e0c35a" stroke="#000" stroke-width="6"/>
-  <path d="M80 55 H120" stroke="#000" stroke-width="6"/>
-  <rect x="40" y="105" width="120" height="75" rx="35" fill="#e0c35a" stroke="#000" stroke-width="6"/>
-  <text x="100" y="190" text-anchor="middle" font-size="18">宗匠</text>
-</svg>`,
-
-  /* SSS：無双（到達点） */
-  SSS: `
-<svg viewBox="0 0 200 200">
-  <defs>
-    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fff5c0"/>
-      <stop offset="100%" stop-color="#d4af37"/>
-    </linearGradient>
-  </defs>
-  <rect x="10" y="10" width="180" height="180" rx="30"
-        fill="url(#gold)" stroke="#000" stroke-width="6"/>
-  <circle cx="100" cy="70" r="40" fill="#fff" stroke="#000" stroke-width="4"/>
-  <path d="M60 135 C80 115,120 115,140 135" fill="none" stroke="#000" stroke-width="5"/>
-  <text x="100" y="185" text-anchor="middle" font-size="22" font-weight="900">無双</text>
-</svg>`
+  G: `<img src="/img/rank/G.webp" width="200" height="200" alt="ランク：入門（おどおど）">`,
+  F: `<img src="/img/rank/F.webp" width="200" height="200" alt="ランク：修練（構え）">`,
+  E: `<img src="/img/rank/E.webp" width="200" height="200" alt="ランク：初段（集中）">`,
+  D: `<img src="/img/rank/D.webp" width="200" height="200" alt="ランク：中段（安定）">`,
+  C: `<img src="/img/rank/C.webp" width="200" height="200" alt="ランク：上段（余裕）">`,
+  B: `<img src="/img/rank/B.webp" width="200" height="200" alt="ランク：師範代（自信）">`,
+  A: `<img src="/img/rank/A.webp" width="200" height="200" alt="ランク：師範（堂々）">`,
+  S: `<img src="/img/rank/S.webp" width="200" height="200" alt="ランク：達人（静）">`,
+  SS: `<img src="/img/rank/SS.webp" width="200" height="200" alt="ランク：宗匠（威厳）">`,
+  SSS: `<img src="/img/rank/SSS.webp" width="200" height="200" alt="ランク：無双（到達点）">`
 };
-
-
 
 
 
@@ -2960,6 +2862,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
