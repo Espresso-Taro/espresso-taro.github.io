@@ -470,8 +470,8 @@ footer{
 }
 
 #rankImageBox{                   /* ランク画像用の枠 */
-  width:200px;                   /* 枠の横幅を200pxに固定 */
-  height:200px;                  /* 枠の高さを200pxに固定 */
+  width:160px;                   /* 枠の横幅を200pxに固定 */
+  height:160px;                  /* 枠の高さを200pxに固定 */
   background:#fff;               /* 背景を白に設定 */
   border:none;                   /* 枠線は一旦なし */
   border-left:1px solid #000;    /* 左側だけ区切り線を表示 */
