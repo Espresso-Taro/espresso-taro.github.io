@@ -907,6 +907,44 @@ function lengthLabel(v) {
 }
 
 /* =========================
+   QRコード生成（Canvas用）
+   ========================= */
+
+function generateQrCanvas(text, size = 240) {
+  const qrCanvas = document.createElement("canvas");
+  qrCanvas.width = size;
+  qrCanvas.height = size;
+  const ctx = qrCanvas.getContext("2d");
+
+  // 軽量QR生成（qrcode-generator互換の簡易実装）
+  // ここでは Web API を使う
+  const qr = new QRCodeGenerator(0, "L");
+  qr.addData(text);
+  qr.make();
+
+  const cellCount = qr.getModuleCount();
+  const cellSize = size / cellCount;
+
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, size, size);
+
+  ctx.fillStyle = "#000";
+  for (let row = 0; row < cellCount; row++) {
+    for (let col = 0; col < cellCount; col++) {
+      if (qr.isDark(row, col)) {
+        ctx.fillRect(
+          col * cellSize,
+          row * cellSize,
+          cellSize,
+          cellSize
+        );
+      }
+    }
+  }
+  return qrCanvas;
+}
+
+/* =========================
    Instagram 共有用 画像生成
    ========================= */
 
@@ -919,36 +957,88 @@ function generateInstagramImage() {
   canvas.height = 1920;
   const ctx = canvas.getContext("2d");
 
+  /*背景*/
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#fff";
   ctx.textAlign = "center";
+  ctx.fillStyle = "#fff";
 
-  ctx.font = "bold 64px system-ui";
+  /*タイトル*/
+  ctx.font = "bold 64px system-ui, -apple-system, sans-serif";
   ctx.fillText("Typing Result", 540, 260);
 
-  ctx.font = "bold 200px system-ui";
-  ctx.fillText(r.cpm, 540, 540);
+  /*CPM（最重要）*/
+  ctx.font = "bold 200px system-ui, -apple-system, sans-serif";
+  ctx.fillText(r.cpm, 540, 560);
 
-  ctx.font = "48px system-ui";
-  ctx.fillText("CPM", 540, 620);
+  ctx.font = "48px system-ui, -apple-system, sans-serif";
+  ctx.fillText("CPM", 540, 640);
 
-  ctx.font = "52px system-ui";
-  ctx.fillText(`RANK ${r.rank}`, 540, 760);
-  ctx.fillText(`難度 ${diffLabel(r.difficulty)}`, 540, 840);
+  /*評価情報*/
+  ctx.font = "52px system-ui, -apple-system, sans-serif";
+  ctx.fillText(`RANK ${r.rank}`, 540, 780);
+  ctx.fillText(`難度 ${diffLabel(r.difficulty)}`, 540, 860);
 
-  if (r.category) {
-    ctx.font = "44px system-ui";
-    ctx.fillText(`${r.category} / ${r.theme}`, 540, 940);
+  /*カテゴリ / テーマ*/
+  if (r.category || r.theme) {
+    ctx.font = "44px system-ui, -apple-system, sans-serif";
+    const catText = [r.category, r.theme].filter(Boolean).join(" / ");
+    ctx.fillText(catText, 540, 960);
   }
 
-  ctx.font = "36px system-ui";
+  /*QRコード生成*/
+  const qrSize = 260;
+  const qrCanvas = document.createElement("canvas");
+  qrCanvas.width = qrSize;
+  qrCanvas.height = qrSize;
+  const qrCtx = qrCanvas.getContext("2d");
+
+  const qr = new QRCode(0, "L");
+  qr.addData(shareUrl());
+  qr.make();
+
+  const count = qr.getModuleCount();
+  const cellSize = qrSize / count;
+
+  qrCtx.fillStyle = "#fff";
+  qrCtx.fillRect(0, 0, qrSize, qrSize);
+
+  qrCtx.fillStyle = "#000";
+  for (let row = 0; row < count; row++) {
+    for (let col = 0; col < count; col++) {
+      if (qr.isDark(row, col)) {
+        qrCtx.fillRect(
+          col * cellSize,
+          row * cellSize,
+          Math.ceil(cellSize),
+          Math.ceil(cellSize)
+        );
+      }
+    }
+  }
+
+  /*QRコード配置*/
+  const qrX = 540 - qrSize / 2;
+  const qrY = 1280;
+  ctx.drawImage(qrCanvas, qrX, qrY);
+
+  ctx.font = "32px system-ui, -apple-system, sans-serif";
   ctx.fillStyle = "#aaa";
-  ctx.fillText("漢字変換(IME)込み 日本語タイピングゲーム", 540, 1700);
+  ctx.fillText("Play here", 540, qrY + qrSize + 48);
+
+  /*フッター*/
+  ctx.font = "32px system-ui, -apple-system, sans-serif";
+  ctx.fillStyle = "#888";
+  ctx.fillText(
+    "漢字変換タイピングゲーム｜社会人向け日本語入力練習",
+    540,
+    1820
+  );
 
   return canvas;
 }
+
 
 function downloadCanvas(canvas) {
   const a = document.createElement("a");
@@ -3019,6 +3109,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
