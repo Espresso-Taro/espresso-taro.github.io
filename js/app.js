@@ -180,29 +180,53 @@ on(shareIgBtn, "click", () => {
   const canvas = generateInstagramImage();
   if (!canvas) return;
 
-  const isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
+  const ua = navigator.userAgent.toLowerCase();
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isAndroid = /android/.test(ua);
 
-  if (isMobile) {
-    canvas.toBlob(blob => {
-      const file = new File([blob], "typing_result.png", {
-        type: "image/png"
+  // =========================
+  // iOS Safari：保存 → 手動共有
+  // =========================
+  if (isIOS) {
+    downloadCanvas(canvas);
+    alert(
+      "画像を保存しました。\nInstagramを開いてストーリーで共有してください。"
+    );
+    return;
+  }
+
+  // =========================
+  // Android：Web Share API
+  // =========================
+  if (isAndroid && navigator.share && navigator.canShare) {
+    const dataUrl = canvas.toDataURL("image/png");
+
+    fetch(dataUrl)
+      .then(res => res.blob())
+      .then(blob => {
+        const file = new File([blob], "typing_result.png", {
+          type: "image/png"
+        });
+
+        if (navigator.canShare({ files: [file] })) {
+          navigator.share({
+            files: [file],
+            title: "Typing Result"
+          });
+        } else {
+          downloadCanvas(canvas);
+        }
       });
 
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        navigator.share({
-          files: [file],
-          title: "Typing Result"
-        });
-      } else {
-        downloadCanvas(canvas);
-        alert("画像を保存後、Instagramストーリーで共有してください。");
-      }
-    });
-  } else {
-    // PC：ダウンロード
-    downloadCanvas(canvas);
+    return;
   }
+
+  // =========================
+  // PC / その他：ダウンロード
+  // =========================
+  downloadCanvas(canvas);
 });
+
 
 
 
@@ -3109,6 +3133,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
