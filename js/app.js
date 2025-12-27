@@ -852,33 +852,36 @@ function generateQrCanvas(text, size = 240) {
   qrCanvas.height = size;
   const ctx = qrCanvas.getContext("2d");
 
-  // 軽量QR生成（qrcode-generator互換の簡易実装）
-  // ここでは Web API を使う
-  const qr = new QRCodeGenerator(0, "L");
+  // qrcode-generator（CDN）の正しい呼び出し
+  const qr = window.qrcode(0, "L");
   qr.addData(text);
   qr.make();
 
   const cellCount = qr.getModuleCount();
   const cellSize = size / cellCount;
 
+  // 背景（白）
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, size, size);
 
+  // QRドット
   ctx.fillStyle = "#000";
   for (let row = 0; row < cellCount; row++) {
     for (let col = 0; col < cellCount; col++) {
       if (qr.isDark(row, col)) {
         ctx.fillRect(
-          col * cellSize,
-          row * cellSize,
-          cellSize,
-          cellSize
+          Math.floor(col * cellSize),
+          Math.floor(row * cellSize),
+          Math.ceil(cellSize),
+          Math.ceil(cellSize)
         );
       }
     }
   }
+
   return qrCanvas;
 }
+
 
 /* =========================
    Instagram 共有用 画像生成
@@ -3115,6 +3118,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
