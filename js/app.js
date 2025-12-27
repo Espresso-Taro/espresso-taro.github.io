@@ -1604,19 +1604,20 @@ async function fetchScoresGroup({ groupId, difficulty, maxFetch = 800 }) {
 }
 
 function sortAndTop10(rows) {
-  const best = new Map(); // uid -> best row
+  const best = new Map(); // personalId -> best row
   for (const r of rows) {
-    const uid = r.uid || "";
-    if (!uid) continue;
-    const prev = best.get(uid);
+    const pid = r.personalId;
+    if (!pid) continue;
+    const prev = best.get(pid);
     if (!prev || Number(r.cpm ?? 0) > Number(prev.cpm ?? 0)) {
-      best.set(uid, r);
+      best.set(pid, r);
     }
   }
   return Array.from(best.values())
     .sort((a, b) => Number(b.cpm ?? 0) - Number(a.cpm ?? 0))
     .slice(0, 10);
 }
+
 
 /* =========================================================
    Ranking loaders
@@ -2862,6 +2863,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
