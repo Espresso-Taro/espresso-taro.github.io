@@ -181,11 +181,11 @@ on(shareIgBtn, "click", () => {
   if (!canvas) return;
 
   const ua = navigator.userAgent.toLowerCase();
-  const isIOS = /iphone|ipad|ipod/.test(ua);
   const isAndroid = /android/.test(ua);
+  const isIOS = /iphone|ipad|ipod/.test(ua);
 
   // =========================
-  // iOS Safari：保存 → 手動共有
+  // iPhone / iOS
   // =========================
   if (isIOS) {
     downloadCanvas(canvas);
@@ -196,36 +196,46 @@ on(shareIgBtn, "click", () => {
   }
 
   // =========================
-  // Android：Web Share API
+  // Android
   // =========================
-  if (isAndroid && navigator.share && navigator.canShare) {
-    const dataUrl = canvas.toDataURL("image/png");
+  if (isAndroid && navigator.share) {
+    try {
+      const dataUrl = canvas.toDataURL("image/png");
 
-    fetch(dataUrl)
-      .then(res => res.blob())
-      .then(blob => {
-        const file = new File([blob], "typing_result.png", {
-          type: "image/png"
-        });
+      fetch(dataUrl)
+        .then(res => res.blob())
+        .then(blob => {
+          const file = new File([blob], "typing_result.png", {
+            type: "image/png"
+          });
 
-        if (navigator.canShare({ files: [file] })) {
           navigator.share({
             files: [file],
             title: "Typing Result"
+          }).catch(() => {
+            downloadCanvas(canvas);
+            alert(
+              "画像を保存しました。\nInstagramを開いてストーリーで共有してください。"
+            );
           });
-        } else {
-          downloadCanvas(canvas);
-        }
-      });
+        });
 
-    return;
+      return;
+    } catch (e) {
+      downloadCanvas(canvas);
+      alert(
+        "画像を保存しました。\nInstagramを開いてストーリーで共有してください。"
+      );
+      return;
+    }
   }
 
   // =========================
-  // PC / その他：ダウンロード
+  // PC / その他
   // =========================
   downloadCanvas(canvas);
 });
+
 
 
 
@@ -3133,6 +3143,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
