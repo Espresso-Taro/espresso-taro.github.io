@@ -933,9 +933,12 @@ function generateInstagramImage() {
   qrCanvas.height = qrSize;
   const qrCtx = qrCanvas.getContext("2d");
 
-  const qr = new QRCode(0, "L");
-  qr.addData(shareUrl());
-  qr.make();
+  const qrCanvas = generateQrCanvas(shareUrl(), 260);
+  ctx.drawImage(
+    qrCanvas,
+    canvas.width / 2 - 130,
+    1280
+  );
 
   const count = qr.getModuleCount();
   const cellSize = qrSize / count;
@@ -3118,6 +3121,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
