@@ -143,6 +143,35 @@ function bindToggle(btnId, panelId) {
 /* =========================================================
    DOM refs
 ========================================================= */
+//SNS共有用
+const shareXBtn    = document.querySelector(".shareX");
+const shareLineBtn = document.querySelector(".shareLine");
+const shareIgBtn   = document.querySelector(".shareIg");
+on(shareXBtn, "click", () => {
+  const text = encodeURIComponent(buildShareText());
+  const url  = encodeURIComponent(shareUrl());
+
+  const intent =
+    `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+
+  window.open(intent, "_blank", "noopener");
+});
+on(shareLineBtn, "click", () => {
+  const text = encodeURIComponent(buildShareText() + "\n" + shareUrl());
+
+  const intent =
+    `https://social-plugins.line.me/lineit/share?text=${text}`;
+
+  window.open(intent, "_blank", "noopener");
+});
+on(shareIgBtn, "click", () => {
+  alert(
+    "結果をスクリーンショットして、Instagramストーリーで共有してください。"
+  );
+});
+
+
+
 // header/status
 const authBadge = $("authBadge");
 const metaInfoEl = $("metaInfo");
@@ -693,7 +722,8 @@ async function filterRowsByExistingUsers(db, rows) {
 ========================================================= */
 const State = {
   authUser: null,
-
+  lastResult: null,   // ★ 追加
+  
   // ★ 追加：今日の課題 ON 前の退避
   beforeDailyPrefs: null,
 
@@ -1583,6 +1613,19 @@ function setModalMetrics({
   if (category && category !== "all") metaParts.push(`カテゴリ:${category}`);
   if (State.currentGroupId) metaParts.push(`グループ:${State.currentGroupId}`);
   setText(mMeta, metaParts.join(" / "));
+  
+  // =========================
+  // ★ 共有用：直近結果を保存
+  // =========================
+  State.lastResult = {
+    cpm,
+    rank,
+    difficulty,
+    lengthGroup,
+    isDailyTask,
+    category,
+    theme
+  };
 }
 
 
@@ -2627,6 +2670,31 @@ function bindGroupUI() {
 
 
 /* =========================================================
+   SNS共有時の自動書き込み内容
+========================================================= */
+function buildShareText() {
+  const r = State.lastResult;
+  if (!r) return "";
+
+  const diff = diffLabel(r.difficulty);
+  const len  = lengthLabel(r.lengthGroup);
+
+  const cat  = r.category ? `カテゴリ:${r.category}` : "";
+  const th   = r.theme ? `テーマ:${r.theme}` : "";
+
+  return `CPM ${r.cpm} / RANK ${r.rank}
+難度:${diff} / 長さ:${len}
+${cat}${cat && th ? " / " : ""}${th}
+
+漢字変換タイピングゲーム｜社会人向け日本語入力練習
+#タイピングゲーム`;
+}
+
+function shareUrl() {
+  return location.origin + location.pathname;
+}
+
+/* =========================================================
    TypingEngine instance (must be after DOM refs)
 ========================================================= */
 function onTypingFinish({ metrics, meta }) {
@@ -2863,6 +2931,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
