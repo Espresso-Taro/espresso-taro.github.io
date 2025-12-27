@@ -660,22 +660,41 @@
       </div>
       <div id="mRankUp" class="rankUpMsg" aria-live="polite" style="display:none;"></div>
       <div class="muted" id="mMeta" style="margin-top:10px;"></div>
-       <!-- ▼ 共有アイコンエリア（追加） -->
-       <div class="shareArea" aria-label="結果を共有" style="margin-top:16px;">
-         <div class="muted" style="margin-bottom:6px;">結果を共有</div>
-         <div class="shareButtons">
-           <button type="button" class="shareBtn shareX" aria-label="Xで共有">
-             <img src="img/icon/X.png" alt="X">
-           </button>
-           <button type="button" class="shareBtn shareLine" aria-label="LINEで共有">
-             <img src="img/icon/LINE.png" alt="LINE">
-           </button>
-           <button type="button" class="shareBtn shareIg" aria-label="Instagramで共有">
-             <img src="img/icon/Instagram.png" alt="Instagram">
-           </button>
-         </div>
-       </div>
-       <!-- ▲ 共有アイコンエリア -->
+      <!-- ▼ 共有アイコンエリア -->
+      <div class="shareArea" aria-label="結果を共有" style="margin-top:16px;">
+        <div class="muted" style="margin-bottom:6px;">結果を共有</div>
+      
+        <div class="shareButtons">
+          <button
+            type="button"
+            class="shareBtn shareX"
+            data-share="x"
+            aria-label="Xで共有"
+          >
+            <img src="img/icon/x.png" alt="X">
+          </button>
+      
+          <button
+            type="button"
+            class="shareBtn shareLine"
+            data-share="line"
+            aria-label="LINEで共有"
+          >
+            <img src="img/icon/line.png" alt="LINE">
+          </button>
+      
+          <button
+            type="button"
+            class="shareBtn shareIg"
+            data-share="instagram"
+            aria-label="Instagramで共有"
+          >
+            <img src="img/icon/instagram.png" alt="Instagram">
+          </button>
+        </div>
+      </div>
+      <!-- ▲ 共有アイコンエリア -->
+
        <div class="modalActions">
         <button id="closeModalBtn" type="button">閉じる</button>
         <button id="nextBtn" type="button">次の文章へ</button>
@@ -686,6 +705,7 @@
   <script type="module" src="./js/app.js" defer></script>
 </body>
 </html>
+
 
 
 
