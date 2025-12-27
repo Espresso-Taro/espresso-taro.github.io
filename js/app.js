@@ -157,18 +157,53 @@ on(shareXBtn, "click", () => {
   window.open(intent, "_blank", "noopener");
 });
 on(shareLineBtn, "click", () => {
-  const text = encodeURIComponent(buildShareText() + "\n" + shareUrl());
+  const text = buildShareText();
+  const url  = shareUrl();
 
-  const intent =
-    `https://social-plugins.line.me/lineit/share?text=${text}`;
+  const message = encodeURIComponent(`${text}\n${url}`);
 
-  window.open(intent, "_blank", "noopener");
+  // スマホは LINE アプリを直接起動
+  const lineAppUrl = `line://msg/text/${message}`;
+
+  // PC fallback
+  const lineWebUrl =
+    `https://social-plugins.line.me/lineit/share?text=${message}`;
+
+  // モバイル判定
+  if (/iphone|ipad|ipod|android/i.test(navigator.userAgent)) {
+    location.href = lineAppUrl;
+  } else {
+    window.open(lineWebUrl, "_blank", "noopener");
+  }
 });
 on(shareIgBtn, "click", () => {
-  alert(
-    "結果をスクリーンショットして、Instagramストーリーで共有してください。"
-  );
+  const canvas = generateInstagramImage();
+  if (!canvas) return;
+
+  const isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    canvas.toBlob(blob => {
+      const file = new File([blob], "typing_result.png", {
+        type: "image/png"
+      });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({
+          files: [file],
+          title: "Typing Result"
+        });
+      } else {
+        downloadCanvas(canvas);
+        alert("画像を保存後、Instagramストーリーで共有してください。");
+      }
+    });
+  } else {
+    // PC：ダウンロード
+    downloadCanvas(canvas);
+  }
 });
+
 
 
 
@@ -870,6 +905,59 @@ function lengthLabel(v) {
   if (v === "xl") return "極長";
   return "-";
 }
+
+/* =========================
+   Instagram 共有用 画像生成
+   ========================= */
+
+function generateInstagramImage() {
+  const r = State.lastResult;
+  if (!r) return null;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 1080;
+  canvas.height = 1920;
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "#111";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#fff";
+  ctx.textAlign = "center";
+
+  ctx.font = "bold 64px system-ui";
+  ctx.fillText("Typing Result", 540, 260);
+
+  ctx.font = "bold 200px system-ui";
+  ctx.fillText(r.cpm, 540, 540);
+
+  ctx.font = "48px system-ui";
+  ctx.fillText("CPM", 540, 620);
+
+  ctx.font = "52px system-ui";
+  ctx.fillText(`RANK ${r.rank}`, 540, 760);
+  ctx.fillText(`難度 ${diffLabel(r.difficulty)}`, 540, 840);
+
+  if (r.category) {
+    ctx.font = "44px system-ui";
+    ctx.fillText(`${r.category} / ${r.theme}`, 540, 940);
+  }
+
+  ctx.font = "36px system-ui";
+  ctx.fillStyle = "#aaa";
+  ctx.fillText("漢字変換(IME)込み 日本語タイピングゲーム", 540, 1700);
+
+  return canvas;
+}
+
+function downloadCanvas(canvas) {
+  const a = document.createElement("a");
+  a.download = "typing_result.png";
+  a.href = canvas.toDataURL("image/png");
+  a.click();
+}
+
+
 
 /* =========================================================
    文章解析ユーティリティ（難易度・文章長 自動判定）
@@ -2931,6 +3019,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
