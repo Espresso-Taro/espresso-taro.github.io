@@ -847,31 +847,31 @@ function lengthLabel(v) {
    ========================= */
 
 function generateQrCanvas(text, size = 240) {
-  const qrCanvas = document.createElement("canvas");
-  qrCanvas.width = size;
-  qrCanvas.height = size;
-  const ctx = qrCanvas.getContext("2d");
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
 
-  // qrcode-generator（CDN）の正しい呼び出し
+  // qrcode-generator（CDN）
   const qr = window.qrcode(0, "L");
   qr.addData(text);
   qr.make();
 
-  const cellCount = qr.getModuleCount();
-  const cellSize = size / cellCount;
+  const count = qr.getModuleCount();
+  const cellSize = size / count;
 
-  // 背景（白）
+  // 背景
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, size, size);
 
-  // QRドット
+  // QR描画
   ctx.fillStyle = "#000";
-  for (let row = 0; row < cellCount; row++) {
-    for (let col = 0; col < cellCount; col++) {
-      if (qr.isDark(row, col)) {
+  for (let r = 0; r < count; r++) {
+    for (let c = 0; c < count; c++) {
+      if (qr.isDark(r, c)) {
         ctx.fillRect(
-          Math.floor(col * cellSize),
-          Math.floor(row * cellSize),
+          Math.floor(c * cellSize),
+          Math.floor(r * cellSize),
           Math.ceil(cellSize),
           Math.ceil(cellSize)
         );
@@ -879,7 +879,7 @@ function generateQrCanvas(text, size = 240) {
     }
   }
 
-  return qrCanvas;
+  return canvas;
 }
 
 
@@ -896,72 +896,44 @@ function generateInstagramImage() {
   canvas.height = 1920;
   const ctx = canvas.getContext("2d");
 
-  /*背景*/
+  /* 背景 */
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.textAlign = "center";
   ctx.fillStyle = "#fff";
 
-  /*タイトル*/
+  /* タイトル */
   ctx.font = "bold 64px system-ui, -apple-system, sans-serif";
   ctx.fillText("Typing Result", 540, 260);
 
-  /*CPM（最重要）*/
+  /* CPM */
   ctx.font = "bold 200px system-ui, -apple-system, sans-serif";
   ctx.fillText(r.cpm, 540, 560);
 
   ctx.font = "48px system-ui, -apple-system, sans-serif";
   ctx.fillText("CPM", 540, 640);
 
-  /*評価情報*/
+  /* 評価 */
   ctx.font = "52px system-ui, -apple-system, sans-serif";
   ctx.fillText(`RANK ${r.rank}`, 540, 780);
   ctx.fillText(`難度 ${diffLabel(r.difficulty)}`, 540, 860);
 
-  /*カテゴリ / テーマ*/
+  /* カテゴリ / テーマ */
   if (r.category || r.theme) {
     ctx.font = "44px system-ui, -apple-system, sans-serif";
-    const catText = [r.category, r.theme].filter(Boolean).join(" / ");
-    ctx.fillText(catText, 540, 960);
+    ctx.fillText(
+      [r.category, r.theme].filter(Boolean).join(" / "),
+      540,
+      960
+    );
   }
 
-  /*QRコード生成*/
+  /* QRコード */
   const qrSize = 260;
-  const qrCanvas = document.createElement("canvas");
-  qrCanvas.width = qrSize;
-  qrCanvas.height = qrSize;
-  const qrCtx = qrCanvas.getContext("2d");
+  const qrCanvas = generateQrCanvas(shareUrl(), qrSize);
 
-  const qrCanvas = generateQrCanvas(shareUrl(), 260);
-  ctx.drawImage(
-    qrCanvas,
-    canvas.width / 2 - 130,
-    1280
-  );
-
-  const count = qr.getModuleCount();
-  const cellSize = qrSize / count;
-
-  qrCtx.fillStyle = "#fff";
-  qrCtx.fillRect(0, 0, qrSize, qrSize);
-
-  qrCtx.fillStyle = "#000";
-  for (let row = 0; row < count; row++) {
-    for (let col = 0; col < count; col++) {
-      if (qr.isDark(row, col)) {
-        qrCtx.fillRect(
-          col * cellSize,
-          row * cellSize,
-          Math.ceil(cellSize),
-          Math.ceil(cellSize)
-        );
-      }
-    }
-  }
-
-  /*QRコード配置*/
-  const qrX = 540 - qrSize / 2;
+  const qrX = canvas.width / 2 - qrSize / 2;
   const qrY = 1280;
   ctx.drawImage(qrCanvas, qrX, qrY);
 
@@ -969,7 +941,7 @@ function generateInstagramImage() {
   ctx.fillStyle = "#aaa";
   ctx.fillText("Play here", 540, qrY + qrSize + 48);
 
-  /*フッター*/
+  /* フッター */
   ctx.font = "32px system-ui, -apple-system, sans-serif";
   ctx.fillStyle = "#888";
   ctx.fillText(
@@ -981,6 +953,10 @@ function generateInstagramImage() {
   return canvas;
 }
 
+
+/* =========================
+   PNG保存
+   ========================= */
 
 function downloadCanvas(canvas) {
   const a = document.createElement("a");
@@ -3121,6 +3097,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
