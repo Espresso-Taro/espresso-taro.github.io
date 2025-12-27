@@ -2825,25 +2825,34 @@ function handleInstagramShare() {
   const isIOS = /iphone|ipad|ipod/.test(ua);
   const isAndroid = /android/.test(ua);
 
+  // ガイド文（端末別に少しだけ変える）
+  let message =
+    "これから結果画像を保存します。\n\n" +
+    "保存後、Instagramを開いてストーリーまたは投稿で共有してください。";
+
+  if (isAndroid) {
+    message =
+      "これから結果画像を保存します。\n\n" +
+      "保存後、Instagramを開いて\n" +
+      "「ギャラリーから選択」して共有してください。";
+  }
+
   if (isIOS) {
-    downloadCanvas(canvas);
-    alert("画像を保存しました。Instagramでストーリー共有してください。");
-    return;
+    message =
+      "これから結果画像を保存します。\n\n" +
+      "保存後、Instagramを開いて\n" +
+      "ストーリーで共有してください。";
   }
 
-  if (isAndroid && navigator.share) {
-    try {
-      const file = dataURLtoFile(canvas.toDataURL(), "result.png");
-      navigator.share({ files: [file] }).catch(() => downloadCanvas(canvas));
-      return;
-    } catch {
-      downloadCanvas(canvas);
-      return;
-    }
-  }
+  // ★ 必ずユーザーに確認
+  const ok = confirm(message);
 
+  if (!ok) return;
+
+  // ★ 了承後に保存
   downloadCanvas(canvas);
 }
+
 function handleShare(type) {
   if (type === "x") handleXShare();
   if (type === "line") handleLineShare();
@@ -3097,6 +3106,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
