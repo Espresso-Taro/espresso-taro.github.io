@@ -143,104 +143,6 @@ function bindToggle(btnId, panelId) {
 /* =========================================================
    DOM refs
 ========================================================= */
-//SNS共有用
-const shareXBtn    = document.querySelector(".shareX");
-const shareLineBtn = document.querySelector(".shareLine");
-const shareIgBtn   = document.querySelector(".shareIg");
-on(shareXBtn, "click", () => {
-  const text = encodeURIComponent(buildShareText());
-  const url  = encodeURIComponent(shareUrl());
-
-  const intent =
-    `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
-
-  window.open(intent, "_blank", "noopener");
-});
-on(shareLineBtn, "click", () => {
-  const text = buildShareText();
-  const url  = shareUrl();
-
-  const message = encodeURIComponent(`${text}\n${url}`);
-
-  // スマホは LINE アプリを直接起動
-  const lineAppUrl = `line://msg/text/${message}`;
-
-  // PC fallback
-  const lineWebUrl =
-    `https://social-plugins.line.me/lineit/share?text=${message}`;
-
-  // モバイル判定
-  if (/iphone|ipad|ipod|android/i.test(navigator.userAgent)) {
-    location.href = lineAppUrl;
-  } else {
-    window.open(lineWebUrl, "_blank", "noopener");
-  }
-});
-on(shareIgBtn, "click", () => {
-  const canvas = generateInstagramImage();
-  if (!canvas) return;
-
-  const ua = navigator.userAgent.toLowerCase();
-  const isAndroid = /android/.test(ua);
-  const isIOS = /iphone|ipad|ipod/.test(ua);
-
-  // =========================
-  // iPhone / iOS
-  // =========================
-  if (isIOS) {
-    downloadCanvas(canvas);
-    alert(
-      "画像を保存しました。\nInstagramを開いてストーリーで共有してください。"
-    );
-    return;
-  }
-
-  // =========================
-  // Android
-  // =========================
-  if (isAndroid && navigator.share) {
-    try {
-      const dataUrl = canvas.toDataURL("image/png");
-
-      fetch(dataUrl)
-        .then(res => res.blob())
-        .then(blob => {
-          const file = new File([blob], "typing_result.png", {
-            type: "image/png"
-          });
-
-          navigator.share({
-            files: [file],
-            title: "Typing Result"
-          }).catch(() => {
-            downloadCanvas(canvas);
-            alert(
-              "画像を保存しました。\nInstagramを開いてストーリーで共有してください。"
-            );
-          });
-        });
-
-      return;
-    } catch (e) {
-      downloadCanvas(canvas);
-      alert(
-        "画像を保存しました。\nInstagramを開いてストーリーで共有してください。"
-      );
-      return;
-    }
-  }
-
-  // =========================
-  // PC / その他
-  // =========================
-  downloadCanvas(canvas);
-});
-
-
-
-
-
-
 // header/status
 const authBadge = $("authBadge");
 const metaInfoEl = $("metaInfo");
@@ -1252,7 +1154,11 @@ const RANK_IMAGES = {
 function showModal() {
   if (!modalBackdrop) return;
   modalBackdrop.classList.add("open");
+
+  // ★ ここで共有ボタンのイベントを登録
+  bindShareButtons();
 }
+
 
 function hideModal() {
   if (!modalBackdrop) return;
@@ -1617,6 +1523,31 @@ function stableIndex(seed, mod) {
   }
   return (h >>> 0) % mod;
 }
+
+/* =========================================================
+   SNS共有ボタン
+========================================================= */
+function bindShareButtons() {
+  const xBtn  = document.querySelector(".shareX");
+  const lBtn  = document.querySelector(".shareLine");
+  const igBtn = document.querySelector(".shareIg");
+
+  if (xBtn && !xBtn.dataset.bound) {
+    xBtn.dataset.bound = "1";
+    xBtn.addEventListener("click", handleXShare);
+  }
+
+  if (lBtn && !lBtn.dataset.bound) {
+    lBtn.dataset.bound = "1";
+    lBtn.addEventListener("click", handleLineShare);
+  }
+
+  if (igBtn && !igBtn.dataset.bound) {
+    igBtn.dataset.bound = "1";
+    igBtn.addEventListener("click", handleInstagramShare);
+  }
+}
+
 
 /* =========================================================
    pool / pick / set item
@@ -2906,6 +2837,72 @@ function shareUrl() {
   return location.origin + location.pathname;
 }
 
+function handleXShare() {
+  const text = encodeURIComponent(buildShareText());
+  const url  = encodeURIComponent(shareUrl());
+  window.open(
+    `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+    "_blank",
+    "noopener"
+  );
+}
+function handleLineShare() {
+  const msg = encodeURIComponent(`${buildShareText()}\n${shareUrl()}`);
+  const isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    location.href = `line://msg/text/${msg}`;
+  } else {
+    window.open(
+      `https://social-plugins.line.me/lineit/share?text=${msg}`,
+      "_blank",
+      "noopener"
+    );
+  }
+}
+function handleInstagramShare() {
+  const canvas = generateInstagramImage();
+  if (!canvas) return;
+
+  const ua = navigator.userAgent.toLowerCase();
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isAndroid = /android/.test(ua);
+
+  if (isIOS) {
+    downloadCanvas(canvas);
+    alert("画像を保存しました。Instagramでストーリー共有してください。");
+    return;
+  }
+
+  if (isAndroid && navigator.share) {
+    try {
+      const file = dataURLtoFile(canvas.toDataURL(), "result.png");
+      navigator.share({ files: [file] }).catch(() => downloadCanvas(canvas));
+      return;
+    } catch {
+      downloadCanvas(canvas);
+      return;
+    }
+  }
+
+  downloadCanvas(canvas);
+}
+function handleShare(type) {
+  if (type === "x") handleXShare();
+  if (type === "line") handleLineShare();
+  if (type === "instagram") handleInstagramShare();
+}
+function bindShareButtons() {
+  document.querySelectorAll(".shareBtn").forEach(btn => {
+    if (btn.dataset.bound) return;
+    btn.dataset.bound = "1";
+
+    const type = btn.dataset.share;
+    btn.addEventListener("click", () => handleShare(type));
+  });
+}
+
+
 /* =========================================================
    TypingEngine instance (must be after DOM refs)
 ========================================================= */
@@ -3143,6 +3140,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
