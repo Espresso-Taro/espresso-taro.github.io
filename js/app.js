@@ -2817,36 +2817,18 @@ function handleLineShare() {
     );
   }
 }
+
 function handleInstagramShare() {
   const canvas = generateInstagramImage();
   if (!canvas) return;
 
-  const ua = navigator.userAgent.toLowerCase();
-  const isIOS = /iphone|ipad|ipod/.test(ua);
-  const isAndroid = /android/.test(ua);
-
-  // ガイド文（端末別に少しだけ変える）
-  let message =
+  const message =
     "これから結果画像を保存します。\n\n" +
-    "保存後、Instagramを開いてストーリーまたは投稿で共有してください。";
+    "保存後、Instagramを開いて\n" +
+    "ストーリーまたは投稿で共有してください。";
 
-  if (isAndroid) {
-    message =
-      "これから結果画像を保存します。\n\n" +
-      "保存後、Instagramを開いて\n" +
-      "「ギャラリーから選択」して共有してください。";
-  }
-
-  if (isIOS) {
-    message =
-      "これから結果画像を保存します。\n\n" +
-      "保存後、Instagramを開いて\n" +
-      "ストーリーで共有してください。";
-  }
-
-  // ★ 必ずユーザーに確認
+  // ★ 必ず事前にガイドを表示
   const ok = confirm(message);
-
   if (!ok) return;
 
   // ★ 了承後に保存
@@ -3106,6 +3088,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
