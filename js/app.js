@@ -1525,31 +1525,6 @@ function stableIndex(seed, mod) {
 }
 
 /* =========================================================
-   SNS共有ボタン
-========================================================= */
-function bindShareButtons() {
-  const xBtn  = document.querySelector(".shareX");
-  const lBtn  = document.querySelector(".shareLine");
-  const igBtn = document.querySelector(".shareIg");
-
-  if (xBtn && !xBtn.dataset.bound) {
-    xBtn.dataset.bound = "1";
-    xBtn.addEventListener("click", handleXShare);
-  }
-
-  if (lBtn && !lBtn.dataset.bound) {
-    lBtn.dataset.bound = "1";
-    lBtn.addEventListener("click", handleLineShare);
-  }
-
-  if (igBtn && !igBtn.dataset.bound) {
-    igBtn.dataset.bound = "1";
-    igBtn.addEventListener("click", handleInstagramShare);
-  }
-}
-
-
-/* =========================================================
    pool / pick / set item
 ========================================================= */
 function buildPool() {
@@ -3140,6 +3115,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
