@@ -10,6 +10,22 @@
     <priority>1.0</priority>
   </url>
 
+  <!-- タイピング上達のコツ（実践） -->
+  <url>
+    <loc>https://espresso-taro.github.io/tips.html</loc>
+    <lastmod>2025-12-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- なぜ今タイピングが速い必要があるのか（思想・動機） -->
+  <url>
+    <loc>https://espresso-taro.github.io/why-typing.html</loc>
+    <lastmod>2025-12-26</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- IME解説 -->
   <url>
     <loc>https://espresso-taro.github.io/ime/what-is-ime.html</loc>
@@ -43,6 +59,3 @@
   </url>
 
 </urlset>
-
-
-
