@@ -582,11 +582,6 @@ async function submitScoreDoc({
     // ② ★追加：無料枠版リーダーボード更新（Functionsの代わり）
     await updateLeaderboardsFromScore(db, scoreData);
 
-    console.log("updateLeaderboardsFromScore start", scoreData);
-    await updateLeaderboardsFromScore(db, scoreData);
-    console.log("updateLeaderboardsFromScore done");
-
-
   } catch (e) {
     console.error("submitScoreDoc failed:", e);
   }
@@ -1036,11 +1031,17 @@ async function updateOneLeaderboard(db, scopeId, meta, entry) {
     const board = snap.exists() ? snap.data() : null;
     const top = Array.isArray(board?.top) ? board.top : [];
 
-    // personalId 重複を潰す
+    // 既存（同じ personalId）があれば、それより低いスコアでは更新しない
+    const existing = top.find(x => x.personalId === entry.personalId);
+    if (existing && Number(existing.cpm || 0) >= Number(entry.cpm || 0)) {
+      return; // ★最高スコア保持
+    }
+
+    // personalId 重複排除して差し替え
     const filtered = top.filter(x => x.personalId !== entry.personalId);
     filtered.push(entry);
 
-    // cpm desc で上位10
+    // cpm desc 上位10
     filtered.sort((a, b) => Number(b.cpm || 0) - Number(a.cpm || 0));
     const newTop = filtered.slice(0, 10);
 
@@ -1048,10 +1049,11 @@ async function updateOneLeaderboard(db, scopeId, meta, entry) {
       ...meta,
       scopeId,
       top: newTop,
-      updatedAt: new Date()
+      updatedAt: serverTimestamp()
     }, { merge: true });
   });
 }
+
 
 
 /* =========================================================
@@ -3133,6 +3135,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
