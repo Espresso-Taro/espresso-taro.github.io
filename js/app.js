@@ -27,6 +27,10 @@ import { rankByCPM, rankIndex } from "./rankUtil.js";
 /* =========================================================
    ユーティリティ関数
 ========================================================= */
+// personalId -> userName のメモリキャッシュ
+const _userNameCache = new Map(); // key: personalId, value: string
+
+
 function runAfterWindowLoad(fn) {
   if (document.readyState === "complete") {
     // すでに load 済み
@@ -607,58 +611,27 @@ function bindUserSwitchHooks() {
 async function resolveUserName(db, personalId) {
   if (!personalId) return "(unknown)";
 
+  // 1) キャッシュがあれば read 0
+  const cached = _userNameCache.get(personalId);
+  if (cached) return cached;
+
+  // 2) userProfiles から1回だけ取得
   try {
+    const { doc, getDoc } =
+      await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
     const snap = await getDoc(doc(db, "userProfiles", personalId));
-    if (snap.exists()) {
-      return snap.data().userName || "(unknown)";
-    }
-  } catch {}
+    const name =
+      (snap.exists() && (snap.data().name || snap.data().userName)) ? (snap.data().name || snap.data().userName) : "(unknown)";
 
-  return "(unknown)";
-}
-
-async function buildUserNameMapFromScores(db, rows) {
-  const map = new Map();
-
-  const safeRows = Array.isArray(rows) ? rows : [];
-  const personalIds = [...new Set(
-    safeRows.map(r => r?.personalId).filter(Boolean)
-  )];
-
-  for (const pid of personalIds) {
-    try {
-      const snap = await getDoc(doc(db, "userProfiles", pid));
-      if (snap.exists()) {
-        const data = snap.data();
-        if (data.userName) {
-          map.set(pid, data.userName);
-        }
-      }
-    } catch (e) {
-      // 読めないユーザーはスキップ（Rules上あり得る）
-    }
+    _userNameCache.set(personalId, name);
+    return name;
+  } catch (e) {
+    console.error("resolveUserName failed:", e);
+    return "(unknown)";
   }
-
-  return map;
 }
 
-async function filterRowsByExistingUsers(db, rows) {
-  if (!Array.isArray(rows) || rows.length === 0) return [];
-
-  const ids = [...new Set(rows.map(r => r.personalId).filter(Boolean))];
-  const alive = new Set();
-
-  for (const pid of ids) {
-    try {
-      const snap = await getDoc(doc(db, "userProfiles", pid));
-      if (snap.exists()) alive.add(pid);
-    } catch {
-      // 読めないものは除外
-    }
-  }
-
-  return rows.filter(r => alive.has(r.personalId));
-}
 
 // =========================================================
 // スクロールバー幅を測定して CSS 変数 --sbw に入れる
@@ -1730,39 +1703,6 @@ function setModalMetrics({
 
 
 /* =========================================================
-   Ranking fetch (group ranking needs custom fetch)
-========================================================= */
-async function fetchScoresGroup({ groupId, difficulty, maxFetch = 800 }) {
-  if (!groupId) return [];
-
-  const colRef = collection(db, "scores");
-  const filters = [
-    where("groupId", "==", groupId)
-  ];
-  if (difficulty) filters.push(where("difficulty", "==", difficulty));
-
-  const q = query(colRef, ...filters, limit(maxFetch));
-  const snap = await getDocs(q);
-  return snap.docs.map(d => d.data());
-}
-
-function sortAndTop10(rows) {
-  const best = new Map(); // personalId -> best row
-  for (const r of rows) {
-    const pid = r.personalId;
-    if (!pid) continue;
-    const prev = best.get(pid);
-    if (!prev || Number(r.cpm ?? 0) > Number(prev.cpm ?? 0)) {
-      best.set(pid, r);
-    }
-  }
-  return Array.from(best.values())
-    .sort((a, b) => Number(b.cpm ?? 0) - Number(a.cpm ?? 0))
-    .slice(0, 10);
-}
-
-
-/* =========================================================
    Ranking loaders
 ========================================================= */
 async function loadDailyRanking() {
@@ -1784,12 +1724,10 @@ async function loadDailyRanking() {
       difficulty: diff
     });
 
-    const userNameMap = await buildUserNameMapFromScores(db, rows);
-
     getRankingService().renderList(dailyRankingUL, rows, {
-      highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
-      userNameMap
+      highlightPersonalId: getUserManager().getCurrentPersonalId() || null
     });
+
 
     return rows;
   } catch (e) {
@@ -1812,12 +1750,10 @@ async function loadOverallRanking() {
       difficulty: State.activeRankDiff
     });
 
-    const userNameMap = await buildUserNameMapFromScores(db, rows);
-
     getRankingService().renderList(rankingUL, rows, {
-      highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
-      userNameMap
+      highlightPersonalId: getUserManager().getCurrentPersonalId() || null
     });
+
 
     return rows;
   } catch (e) {
@@ -1844,17 +1780,13 @@ async function loadGroupRanking() {
   hide(groupRankLabel);
 
   try {
-    const rowsRaw = await fetchScoresGroup({
+    const rows = await rankingSvc.loadGroup({
       groupId: State.currentGroupId,
       difficulty: State.activeRankDiff
     });
 
-    const rows = sortAndTop10(rowsRaw);
-    const userNameMap = await buildUserNameMapFromScores(db, rows);
-
-    getRankingService().renderList(groupRankingUL, rows, {
-      highlightPersonalId: getUserManager().getCurrentPersonalId() || null,
-      userNameMap
+    rankingSvc.renderList(groupRankingUL, rows, {
+      highlightPersonalId: getUserManager().getCurrentPersonalId() || null
     });
 
     return rows;
@@ -1864,7 +1796,6 @@ async function loadGroupRanking() {
     return [];
   }
 }
-
 
 async function reloadAllRankings() {
   await loadOverallRanking();
