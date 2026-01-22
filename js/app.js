@@ -6,6 +6,7 @@ import {
   addDoc,
   getDocs,
   getDoc,
+  orderBy,
   doc,
   query,
   where,
@@ -584,6 +585,31 @@ async function submitScoreDoc({
   } catch (e) {
     console.error("submitScoreDoc failed:", e);
   }
+}
+
+async function backfillLeaderboards({ maxDocs = 5000 } = {}) {
+  ensureFirebaseReady();
+
+  // scores を新しい順に取得（必要なら条件で絞る）
+  const q = query(
+    collection(db, "scores"),
+    orderBy("createdAt", "desc"),
+    limit(maxDocs)
+  );
+
+  const snap = await getDocs(q);
+  console.log("backfill scores:", snap.size);
+
+  // 1件ずつ leaderboards を更新（まずは確実に動く形）
+  let i = 0;
+  for (const docSnap of snap.docs) {
+    const s = docSnap.data();
+    await updateLeaderboardsFromScore(db, s);
+    i++;
+    if (i % 100 === 0) console.log("backfill progress:", i);
+  }
+
+  console.log("backfill done:", i);
 }
 
 
