@@ -10,7 +10,8 @@ import {
   query,
   where,
   limit,
-  serverTimestamp
+  serverTimestamp,
+  runTransaction,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import {
   getAuth,
@@ -541,7 +542,6 @@ async function submitScoreDoc({
   uid,
   userName,
   cpm,
-  rank,
   timeSec,
   difficulty,
   lengthGroup,
@@ -555,28 +555,37 @@ async function submitScoreDoc({
 }) {
   if (!personalId || !uid) return;
 
+  // ★ addDoc に渡すデータを変数化
+  const scoreData = {
+    personalId,          // 主キー
+    uid,
+    userName,            // 表示用
+    cpm,
+    timeSec,
+    difficulty,          // "easy"/"normal"/"hard"
+    lengthGroup,
+    category,
+    theme,
+    dateKey,
+    isDailyTask: !!isDailyTask,
+    dailyTaskKey: dailyTaskKey || null,
+    dailyTaskName: dailyTaskName || null,
+    groupId: groupId || null,
+    createdAt: serverTimestamp()
+  };
+
   try {
-    await addDoc(collection(db, "scores"), {
-      personalId,          // ★追加（主キー）
-      uid,
-      userName,            // 表示用
-      cpm,
-      timeSec,
-      difficulty,
-      lengthGroup,
-      category,
-      theme,
-      dateKey,
-      isDailyTask: !!isDailyTask,
-      dailyTaskKey: dailyTaskKey || null,
-      dailyTaskName: dailyTaskName || null,
-      groupId: groupId || null,
-      createdAt: serverTimestamp()
-    });
+    // ① scores に保存（今まで通り）
+    await addDoc(collection(db, "scores"), scoreData);
+
+    // ② ★追加：無料枠版リーダーボード更新（Functionsの代わり）
+    await updateLeaderboardsFromScore(db, scoreData);
+
   } catch (e) {
     console.error("submitScoreDoc failed:", e);
   }
 }
+
 
 function bindUserSwitchHooks() {
   getUserManager().onUserChanged(async () => {
@@ -938,6 +947,79 @@ function downloadCanvas(canvas) {
   a.click();
 }
 
+async function updateLeaderboardsFromScore(db, score) {
+  const scopes = [];
+
+  const diff = score.difficulty || "normal";
+  const entry = {
+    personalId: score.personalId,
+    userName: score.userName || "(unknown)",
+    cpm: Number(score.cpm || 0),
+    timeSec: Number(score.timeSec || 0),
+    uid: score.uid || null,
+    createdAt: new Date()
+  };
+
+  // overall
+  scopes.push({
+    scopeId: `overall_${diff}`,
+    meta: { scopeType: "overall", difficulty: diff }
+  });
+
+  // daily
+  if (score.isDailyTask && score.dateKey && score.dailyTaskKey) {
+    scopes.push({
+      scopeId: `daily_${score.dateKey}_${diff}_${score.dailyTaskKey}`,
+      meta: {
+        scopeType: "daily",
+        difficulty: diff,
+        dateKey: score.dateKey,
+        dailyTaskKey: score.dailyTaskKey
+      }
+    });
+  }
+
+  // group
+  if (score.groupId) {
+    scopes.push({
+      scopeId: `group_${score.groupId}_${diff}`,
+      meta: {
+        scopeType: "group",
+        difficulty: diff,
+        groupId: score.groupId
+      }
+    });
+  }
+
+  for (const s of scopes) {
+    await updateOneLeaderboard(db, s.scopeId, s.meta, entry);
+  }
+}
+
+async function updateOneLeaderboard(db, scopeId, meta, entry) {
+  const boardRef = doc(db, "leaderboards", scopeId);
+
+  await runTransaction(db, async (tx) => {
+    const snap = await tx.get(boardRef);
+    const board = snap.exists() ? snap.data() : null;
+    const top = Array.isArray(board?.top) ? board.top : [];
+
+    // personalId 重複を潰す
+    const filtered = top.filter(x => x.personalId !== entry.personalId);
+    filtered.push(entry);
+
+    // cpm desc で上位10
+    filtered.sort((a, b) => Number(b.cpm || 0) - Number(a.cpm || 0));
+    const newTop = filtered.slice(0, 10);
+
+    tx.set(boardRef, {
+      ...meta,
+      scopeId,
+      top: newTop,
+      updatedAt: new Date()
+    }, { merge: true });
+  });
+}
 
 
 /* =========================================================
