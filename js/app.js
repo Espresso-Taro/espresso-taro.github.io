@@ -612,6 +612,7 @@ async function backfillLeaderboards({ maxDocs = 5000 } = {}) {
   console.log("backfill done:", i);
 }
 
+window.backfillLeaderboards = backfillLeaderboards;
 
 function bindUserSwitchHooks() {
   getUserManager().onUserChanged(async () => {
@@ -3127,6 +3128,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
