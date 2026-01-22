@@ -582,6 +582,11 @@ async function submitScoreDoc({
     // ② ★追加：無料枠版リーダーボード更新（Functionsの代わり）
     await updateLeaderboardsFromScore(db, scoreData);
 
+    console.log("updateLeaderboardsFromScore start", scoreData);
+    await updateLeaderboardsFromScore(db, scoreData);
+    console.log("updateLeaderboardsFromScore done");
+
+
   } catch (e) {
     console.error("submitScoreDoc failed:", e);
   }
@@ -3128,6 +3133,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
