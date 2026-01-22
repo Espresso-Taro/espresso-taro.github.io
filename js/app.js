@@ -587,7 +587,7 @@ async function submitScoreDoc({
   }
 }
 
-async function backfillLeaderboards({ maxDocs = 5000 } = {}) {
+async function backfillLeaderboards({ maxDocs = 30000 } = {}) {
   ensureFirebaseReady();
 
   // scores を新しい順に取得（必要なら条件で絞る）
@@ -3128,6 +3128,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
