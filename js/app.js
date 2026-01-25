@@ -697,6 +697,9 @@ async function resolveUserName(db, personalId) {
 //let touchActive = false;
 //const SWIPE_THRESHOLD = 10;
 
+// ===== metaの後勝ちガード（見本文が消える対策）=====
+let _metaSeq = 0;
+
 /* =========================================================
    State
 ========================================================= */
@@ -1287,6 +1290,7 @@ async function loadTriviaFastFirst() {
       await loadTriviaAll();
       initFilterOptions();
       buildPool();
+      updateMetaInfo();   // ★ 追加：select再生成後に必ず見本文を描き直す
     });
   });
 
@@ -1683,13 +1687,14 @@ function setCurrentItem(item, { daily = false } = {}) {
 function updateMetaInfo() {
   if (!metaInfoEl) return;
 
+  const seq = ++_metaSeq;
+
   const daily = State.daily.enabled;
   const diff = daily ? State.daily.diff : getPracticeDifficulty();
-  const lg = daily ? State.daily.lengthGroup : getPracticeLengthGroup();
+  const lg   = daily ? State.daily.lengthGroup : getPracticeLengthGroup();
 
   const selectedCategory = getPracticeCategory();
   const selectedTheme = getPracticeTheme();
-
   const item = State.currentItem;
 
   const parts = [];
@@ -1697,14 +1702,14 @@ function updateMetaInfo() {
   parts.push(`${lengthLabel(lg)}`);
   if (daily) parts.push("今日の課題：ON");
 
-  // ★ カテゴリ表示
+  // カテゴリ表示
   if (selectedCategory !== "all") {
     parts.push(`カテゴリ：${selectedCategory}`);
   } else if (item?.category && item.category !== "all") {
     parts.push(`カテゴリ：${item.category}`);
   }
 
-  // ★ テーマ表示
+  // テーマ表示
   if (selectedTheme !== "all") {
     parts.push(`テーマ：${selectedTheme}`);
   } else if (item?.theme && item.theme !== "all") {
@@ -1712,10 +1717,19 @@ function updateMetaInfo() {
   }
 
   const metaValueEl = document.getElementById("metaInfoValue");
-  if (metaValueEl) {
-    metaValueEl.textContent = parts.join(" / ");
-  }
+  if (!metaValueEl) return;
+
+  const text = parts.join(" / ");
+
+  // ★ 空文字で上書きしない（見本文が消える主因を潰す）
+  if (!text.trim()) return;
+
+  // ★ 古い呼び出し（非同期由来）で後から上書きしない
+  if (seq !== _metaSeq) return;
+
+  metaValueEl.textContent = text;
 }
+
 
 
 function showNoItemMessage(diff, lg, category, theme) {
@@ -3135,6 +3149,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
