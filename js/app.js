@@ -1290,9 +1290,18 @@ async function loadTriviaFastFirst() {
   runAfterWindowLoad(() => {
     runWhenIdle(async () => {
       await loadTriviaAll();
+      
+      // ★ いまユーザーが選んでいる値を退避
+      const snap = collectCurrentPrefs();
+      
       initFilterOptions();
+      
+      // ★ initFilterOptions が普/中に戻すので、退避値で復元
+      applyPrefsToUI(snap);
+      
       buildPool();
-      updateMetaInfo();   // ★ 追加：select再生成後に必ず見本文を描き直す
+      updateMetaInfo(); // 見本文再描画
+
     });
   });
 
@@ -1341,7 +1350,7 @@ function initFilterOptions() {
   if (difficultyEl) {
     difficultyEl.innerHTML = `
       <option value="easy">難度：易</option>
-      <option value="normal" selected>難度：普</option>
+      <option value="normal">難度：普</option>
       <option value="hard">難度：難</option>
     `;
   }
@@ -1351,7 +1360,7 @@ function initFilterOptions() {
     lengthGroupEl.innerHTML = `
       <option value="xs">長さ：極短</option>
       <option value="short">長さ：短</option>
-      <option value="medium" selected>長さ：中</option>
+      <option value="medium">長さ：中</option>
       <option value="long">長さ：長</option>
       <option value="xl">長さ：極長</option>
     `;
@@ -3151,6 +3160,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
