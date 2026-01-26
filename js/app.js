@@ -1748,9 +1748,9 @@ function showNoItemMessage(diff, lg, category, theme) {
     startBtn.disabled = true;
   }
 
-  if (metaValueEl) {
-    metaValueEl.textContent =
-      `難度：${diffLabel(diff)} / 長さ：${lengthLabel(lg)} / ※該当文章なし`;
+  const el = metaValueEl || document.getElementById("metaInfoValue");
+  if (el) {
+    el.textContent = `難度：${diffLabel(diff)} / 長さ：${lengthLabel(lg)} / ※該当文章なし`;
   }
 }
 
@@ -3151,6 +3151,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
