@@ -152,6 +152,8 @@ function bindToggle(btnId, panelId) {
 // header/status
 const authBadge = $("authBadge");
 const metaInfoEl = $("metaInfo");
+const metaValueEl = $("metaInfoValue");
+
 
 // ★ 追加
 const topTabsEl = $("topTabs");
@@ -3149,6 +3151,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
