@@ -1658,7 +1658,6 @@ function pickRandomDifferentText() {
 }
 
 function setCurrentItem(item, { daily = false } = {}) {
-  // ★ 文章切り替え前に必ずリセット
   resetTypingUI();
   resetElapsedTimeDisplay();
 
@@ -1667,29 +1666,34 @@ function setCurrentItem(item, { daily = false } = {}) {
   const text = item?.text ?? "";
   if (textEl) textEl.textContent = text;
 
-    // ★ 追加
+  const uiLg = getPracticeLengthGroup();
+  const uiDiff = getPracticeDifficulty();
+
   const lg = daily
     ? State.daily.lengthGroup
-    : getPracticeLengthGroup();
+    : (uiLg || item?.lengthGroup || "medium");
 
-  applyFontSizeByLength(lg);
+  const diff = daily
+    ? State.daily.diff
+    : (uiDiff || item?.difficulty || "normal");
+
+  applyFontSizeByLength(lg); // ★lgが必ず入る
 
   engine.setTarget(text, {
     daily,
     dateKey: todayKey(),
     dailyTaskKey: daily ? State.daily.dailyTaskKey : null,
-    difficulty: daily ? State.daily.diff : getPracticeDifficulty(),
-    lengthGroup: daily ? State.daily.lengthGroup : getPracticeLengthGroup(),
-    category: item?.category ?? getPracticeCategory(), // ★ 実カテゴリ優先
-    theme: item?.theme ?? getPracticeTheme(),   // ★ 実文章のテーマを優先
+    difficulty: diff,
+    lengthGroup: lg,
+    category: item?.category ?? getPracticeCategory(),
+    theme: item?.theme ?? getPracticeTheme(),
     groupId: State.currentGroupId || null
   });
 
   engine.enableReadyState();
-
-    // ★ これを追加
   armStartOnFirstType();
 }
+
 
 
 /* =========================================================
@@ -1757,9 +1761,10 @@ function showNoItemMessage(diff, lg, category, theme) {
     startBtn.disabled = true;
   }
 
-  const el = metaValueEl || document.getElementById("metaInfoValue");
-  if (el) {
-    el.textContent = `難度：${diffLabel(diff)} / 長さ：${lengthLabel(lg)} / ※該当文章なし`;
+  const metaValueEl = document.getElementById("metaInfoValue");
+  if (metaValueEl) {
+    metaValueEl.textContent =
+      `難度：${diffLabel(diff)} / 長さ：${lengthLabel(lg)} / ※該当文章なし`;
   }
 }
 
@@ -3043,12 +3048,9 @@ engine.attach();
    App init
 ========================================================= */
 async function initApp() {
-  loadTriviaFastFirst();
+
   initFilterOptions();
 
-  // =========================
-  // ★ UserManager に UI を注入（最重要）
-  // =========================
   const um = getUserManager();
   um.setUI({
     selectEl: document.getElementById("userSelect"),
@@ -3057,24 +3059,22 @@ async function initApp() {
     deleteBtn: document.getElementById("deleteUserBtn"),
   });
 
-  // ★ 前回の選択を復元（options 構築後じゃないと反映できない）
   {
     const personalId = um.getCurrentPersonalId();
     const prefs = loadPrefsOf(personalId);
     applyPrefsToUI(prefs);
   }
 
-  // ★ daily は「復元したチェック状態」に従う
-  if (dailyTaskEl?.checked) {
-    enableDailyTask();
-  } else {
-    disableDailyTask();
-  }
+  if (dailyTaskEl?.checked) enableDailyTask();
+  else disableDailyTask();
 
-  //buildPool();トリビアを分けたときにコメントアウトした。
-  if (!State.hasNoItem) {
-    setCurrentItem(pickRandomDifferentText(), { daily: false });
-  }
+  // ★ここで「最初の1件」を確定（selectが揃ってから）
+  await loadTriviaFastFirst();
+
+  // （必要なら）buildPool→pickRandom… はここから
+  // buildPool();
+  // if (!State.hasNoItem) setCurrentItem(pickRandomDifferentText(), { daily:false });
+
   updateMetaInfo();
   syncDailyInfoLabel();
 
@@ -3160,6 +3160,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
