@@ -526,22 +526,31 @@
     <div id="mRankUp" class="rankUpMsg" aria-live="polite" style="display:none;"></div>
     <div class="muted" id="mMeta" style="margin-top:10px;"></div>
 
-   <!-- 推奨キーボード枠（端末により1商品だけ表示） -->
-   <div id="affiliateBox" class="card" style="margin-top:16px; text-align:left; display:none;">
-     <h3 style="margin-top:0;">練習効果を“実務/外出”に寄せるおすすめ</h3>
-   
-     <p class="muted" id="affiliateLead" style="margin:6px 0 10px;"></p>
-   
-     <a id="affiliateLink"
-        href="#"
-        target="_blank"
-        rel="sponsored noopener noreferrer"
-        style="display:block;padding:12px;border-radius:10px;background:#f7f7f7;color:#111;text-decoration:none;">
-       <div id="affiliateTitle" style="font-weight:900;font-size:14px;line-height:1.4;"></div>
-       <div id="affiliateNote" class="muted" style="margin-top:6px;font-size:12px;line-height:1.6;"></div>
-       <div class="muted" style="margin-top:8px;font-size:12px;">→ Amazonで見る</div>
-     </a>
-   </div>
+<!-- 推奨キーボード枠（端末により1商品だけ表示） -->
+<div id="affiliateBox" class="card" style="margin-top:16px; text-align:left; display:none;">
+  <h3 style="margin-top:0;">練習効果を“実務/外出”に寄せるおすすめ</h3>
+
+  <p class="muted" id="affiliateLead" style="margin:6px 0 10px;"></p>
+
+  <a id="affiliateLink"
+     href="#"
+     target="_blank"
+     rel="sponsored noopener noreferrer"
+     style="display:flex; gap:12px; align-items:center;
+            padding:12px;border-radius:10px;background:#f7f7f7;color:#111;text-decoration:none;">
+    
+    <!-- 画像（imgUrl が無い場合はJSで非表示にする） -->
+    <img id="affiliateImg" src="" alt="" width="88" height="88"
+         style="flex:0 0 auto; border-radius:10px; background:#fff; object-fit:contain; display:none;" />
+
+    <div style="min-width:0;">
+      <div id="affiliateTitle" style="font-weight:900;font-size:14px;line-height:1.4;"></div>
+      <div id="affiliateNote" class="muted" style="margin-top:6px;font-size:12px;line-height:1.6;"></div>
+      <div class="muted" style="margin-top:8px;font-size:12px;">→ Amazonで見る</div>
+    </div>
+  </a>
+</div>
+
 
 
     <div class="shareArea" aria-label="結果を共有" style="margin-top:16px;">
@@ -570,6 +579,7 @@
 <script type="module" src="./js/app.js" defer></script>
 </body>
 </html>
+
 
 
 
