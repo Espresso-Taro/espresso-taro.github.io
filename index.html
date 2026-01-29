@@ -528,7 +528,10 @@
 
 <!-- 推奨キーボード枠（端末により1商品だけ表示） -->
 <div id="affiliateBox" class="card" style="margin-top:16px; text-align:left; display:none;">
-  <h3 style="margin-top:0;">練習効果を“実務/外出”に寄せるおすすめ</h3>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <h3 style="margin:0;">入力環境を整える</h3>
+    <span style="font-size:12px;padding:2px 6px;border-radius:6px;background:#eee;">PR</span>
+  </div>
 
   <p class="muted" id="affiliateLead" style="margin:6px 0 10px;"></p>
 
@@ -537,19 +540,19 @@
      target="_blank"
      rel="sponsored noopener noreferrer"
      style="display:flex; gap:12px; align-items:center;
-            padding:12px;border-radius:10px;background:#f7f7f7;color:#111;text-decoration:none;">
-    
-    <!-- 画像（imgUrl が無い場合はJSで非表示にする） -->
-    <img id="affiliateImg" src="" alt="" width="88" height="88"
-         style="flex:0 0 auto; border-radius:10px; background:#fff; object-fit:contain; display:none;" />
+            padding:12px;border-radius:12px;background:#f7f7f7;color:#111;text-decoration:none;">
+    <img id="affiliateImg" src="" alt="" width="96" height="96"
+         style="flex:0 0 auto;border-radius:12px;background:#fff;object-fit:cover;" />
 
     <div style="min-width:0;">
       <div id="affiliateTitle" style="font-weight:900;font-size:14px;line-height:1.4;"></div>
       <div id="affiliateNote" class="muted" style="margin-top:6px;font-size:12px;line-height:1.6;"></div>
-      <div class="muted" style="margin-top:8px;font-size:12px;">→ Amazonで見る</div>
+      <div class="muted" style="margin-top:6px;font-size:11px;">※私が購入した商品画像です</div>
+      <div class="muted" style="margin-top:8px;font-size:12px;">→ Amazonで商品ページを見る</div>
     </div>
   </a>
 </div>
+
 
 
 
@@ -579,6 +582,7 @@
 <script type="module" src="./js/app.js" defer></script>
 </body>
 </html>
+
 
 
 
