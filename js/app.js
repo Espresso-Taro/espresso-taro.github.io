@@ -208,6 +208,13 @@ const mCPM = $("mCPM");
 const mTimeSec = $("mTimeSec");
 const mLen = $("mLen");
 const mMeta = $("mMeta");
+// affiliate（結果モーダル内）
+const affiliateBox  = $("affiliateBox");
+const affiliateLead = $("affiliateLead");
+const affiliateLink = $("affiliateLink");
+const affiliateTitle= $("affiliateTitle");
+const affiliateNote = $("affiliateNote");
+
 
 // rankings
 const dailyRankLabel = $("dailyRankLabel");
@@ -1240,6 +1247,52 @@ function hideModal() {
   if (!modalBackdrop) return;
   modalBackdrop.classList.remove("open");
 }
+
+/* =========================================================
+   Affiliate (1 product / device)
+========================================================= */
+
+// あなたが貼ってくれたアソシエイトURL（そのまま）
+const AFF = {
+  omikamo: {
+    title: "Omikamo 折り畳み Bluetooth（JIS配列／タッチパッド付き）",
+    lead: "スマホ・タブレットでも練習を続けたい人向け。持ち運べて、外出先のスキマ時間でも“実用の入力”に寄せられます。",
+    note: "持ち運び◎／折り畳み／Bluetooth／JIS配列（日本語入力に馴染みやすい）",
+    url: "https://www.amazon.co.jp/%E3%80%90%E6%9C%80%E6%96%B0%E5%9E%8B%E3%80%91Omikamo-bluetooth-JIS%E6%A8%99%E6%BA%96%E6%97%A5%E6%9C%AC%E8%AA%9E%E9%85%8D%E5%88%97-%E3%83%9E%E3%83%AB%E3%83%81%E3%83%9A%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0-%E3%82%BF%E3%83%83%E3%83%81%E3%83%91%E3%83%83%E3%83%89%E4%BB%98%E3%81%8D/dp/B0CWKWXP37?crid=2BOK9E82V6JWP&dib=eyJ2IjoiMSJ9.HHt3TixKIIavzm0ffiJoHdseHnIQfI2Qb_4K6SZs2QJAOLLhxkGKHXyU3vZvbV8iXjZfkAyMc_oC9EVxOE94rPRdf4gYBWvnT-j3FypqMiPYj47IQcWkb6cS_TJeZFCECF3JqDIFs7a2L7I0o3mULOMkITRUyfFmHNHceNCv_J-aazYJkRxyZlsqPPnfQDIfUHEidEMUChRYbYu9Jyzb6hqYCFXOLfSH_T85NAF6Sw56pHuv7IJLZv4UeDmCyiw61Scx71vjqBnQ8t1-DqelsZEKJwBIn1Z3GU0SFKKpEsI.iAGXX4Ak018GjIzT4l4etESe8_IpzCE2UFWl29pa5UU&dib_tag=se&keywords=omikamo%2B%E3%82%AD%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89%2B%E6%8A%98%E3%82%8A%E7%95%B3%E3%81%BF&qid=1769692386&sprefix=omikamo%2Caps%2C190&sr=8-5&ufe=app_do%3Aamzn1.fos.d8e7ee72-073f-4b97-8ec0-59c18d6dfebe&th=1&linkCode=ll1&tag=espressotaro-22&linkId=f4838d030bdccfdd5ef61d61cd8ca6b7&language=ja_JP&ref_=as_li_ss_tl"
+  },
+  elecom: {
+    title: "エレコム Bluetooth フルキーボード TK-FBM120KBK/EC",
+    lead: "普段の業務用ノートPCに近い“サイズ感・配列・浅めの打鍵感”で練習したい人向け。静音なので職場/自宅でも続けやすいです。",
+    note: "ノートPC感覚に寄せやすい／浅めキー／静音寄り／Bluetooth（複数台切替）",
+    url: "https://www.amazon.co.jp/%E3%82%A8%E3%83%AC%E3%82%B3%E3%83%A0-Bluetooth-TK-FBM120KBK-EC-%E6%9C%80%E5%A4%A73%E5%8F%B0%E3%83%9E%E3%83%AB%E3%83%81%E3%83%9A%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E5%AF%BE%E5%BF%9C/dp/B09MQ9KK6P?pd_rd_w=xKmhx&content-id=amzn1.sym.3474371e-c251-45d0-b7dd-181708817ec8&pf_rd_p=3474371e-c251-45d0-b7dd-181708817ec8&pf_rd_r=404WHRYE69RYCFXF0YTW&pd_rd_wg=7o0Sh&pd_rd_r=2bca23c7-5723-4eb8-901c-f7e92f40fea2&pd_rd_i=B08TMK8GSC&th=1&linkCode=ll1&tag=espressotaro-22&linkId=4aee418e965ff12bf56bf590ecb83070&language=ja_JP&ref_=as_li_ss_tl"
+  }
+};
+
+// 端末判定（スマホ/タブレット優先でOmikamoを出す）
+function isMobileLike() {
+  // pointer:coarse はスマホ/タブレットで効きやすい
+  const coarse = window.matchMedia && window.matchMedia("(pointer:coarse)").matches;
+  const ua = navigator.userAgent || "";
+  const uaMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+  return coarse || uaMobile;
+}
+
+function pickAffiliateProduct() {
+  return isMobileLike() ? AFF.omikamo : AFF.elecom;
+}
+
+function renderAffiliate() {
+  if (!affiliateBox || !affiliateLead || !affiliateLink || !affiliateTitle || !affiliateNote) return;
+
+  const p = pickAffiliateProduct();
+  affiliateLead.textContent = p.lead;
+  affiliateTitle.textContent = p.title;
+  affiliateNote.textContent = p.note;
+  affiliateLink.href = p.url;
+
+  affiliateBox.style.display = "";
+}
+
 
 
 /* =========================================================
@@ -2981,6 +3034,7 @@ function onTypingFinish({ metrics, meta }) {
     }
 
 
+    renderAffiliate();
     showModal();
 
     const user = State.authUser;
@@ -3160,6 +3214,7 @@ window.addEventListener("pageshow", () => {
     });
   });
 });
+
 
 
 
