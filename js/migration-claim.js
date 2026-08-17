@@ -1,24 +1,38 @@
 /**
- * Attach every userProfile personalId on this device to the migration
- * banner link so a click carries the whole roster to the new site. The
- * new site picks each up in turn and offers to inherit them.
+ * Attach every userProfile on this device to the migration banner link so a
+ * click carries the whole roster to the new site. The new site picks each
+ * up in turn and offers to inherit them.
  *
- * Two sources for the roster:
- *   1) window.__migrationUsers — published by app.js once the user
- *      manager has hydrated (covers multi-user devices).
- *   2) localStorage lastPersonalId_v1:<authUid> — fallback for the first
- *      moments before the user manager runs (covers single-user devices).
+ * Sources:
+ *   1) window.__migrationUsers — published by app.js after the user
+ *      manager hydrates. Carries {personalId, userName} for every profile.
+ *   2) localStorage lastPersonalId_v1:<authUid> — fallback for early
+ *      moments before the user manager runs (single-user case, no name).
+ *
+ * We send BOTH personalId and userName so the new site can render the
+ * confirmation modal without hitting Firestore first — important when the
+ * user's daily read quota is already exhausted.
  */
 (function () {
+  function encodeList(names) {
+    // Names may contain commas and Japanese chars. encodeURIComponent
+    // each, then join with a comma delimiter that survives the round-trip.
+    return names.map(function (n) { return encodeURIComponent(String(n || "")); }).join(",");
+  }
+
   function readFromWindow() {
     var arr = window.__migrationUsers;
     if (!Array.isArray(arr) || arr.length === 0) return null;
-    var pids = [];
+    var seen = {};
+    var out = [];
     for (var i = 0; i < arr.length; i++) {
-      var p = arr[i] && arr[i].personalId;
-      if (p && pids.indexOf(p) === -1) pids.push(p);
+      var u = arr[i];
+      var pid = u && u.personalId;
+      if (!pid || seen[pid]) continue;
+      seen[pid] = 1;
+      out.push({ personalId: pid, userName: (u.userName || "").toString() });
     }
-    return pids.length ? pids : null;
+    return out.length ? out : null;
   }
 
   function readFromStorage() {
@@ -30,35 +44,40 @@
         if (v) { pid = v; break; }
       }
     }
-    return pid ? [pid] : null;
+    return pid ? [{ personalId: pid, userName: "" }] : null;
   }
 
   function attachClaim() {
-    var pids = readFromWindow() || readFromStorage();
-    if (!pids) return false;
+    var users = readFromWindow() || readFromStorage();
+    if (!users) return false;
     var banner = document.getElementById("migration-banner");
     if (!banner) return true; // banner absent — no-op, but stop polling
     var link = banner.querySelector("a[href*='kanji-typing-game']");
     if (!link) return true;
     try {
       var url = new URL(link.href);
-      // Encode as comma-separated so a legacy user with 7 profiles doesn't
-      // blow the URL into a wall of repeated params.
-      var joined = pids.join(",");
-      if (url.searchParams.get("claim") === joined) return true; // unchanged
-      url.searchParams.set("claim", joined);
+      var pids = users.map(function (u) { return u.personalId; });
+      var names = users.map(function (u) { return u.userName; });
+      var claimVal = pids.join(",");
+      var namesVal = encodeList(names);
+      if (
+        url.searchParams.get("claim") === claimVal
+        && url.searchParams.get("names") === namesVal
+      ) return true;
+      url.searchParams.set("claim", claimVal);
+      url.searchParams.set("names", namesVal);
       link.href = url.toString();
     } catch (_) { /* leave link alone */ }
     return true;
   }
 
-  if (attachClaim()) return;
-  // Poll while auth + userManager settle.
+  // Kick off, then keep polling so we upgrade from the storage fallback
+  // to the fuller window list once app.js publishes it, and pick up
+  // newly-added users mid-session too.
+  attachClaim();
   var attempts = 0;
   var iv = setInterval(function () {
-    // Keep going even after the storage fallback fires so we can upgrade
-    // to the fuller window list once app.js publishes it.
     attachClaim();
-    if (++attempts > 40) clearInterval(iv);
+    if (++attempts > 60) clearInterval(iv); // ~15s
   }, 250);
 })();
