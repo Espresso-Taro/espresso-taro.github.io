@@ -625,8 +625,22 @@ async function backfillLeaderboards({ maxDocs = 5000 } = {}) {
 
 window.backfillLeaderboards = backfillLeaderboards;
 
+// Migration-claim hook: expose the users list so /js/migration-claim.js can
+// bundle every profile on this device into the new-site banner link.
+function publishMigrationUsers() {
+  try {
+    const u = getUserManager();
+    const users = Array.isArray(u?.users) ? u.users : [];
+    window.__migrationUsers = users.map(x => ({
+      personalId: x.personalId,
+      userName: x.userName,
+    }));
+  } catch (_) { /* ignore */ }
+}
+
 function bindUserSwitchHooks() {
   getUserManager().onUserChanged(async () => {
+    publishMigrationUsers();
     console.log("onUserChanged ACTIVE");
 
     // ★ ユーザーごとの前回状態を復元
