@@ -1,148 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>漢字変換タイピングとは？仕事で通用する日本語入力練習</title>
-  <meta name="description" content="漢字変換タイピングとは何かを解説。ローマ字速度だけでは実務が速くならない理由、変換ミスの損失、上達のコツ、IME設定や辞書登録の考え方をまとめます。">
-  <meta name="robots" content="index,follow">
-  <link rel="canonical" href="https://kanji-typing-game.pages.dev/typing/kanji-typing/">
-
-  <!-- index と同じ CSS -->
-  <link rel="stylesheet" href="../css/app.css">
+<meta charset="utf-8">
+<title>漢字変換タイピングゲーム</title>
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://kanjihenkan.com/typing/kanji-typing/">
+<meta http-equiv="refresh" content="0; url=https://kanjihenkan.com/typing/kanji-typing/">
+<script>window.location.replace("https://kanjihenkan.com/typing/kanji-typing/");</script>
+<style>body{font-family:system-ui,-apple-system,sans-serif;padding:2em;text-align:center;color:#333;line-height:1.6}a{color:#c94f30;font-weight:600}</style>
 </head>
-
-<body class="article-page">
-<div id="migration-banner" style="background:linear-gradient(90deg,#a55f1f,#c6792d);color:#fff;padding:10px 12px;text-align:center;font-family:system-ui,-apple-system,'Yu Gothic UI','Hiragino Sans',sans-serif;font-size:13px;line-height:1.5;position:sticky;top:0;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,0.2);">
-  ✨ サイトが新しくなりました
-  <a href="https://kanji-typing-game.pages.dev/typing/kanji-typing/?utm_source=old_site&amp;utm_medium=banner&amp;utm_campaign=migration" style="color:#fff;text-decoration:none;font-weight:700;background:rgba(255,255,255,0.22);padding:5px 12px;border-radius:6px;margin-left:8px;display:inline-block;">新サイトへ →</a>
-</div>
-<main>
-  <header>
-    <h1>漢字変換タイピングとは？仕事で通用する日本語入力練習</h1>
-    <p>
-      漢字変換タイピングとは、IME（日本語入力システム）による<strong>変換操作を含めて</strong>行うタイピング練習です。
-      「ローマ字を速く打つ」だけでなく、「日本語として文章を完成させる」ことに焦点を当てます。
-    </p>
-  </header>
-
-  <section>
-    <h2>漢字変換タイピングとは何か</h2>
-    <p>
-      一般的なタイピングゲームは、かな入力（ローマ字打鍵）の速さを中心に評価します。
-      しかし実務では、変換・候補選択・確定が入り、ここで止まると入力全体が遅くなります。
-    </p>
-    <p>
-      漢字変換タイピングは、この“実務で必ず発生する工程”を練習に取り込み、
-      <strong>完成文の速さ</strong>を伸ばすためのアプローチです。
-      あわせて、評価指標としては <a href="./cpm.html">CPM（文字/分）</a> が相性が良いです。
-    </p>
-  </section>
-
-  <section>
-    <h2>実務で求められる日本語入力スキル</h2>
-    <p>
-      仕事の入力は、単に「打つ」だけでは終わりません。たとえば次のような場面があります。
-    </p>
-    <ul>
-      <li>メール：丁寧語・固有名詞・誤字脱字の少なさが重要</li>
-      <li>チャット：短文でもテンポよく、誤変換を減らす</li>
-      <li>資料作成：専門用語・製品名・数値の正確性</li>
-      <li>議事録：聞きながら入力し、変換で止まらないこと</li>
-    </ul>
-    <p>
-      ここで効いてくるのが、IME変換の精度と操作のスムーズさです。
-      ローマ字入力が速くても、変換が不安定だと全体速度が上がりません。
-    </p>
-  </section>
-
-  <section>
-    <h2>変換ミスが仕事を遅くする理由</h2>
-    <p>
-      変換ミスは「1回のミス」が小さく見えて、実は積み重なると大きな損失になります。
-      代表的な損失は次の3つです。
-    </p>
-
-    <h3>1. 修正コストが高い</h3>
-    <p>
-      誤変換に気付いて戻る、消す、打ち直す、再変換する……という一連の操作は、数秒でも回数が増えると入力全体が遅くなります。
-      特に資料やメールは、後から見直すほど手戻りが増えがちです。
-    </p>
-
-    <h3>2. 思考が途切れる</h3>
-    <p>
-      文章を組み立てながら入力しているとき、変換で迷うと集中が切れます。
-      これは速度だけでなく、文章品質（言い回し・論理の流れ）にも影響します。
-    </p>
-
-    <h3>3. “速さ”が再現しない</h3>
-    <p>
-      ローマ字速度だけを鍛えると、文章や文脈が変わった途端に崩れます。
-      実務では常に内容が変わるため、変換込みでの安定性が重要です。
-    </p>
-  </section>
-
-  <section>
-    <h2>漢字変換タイピングを上達させるコツ</h2>
-
-    <h3>1. 文節の切り方を固定する</h3>
-    <p>
-      変換で迷う原因の多くは、文節の切り方が毎回バラバラなことです。
-      長文を一括変換すると候補が増えて迷い、短すぎる変換は確定回数が増えてテンポが悪くなります。
-      自分が迷いにくい分割を決めておくと、入力が安定します。
-    </p>
-
-    <h3>2. 候補選択を“探さない”状態にする</h3>
-    <p>
-      候補をスクロールして探す状態は、入力速度を大きく落とします。
-      できるだけ一発で狙った候補が出るように、入力の癖（ひらがな/カタカナ、送り仮名、文節）を整えるのが効果的です。
-    </p>
-
-    <h3>3. 辞書登録で迷いを消す</h3>
-    <p>
-      固有名詞やよく使う定型句は、辞書登録で一気に改善します。
-      「候補から選ぶ」作業が減ると、速度と正確性が両方上がりやすいです。
-    </p>
-
-    <h3>4. IMEの設定を最低限見直す</h3>
-    <p>
-      OSやIMEによって設定項目は異なりますが、予測変換・学習・入力モードなどは体感に影響します。
-      まずは「誤変換が多い単語」「迷う場面」をメモして、辞書登録や入力の切り方で潰すのが確実です。
-    </p>
-  </section>
-
-  <section>
-    <h2>指標はCPMで見ると伸びが実務に直結する</h2>
-    <p>
-      漢字変換タイピングの目的は、ローマ字の速さではなく<strong>完成文の速さ</strong>を上げることです。
-      そのため、WPMよりも <a href="./cpm.html">CPM（文字/分）</a> で評価すると、改善が実務に繋がりやすくなります。
-    </p>
-    <p>
-      「速さは出ているのに疲れる」「ミスが多い」場合は、入力の流れがどこで止まっているか（変換・確定・修正）を見てください。
-      ボトルネックが分かると、伸ばすポイントが明確になります。
-    </p>
-  </section>
-
-  <section>
-    <h2>よくある質問（FAQ）</h2>
-
-    <h3>タイピングゲームで速いのに、仕事の文章入力が遅いです</h3>
-    <p>
-      仕事の文章は、変換・確定・修正の比率が高いからです。
-      変換込みで練習し、CPMと正確性をセットで見ると改善しやすくなります。
-    </p>
-
-    <h3>まず何から始めればいい？</h3>
-    <p>
-      迷いやすい単語を辞書登録し、文節の切り方をある程度固定するのが効果的です。
-      そこから、短い文章で「止まらずに完成文を作る」練習に移ると、実務に直結します。
-    </p>
-  </section>
-
-  <nav>
-    <a href="../">← トップページに戻る</a>
-  </nav>
-</main>
-<script src="/js/migration-claim.js" defer></script>
+<body>
+<p>このページは移転しました。</p>
+<p><a href="https://kanjihenkan.com/typing/kanji-typing/">https://kanjihenkan.com/typing/kanji-typing/</a></p>
 </body>
 </html>
