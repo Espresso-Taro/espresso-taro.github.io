@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,follow">
+<title>データ移行中 | 漢字変換タイピングゲーム</title>
+<style>
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Yu Gothic", sans-serif;
+    padding: 2em 1em;
+    text-align: center;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+  }
+  .icon { font-size: 4em; animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  h1 { font-size: 1.1em; margin: 0.6em 0 0.4em; }
+  .status { color: #666; font-size: 0.95em; margin: 0; max-width: 30em; }
+  .fallback { margin-top: 2em; display: none; }
+  .fallback a {
+    display: inline-block;
+    padding: 0.6em 1.4em;
+    background: #c94f30;
+    color: #fff;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #18181b; color: #e4e4e7; }
+    .status { color: #a1a1aa; }
+  }
+</style>
+</head>
+<body>
+<div class="icon" aria-hidden="true">🚚</div>
+<h1>データを新サイトに移行中</h1>
+<p class="status" id="status">初期化中…</p>
+<div class="fallback" id="fallback">
+  <p style="font-size:0.9em;color:#888;">自動でリダイレクトされない場合:</p>
+  <a id="fallback-link" href="https://kanjihenkan.com/">新サイトを開く</a>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+// Must match the app's Firebase project so we look at the same Firestore.
+const firebaseConfig = {
+  apiKey: "AIzaSyAqDSPE_HkPbi-J-SqPL4Ys-wR4RaA8wKA",
+  authDomain: "otonano-typing-game.firebaseapp.com",
+  projectId: "otonano-typing-game",
+  storageBucket: "otonano-typing-game.appspot.com",
+  messagingSenderId: "475283850178",
+  appId: "1:475283850178:web:193d28f17be20a232f4c5b",
+};
+
+const TARGET_ORIGIN = "https://kanjihenkan.com";
+const statusEl = document.getElementById("status");
+const fallbackEl = document.getElementById("fallback");
+const fallbackLinkEl = document.getElementById("fallback-link");
+
+// Preserve the intended destination path (e.g. /tips/) if the caller
+// passed ?to=/tips/. Reject anything that's not a same-origin path so a
+// crafted link can't bounce visitors off to an attacker-controlled URL.
+const params = new URLSearchParams(window.location.search);
+const rawPath = params.get("to") || "/";
+const safePath = rawPath.startsWith("/") && !rawPath.startsWith("//") ? rawPath : "/";
+
+function goToNew(claim) {
+  let url = TARGET_ORIGIN + safePath;
+  if (claim) {
+    const sep = url.includes("?") ? "&" : "?";
+    url += sep + claim;
+  }
+  window.location.replace(url);
+}
+
+(async () => {
+  try {
+    statusEl.textContent = "サインイン中…";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const user = await new Promise((resolve, reject) => {
+      const t = setTimeout(() => reject(new Error("auth timeout")), 10000);
+      if (auth.currentUser) { clearTimeout(t); resolve(auth.currentUser); return; }
+      signInAnonymously(auth).catch((e) => console.error("signInAnonymously", e));
+      const unsub = onAuthStateChanged(auth, (u) => {
+        if (u) { clearTimeout(t); unsub(); resolve(u); }
+      });
+    });
+
+    statusEl.textContent = "データを検索中…";
+    const q = query(collection(db, "userProfiles"), where("uid", "==", user.uid));
+    const snap = await getDocs(q);
+
+    const profiles = snap.docs
+      .map((d) => {
+        const data = d.data() || {};
+        return {
+          personalId: String(data.personalId || d.id || ""),
+          userName: String(data.userName || ""),
+        };
+      })
+      .filter((p) => p.personalId && p.userName);
+
+    if (profiles.length === 0) {
+      statusEl.textContent = "このデバイスに旧サイトのデータは見つかりませんでした。新サイトに移動します。";
+      setTimeout(() => goToNew(""), 1200);
+      return;
+    }
+
+    const pids = profiles.map((p) => p.personalId).join(",");
+    const names = profiles.map((p) => encodeURIComponent(p.userName)).join(",");
+    statusEl.textContent = profiles.length + "件のプロフィールを引き継ぎ中…";
+    goToNew("claim=" + pids + "&names=" + names);
+  } catch (e) {
+    console.error("migration failed", e);
+    statusEl.textContent = "移行に失敗しました。手動で新サイトを開いてください。";
+    fallbackLinkEl.href = TARGET_ORIGIN + safePath;
+    fallbackEl.style.display = "block";
+  }
+})();
+</script>
+</body>
+</html>
